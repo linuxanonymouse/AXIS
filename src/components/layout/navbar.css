@@ -1,0 +1,196 @@
+/* ─── Premium Glassmorphic Navbar ─── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  border-bottom: 1px solid transparent;
+}
+
+.navbar--scrolled {
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  padding: 1rem 2.5rem;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+/* Pulsing gold beacon */
+@keyframes mark-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(205, 164, 100, 0.6), 0 0 20px rgba(205, 164, 100, 0.2); transform: scale(1); }
+  50% { box-shadow: 0 0 16px rgba(205, 164, 100, 1), 0 0 35px rgba(205, 164, 100, 0.5); transform: scale(1.15); }
+}
+
+.navbar__mark {
+  width: 8px;
+  height: 8px;
+  background-color: var(--gold);
+  animation: mark-pulse 3s ease-in-out infinite;
+}
+
+.navbar__brand {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--ivory);
+  letter-spacing: 0.1em;
+}
+
+.navbar__brand-os {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-left: 0.4rem;
+  vertical-align: super;
+}
+
+.navbar__links {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .navbar__links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+}
+
+.navbar__link {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.navbar__link:hover {
+  color: var(--ivory);
+  text-shadow: 0 0 12px rgba(205, 164, 100, 0.4);
+}
+
+.navbar__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), rgba(205, 164, 100, 0.3));
+  box-shadow: 0 0 6px rgba(205, 164, 100, 0.5);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar__link:hover .navbar__indicator {
+  width: 100%;
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar__btn-secondary {
+  display: none;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar__btn-secondary:hover {
+  color: var(--ivory);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Glowing CTA button */
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(205, 164, 100, 0.15), inset 0 0 6px rgba(205, 164, 100, 0.05); }
+  50% { box-shadow: 0 0 18px rgba(205, 164, 100, 0.35), inset 0 0 12px rgba(205, 164, 100, 0.1); }
+}
+
+.navbar__btn-primary {
+  display: none;
+  background: rgba(205, 164, 100, 0.1);
+  border: 1px solid rgba(205, 164, 100, 0.3);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: btn-glow 4s ease-in-out infinite;
+}
+
+.navbar__btn-primary:hover {
+  background: var(--gold);
+  color: var(--black);
+  box-shadow: 0 0 25px rgba(205, 164, 100, 0.6), 0 0 60px rgba(205, 164, 100, 0.2);
+  animation: none;
+}
+
+@media (min-width: 768px) {
+  .navbar__btn-secondary,
+  .navbar__btn-primary {
+    display: block;
+  }
+}
+
+/* Mobile menu lines */
+.menu-trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+
+.menu-line-long, .menu-line-short {
+  display: block;
+  height: 1px;
+  background: var(--ivory);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-line-long { width: 24px; }
+.menu-line-short { width: 16px; }
+
+.menu-trigger:hover .menu-line-long { width: 24px; background: var(--gold); }
+.menu-trigger:hover .menu-line-short { width: 24px; background: var(--gold); }
+
+.navbar__mobile-btn {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .navbar__mobile-btn {
+    display: none;
+  }
+}
