@@ -4,99 +4,134 @@ import { motion } from "framer-motion";
 import { Brain, Play, DollarSign, Building2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function EcosystemGraph() {
+export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
   const containerFade = {
-    hidden: { opacity: 0 },
+    hidden: { 
+      opacity: 0, 
+      filter: "drop-shadow(0px 0px 0px rgba(205,164,100,0))",
+      transition: { duration: 0.2, ease: "easeOut" as const }
+    },
     visible: { 
       opacity: 1, 
-      transition: { duration: 1.2, staggerChildren: 0.4 } 
+      filter: "drop-shadow(0px 0px 40px rgba(205,164,100,0.6))",
+      transition: { duration: 0.8, delay: 0.4, staggerChildren: 0.15 } 
     }
   };
 
-  const floatAnimation = {
-    hidden: { scale: 0, opacity: 0 },
+  const nodeEntrance = {
+    hidden: { 
+      scale: 0, 
+      opacity: 0, 
+      filter: "blur(10px)",
+      transition: { duration: 0.2 }
+    },
     visible: { 
       scale: 1, 
       opacity: 1, 
-      transition: { type: "spring", stiffness: 50, damping: 10, delay: 2.0 } 
-    },
+      filter: "blur(0px)",
+      transition: { type: "spring" as const, stiffness: 70, damping: 14 } 
+    }
+  };
+
+  const nodeFloat = {
     float: {
       y: ["-12px", "12px"],
       transition: {
         y: {
           duration: 3,
           repeat: Infinity,
-          repeatType: "reverse",
-          ease: "easeInOut"
+          repeatType: "reverse" as const,
+          ease: "easeInOut" as const
         }
       }
     }
   };
 
   const drawLine = {
-    hidden: { pathLength: 0, opacity: 0 },
+    hidden: { 
+      pathLength: 0, 
+      opacity: 0,
+      transition: { duration: 0.2 }
+    },
     visible: { 
       pathLength: 1, 
       opacity: 1, 
-      transition: { pathLength: { duration: 1.5, ease: "easeInOut", delay: 1.0 }, opacity: { duration: 0.5, delay: 1.0 } } 
+      transition: { pathLength: { duration: 0.8, ease: "easeInOut" as const }, opacity: { duration: 0.3 } } 
     }
   };
 
   const drawCircle = {
-    hidden: { pathLength: 0, opacity: 0 },
+    hidden: { 
+      pathLength: 0, 
+      opacity: 0,
+      transition: { duration: 0.2 }
+    },
     visible: { 
       pathLength: 1, 
       opacity: 1, 
-      transition: { pathLength: { duration: 1.5, ease: "easeInOut" }, opacity: { duration: 0.5 } } 
+      transition: { pathLength: { duration: 0.8, ease: "easeInOut" as const }, opacity: { duration: 0.3 } } 
     }
   };
 
   const drawAndSpinInner = {
-    hidden: { pathLength: 0, opacity: 0, rotate: 0 },
+    hidden: { 
+      pathLength: 0, 
+      opacity: 0, 
+      rotate: 0,
+      transition: { duration: 0.2 }
+    },
     visible: { 
       pathLength: 1, 
       opacity: 1, 
       rotate: 360,
       transition: { 
-        pathLength: { duration: 1.5, ease: "easeInOut" }, 
-        opacity: { duration: 0.5 },
-        rotate: { repeat: Infinity, duration: 40, ease: "linear" }
+        pathLength: { duration: 0.8, ease: "easeInOut" as const }, 
+        opacity: { duration: 0.3 },
+        rotate: { repeat: Infinity, duration: 40, ease: "linear" as const }
       } 
     }
   };
 
   const drawAndSpinOuter = {
-    hidden: { pathLength: 0, opacity: 0, rotate: 0 },
+    hidden: { 
+      pathLength: 0, 
+      opacity: 0, 
+      rotate: 0,
+      transition: { duration: 0.2 }
+    },
     visible: { 
       pathLength: 1, 
       opacity: 1, 
       rotate: -360,
       transition: { 
-        pathLength: { duration: 1.5, ease: "easeInOut" }, 
-        opacity: { duration: 0.5 },
-        rotate: { repeat: Infinity, duration: 60, ease: "linear" }
+        pathLength: { duration: 0.8, ease: "easeInOut" as const }, 
+        opacity: { duration: 0.3 },
+        rotate: { repeat: Infinity, duration: 60, ease: "linear" as const }
       } 
     }
   };
 
   const fadeInDelay = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1.0, delay: 2.5 } }
+    hidden: { 
+      opacity: 0,
+      transition: { duration: 0.2 }
+    },
+    visible: { 
+      opacity: 1, 
+      transition: { duration: 0.6, delay: 0.6 } 
+    }
   };
 
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
-      // Prioritize making the graph large and prominent
-      const availableWidth = Math.min(window.innerWidth - 32, 800);
-      // Only subtract a minimal 100px for breathing room, instead of 300px
+      // Increase sizing algorithm to force the graph to be large and legible
+      const availableWidth = Math.min(window.innerWidth - 16, 800);
       const availableHeight = Math.min(window.innerHeight - 100, 800);
-      const calculatedScale = Math.min(availableWidth, availableHeight) / 800;
-      
-      // Force the graph to be large: at least 80% on desktop, 55% on mobile
-      const minAllowedScale = window.innerWidth > 768 ? 0.8 : 0.55;
-      setScale(Math.max(minAllowedScale, calculatedScale));
+      const minScale = Math.min(availableWidth, availableHeight) / 800;
+      // Never allow the graph to shrink below 75% size (600px square)
+      setScale(Math.max(0.75, minScale));
     };
     
     // Initial calculation
@@ -108,22 +143,21 @@ export default function EcosystemGraph() {
 
   return (
     // The outer wrapper reserves the EXACT scaled height so the page doesn't jump
-    <div style={{ width: '100%', height: `${800 * scale}px`, display: 'flex', justifyContent: 'center' }}>
+    <div style={{ width: `${800 * scale}px`, height: `${800 * scale}px`, display: 'flex', justifyContent: 'center', alignItems: 'center', transform: 'translateX(-70px)' }}>
       
-      {/* The 800x800 perfect square that scales up and down like an image */}
+      {/* The 800x800 perfect square that scales up and down like an image, responding to SCROLL position! */}
       <motion.div 
         className="ecosystem-graph"
         style={{ 
           position: 'relative', 
           width: '800px', 
           height: '800px', 
-          transform: `scale(${scale})`, 
-          transformOrigin: 'top center' 
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center'
         }}
         variants={containerFade}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.2 }}
+        animate={isActive ? "visible" : "hidden"}
       >
         <svg style={{ position: 'absolute', top: 0, left: 0, width: '800px', height: '800px', pointerEvents: 'none' }} viewBox="0 0 1000 1000">
           <defs>
@@ -200,7 +234,7 @@ export default function EcosystemGraph() {
             {/* Intersection Dots */}
             <motion.g fill="var(--gold)" filter="url(#glow)"
               animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }}
             >
               <circle cx="230" cy="230" r="4" />
               <circle cx="770" cy="770" r="4" />
@@ -223,51 +257,61 @@ export default function EcosystemGraph() {
         
         {/* Center Node */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={floatAnimation} animate="float">
-            <div className="ecosystem-graph-node center-node group">
-              <div className="absolute inset-0 bg-[var(--gold)] opacity-5 blur-2xl group-hover:opacity-15 transition-opacity duration-700 rounded-full" />
-              <h3 className="text-2xl font-serif text-[var(--gold)] mb-1 font-medium text-shimmer">Axis<br/>Operations</h3>
-            </div>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node center-node group bg-black/60 backdrop-blur-md w-40 h-40 rounded-full border border-[var(--gold)]/30 shadow-[0_0_30px_rgba(205,164,100,0.15)] flex flex-col items-center justify-center">
+                <div className="absolute inset-0 bg-[var(--gold)] opacity-5 blur-2xl group-hover:opacity-15 transition-opacity duration-700 rounded-full" />
+                <h3 className="text-2xl font-serif text-white mb-1 font-semibold text-center leading-tight">Axis<br/>Operations</h3>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Top Node: Intelligence */}
         <div style={{ position: 'absolute', zIndex: 10, top: '96px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={floatAnimation} animate="float">
-            <div className="ecosystem-graph-node satellite-node node-purple group">
-              <Brain className="w-8 h-8 mb-2 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
-              <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Intelligence</h4>
-            </div>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node satellite-node node-purple group">
+                <Brain className="w-8 h-8 mb-2 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Intelligence</h4>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Right Node: Media */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '704px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={floatAnimation} animate="float">
-            <div className="ecosystem-graph-node satellite-node node-blue group">
-              <Play className="w-8 h-8 mb-2 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
-              <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Media</h4>
-            </div>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node satellite-node node-blue group">
+                <Play className="w-8 h-8 mb-2 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Media</h4>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Bottom Node: Ventures */}
         <div style={{ position: 'absolute', zIndex: 10, top: '704px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={floatAnimation} animate="float">
-            <div className="ecosystem-graph-node satellite-node node-green group">
-              <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
-              <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Ventures</h4>
-            </div>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node satellite-node node-green group">
+                <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Ventures</h4>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Left Node: Studio */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '96px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={floatAnimation} animate="float">
-            <div className="ecosystem-graph-node satellite-node node-orange group">
-              <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
-              <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Studio</h4>
-            </div>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node satellite-node node-orange group">
+                <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Studio</h4>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
 

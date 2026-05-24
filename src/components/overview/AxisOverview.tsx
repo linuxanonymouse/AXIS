@@ -1,26 +1,46 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import EcosystemGraph from "./EcosystemGraph";
 
 export default function AxisOverview() {
   const [activeSection, setActiveSection] = useState(0);
 
+  // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const vh = window.innerHeight;
-      const scrollY = window.scrollY;
-      const index = Math.round(scrollY / vh);
-      setActiveSection(index);
+      const vh = window.innerHeight || 1;
+      const scrollVh = window.scrollY / vh;
+      const index = Math.round(scrollVh);
+      setActiveSection(Math.min(6, Math.max(0, index)));
     };
     window.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToNext = () => {
-    window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    if (typeof window !== "undefined") {
+      (window as any).__axisDotClick = true;
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+      setTimeout(() => {
+        (window as any).__axisDotClick = false;
+      }, 1200);
+    }
   };
+
+  const scrollToSection = (idx: number) => {
+    if (typeof window !== "undefined") {
+      (window as any).__axisDotClick = true;
+      window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+      setTimeout(() => {
+        (window as any).__axisDotClick = false;
+      }, 1200);
+    }
+  };
+
   const containerStagger = {
     hidden: { opacity: 0 },
     visible: {
@@ -50,34 +70,46 @@ export default function AxisOverview() {
     }
   };
 
+  const artisticCard = {
+    hidden: { opacity: 0, scale: 0.8, rotateX: 45, filter: "blur(15px)" },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotateX: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 1.2, type: "spring" as const, bounce: 0.4 } 
+    }
+  };
+
   return (
     <div className="w-full">
       {/* SECTION 01 — Hero Opening */}
       <motion.section 
-        className="overview-section section-hero"
+        className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
-        animate="visible"
+        animate={activeSection === 0 ? "visible" : "hidden"}
         variants={containerStagger}
       >
+        <div className="cinematic-backdrop-glow" />
         <motion.h1 variants={childFadeUp} className="text-luxury-heading text-shimmer">AXIS</motion.h1>
         <motion.div variants={childFadeUp} className="eyebrow">Operating System for Scalable Organizations</motion.div>
         <motion.p variants={childFadeUp} className="text-body-large mt-8">
           Axis aligns infrastructure, intelligence, distribution, and monetization into a coordinated operating environment designed for scalable growth.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas mt-8">
-          <button className="btn-gold">Explore the Ecosystem</button>
-          <button className="btn-white">Begin Alignment</button>
+          <button className="btn-gold" onClick={() => scrollToSection(4)}>Explore the Ecosystem</button>
+          <button className="btn-white" onClick={() => scrollToSection(1)}>Begin Alignment</button>
         </motion.div>
       </motion.section>
 
       {/* SECTION 02 — What Axis Is */}
       <motion.section 
-        className="overview-section"
+        className={`overview-section ${activeSection === 1 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 1 ? "visible" : "hidden"}
         variants={containerStagger}
       >
+        <div className="split-glow-right" />
         <div className="section-split relative w-full">
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left lg:border-none"></div>
@@ -97,12 +129,12 @@ export default function AxisOverview() {
 
       {/* SECTION 03 — What Axis Is Not */}
       <motion.section 
-        className="overview-section"
+        className={`overview-section ${activeSection === 2 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 2 ? "visible" : "hidden"}
         variants={containerStagger}
       >
+        <div className="split-glow-left" />
         <div className="section-split relative w-full">
           <motion.div variants={childFadeUp} className="split-col is-left lg:border-none">
             <h2 className="text-luxury-subheading text-shimmer">What Axis Is Not</h2>
@@ -124,29 +156,29 @@ export default function AxisOverview() {
 
       {/* SECTION 04 — Clarity → Structure → Monetization */}
       <motion.section 
-        className="overview-section section-hero"
+        className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 3 ? "visible" : "hidden"}
         variants={{
           hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 2.0, delayChildren: 0.2 } }
+          visible: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 0.1 } }
         }}
       >
-        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.4 } } }} className="flex flex-wrap items-center justify-center gap-4 mb-12 text-luxury-subheading">
+        <div className="cinematic-backdrop-glow" />
+        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }} className="flex flex-wrap items-center justify-center gap-4 mb-12 text-luxury-subheading">
           <motion.span variants={childFadeUp} className="text-shimmer">Clarity</motion.span>
           <motion.span variants={childFadeUp} className="text-[var(--gold)] opacity-50">→</motion.span>
           <motion.span variants={childFadeUp} className="text-shimmer">Structure</motion.span>
           <motion.span variants={childFadeUp} className="text-[var(--gold)] opacity-50">→</motion.span>
           <motion.span variants={childFadeUp} className="text-shimmer">Monetization</motion.span>
         </motion.div>
-        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.3 } } }} className="section-panels w-full">
+        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }} className="section-panels w-full" style={{ perspective: "1200px" }}>
           {[
             { num: "01.", title: "Clarity", desc: "Understanding what is actually happening versus what is assumed." },
             { num: "02.", title: "Structure", desc: "Designing systems where execution becomes predictable and scalable." },
             { num: "03.", title: "Monetization", desc: "Capturing and compounding value once structure is aligned." }
           ].map((panel, idx) => (
-            <motion.div key={idx} variants={childFadeUp} className="cinematic-panel group">
+            <motion.div key={idx} variants={artisticCard} className="cinematic-panel group">
               <div className="panel-number transition-colors duration-500 group-hover:text-[var(--ivory)]">{panel.num}</div>
               <h3 className="panel-title">{panel.title}</h3>
               <p className="text-body-regular">{panel.desc}</p>
@@ -157,31 +189,30 @@ export default function AxisOverview() {
 
       {/* SECTION 05 — The Axis Ecosystem */}
       <motion.section 
-        className="overview-section section-hero"
+        className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
+        style={{ minHeight: '200vh' }}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
         variants={containerStagger}
       >
-        <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
-        <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
-        <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
-          Each layer performs a distinct function. Together, they form a complete system built for scalable growth.
-        </motion.p>
-
-        <motion.div variants={childFadeUp} className="w-full">
-          <EcosystemGraph />
-        </motion.div>
+        <div className="cinematic-backdrop-glow" />
+        <div className="absolute top-12 left-0 right-0 z-10 pointer-events-none px-4">
+          <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
+          <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
+          <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
+            Each layer performs a distinct function. Together, they form a complete system built for scalable growth.
+          </motion.p>
+        </div>
       </motion.section>
 
-      {/* SECTION 05 — Final Statement + CTA */}
+      {/* SECTION 06 — Final Statement + CTA */}
       <motion.section 
-        className="overview-section section-final"
+        className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 6 ? "visible" : "hidden"}
         variants={containerStagger}
       >
+        <div className="cinematic-backdrop-glow" />
         <motion.h2 variants={childFadeUp} className="text-luxury-subheading mb-4">
           AXIS does not create demand.<br/>
           AXIS makes existing value unavoidable.
@@ -199,10 +230,10 @@ export default function AxisOverview() {
       <div className="fixed bottom-12 right-12 z-[100] flex flex-col items-center gap-6 hidden md:flex">
         {/* Navigation Dots */}
         <div className="flex flex-col gap-3">
-          {[0, 1, 2, 3, 4, 5].map(idx => (
+          {[0, 1, 2, 3, 4, 5, 6].map(idx => (
             <button 
               key={idx} 
-              onClick={() => window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' })}
+              onClick={() => scrollToSection(idx)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === idx ? 'bg-[var(--gold)] scale-[1.5] shadow-[0_0_10px_rgba(205,164,100,0.8)]' : 'bg-white/20 hover:bg-white/50'}`}
               aria-label={`Scroll to section ${idx + 1}`}
             />
@@ -210,7 +241,7 @@ export default function AxisOverview() {
         </div>
         
         {/* Next Section Arrow */}
-        {activeSection < 5 && (
+        {activeSection < 6 && (
           <button 
             onClick={scrollToNext}
             className="w-10 h-10 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-[var(--gold)] hover:bg-white/10 hover:border-white/30 transition-all animate-bounce shadow-lg"
@@ -222,7 +253,6 @@ export default function AxisOverview() {
           </button>
         )}
       </div>
-
     </div>
   );
 }

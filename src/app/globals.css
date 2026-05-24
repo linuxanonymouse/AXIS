@@ -46,7 +46,6 @@ body {
   background: var(--black);
   font-family: var(--font-sans);
   font-weight: 400;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 

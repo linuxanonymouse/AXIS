@@ -1,10 +1,12 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { Float, Stars, MeshTransmissionMaterial } from "@react-three/drei";
+import { Float, Stars, MeshTransmissionMaterial, Environment, Html } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { motion } from "framer-motion";
+import EcosystemGraph from "../overview/EcosystemGraph";
 
 function CinematicCamera() {
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -18,131 +20,108 @@ function CinematicCamera() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const docHeight = typeof document !== "undefined" ? (document.documentElement.scrollHeight - window.innerHeight) : 1;
-    const scrollProgress = scrollY / Math.max(1, docHeight);
-
-    // Let's create beautiful cinematic camera positions:
-    // Scroll progress moves from 0 to 1
-    // Section 1 (Hero): Camera starts at [0, 1.2, 7.5]
-    // Section 2 (Split): Camera moves to [-2.2, 0.6, 5.2] (pans left, looking right)
-    // Section 3 (Clarity Panels): Camera moves to [2.4, -0.2, 4.8] (pans right, looking left)
-    // Section 4 (Ecosystem): Camera moves to [0, -1.2, 3.2] (low angle looking up)
-    // Section 5 (Final CTA): Camera retreats back and high: [0, 2.5, 8] (high view looking down)
-
-    const targetPos = new THREE.Vector3();
-    const targetLookAt = new THREE.Vector3(0, 0, 0);
-
-    // Helper to finish the transition halfway through the section's scroll, allowing it to rest
-    const getP = (start: number, end: number) => {
-      return Math.min(1, Math.max(0, (scrollProgress - start) / ((end - start) * 0.5)));
-    };
-
-    if (scrollProgress < 0.2) {
-      // 0 to 20%: Hero to What Axis Is (Core on left, text on right)
-      const p = getP(0, 0.2);
-      targetPos.set(
-        THREE.MathUtils.lerp(0, -0.5, p),
-        THREE.MathUtils.lerp(1.2, 0.8, p),
-        THREE.MathUtils.lerp(7.5, 6.0, p)
-      );
-      targetLookAt.set(
-        THREE.MathUtils.lerp(0, -1.0, p), // Look slightly left at the core
-        THREE.MathUtils.lerp(0, -0.1, p),
-        THREE.MathUtils.lerp(0, -0.5, p)
-      );
-    } else if (scrollProgress < 0.4) {
-      // 20% to 40%: What Axis Is to What Axis Is Not (Core on right, text on left)
-      const p = getP(0.2, 0.4);
-      targetPos.set(
-        THREE.MathUtils.lerp(-0.5, 0.5, p),
-        THREE.MathUtils.lerp(0.8, 0.8, p),
-        THREE.MathUtils.lerp(6.0, 6.0, p)
-      );
-      targetLookAt.set(
-        THREE.MathUtils.lerp(-1.0, 1.0, p), // Look slightly right at the core
-        THREE.MathUtils.lerp(-0.1, -0.1, p),
-        THREE.MathUtils.lerp(-0.5, -0.5, p)
-      );
-    } else if (scrollProgress < 0.6) {
-      // 40% to 60%: What Axis Is Not to Panels
-      const p = getP(0.4, 0.6);
-      targetPos.set(
-        THREE.MathUtils.lerp(0.5, 0, p),
-        THREE.MathUtils.lerp(0.8, -0.5, p),
-        THREE.MathUtils.lerp(6.0, 4.0, p)
-      );
-      targetLookAt.set(
-        THREE.MathUtils.lerp(1.0, 0, p), // Center
-        THREE.MathUtils.lerp(-0.1, -0.5, p),
-        THREE.MathUtils.lerp(-0.5, -1.0, p)
-      );
-    } else if (scrollProgress < 0.8) {
-      // 60% to 80%: Panels to Ecosystem
-      const p = getP(0.6, 0.8);
-      targetPos.set(
-        THREE.MathUtils.lerp(0, 0, p),
-        THREE.MathUtils.lerp(-0.5, 0, p),
-        THREE.MathUtils.lerp(4.0, 3.5, p)
-      );
-      targetLookAt.set(
-        THREE.MathUtils.lerp(0, 0, p),
-        THREE.MathUtils.lerp(-0.5, 0, p), // Looking straight at center
-        THREE.MathUtils.lerp(-1.0, -0.5, p)
-      );
-    } else {
-      // 80% to 100%: Ecosystem to Final CTA
-      const p = getP(0.8, 1.0);
-      targetPos.set(
-        THREE.MathUtils.lerp(0, 0, p),
-        THREE.MathUtils.lerp(0, 2.5, p),
-        THREE.MathUtils.lerp(3.5, 8.0, p)
-      );
-      targetLookAt.set(
-        THREE.MathUtils.lerp(0, 0, p),
-        THREE.MathUtils.lerp(0, 0.1, p),
-        THREE.MathUtils.lerp(-0.5, -0.4, p)
-      );
+    const vh = typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1;
+    
+    const rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
+    
+    // Smooth the scroll value itself using THREE.MathUtils.damp to prevent stutter
+    if (state.camera.userData.smoothedFloat === undefined) {
+      state.camera.userData.smoothedFloat = rawSectionFloat;
     }
+    state.camera.userData.smoothedFloat = THREE.MathUtils.damp(state.camera.userData.smoothedFloat, rawSectionFloat, 4, delta);
+    
+    const sectionFloat = state.camera.userData.smoothedFloat;
+    
+    // Determine the two indices to interpolate between
+    const lowerIndex = Math.min(6, Math.floor(sectionFloat));
+    const upperIndex = Math.min(6, lowerIndex + 1);
+    const p = sectionFloat - lowerIndex;
 
-    // Add subtle mouse parallax to camera position
-    targetPos.x += mouseRef.current.x * 0.4;
-    targetPos.y += mouseRef.current.y * 0.4;
+    const cameraTargets = [
+      { pos: [0, 1.2, 7.5], lookAt: [0, -1.0, -0.5] }, // Hero (0)
+      { pos: [-0.5, 0.8, 6.0], lookAt: [-1.0, -0.1, -0.5] }, // Is (1)
+      { pos: [0.5, 0.8, 6.0], lookAt: [1.0, -0.1, -0.5] }, // Is Not (2)
+      { pos: [0, -0.5, 4.0], lookAt: [0, -0.5, -1.0] }, // Panels (3)
+      { pos: [0, 0, 5.5], lookAt: [0, 0, 0] }, // Ecosystem Text (4)
+      { pos: [0, 0, 5.5], lookAt: [0, 0, 0] }, // Ecosystem Graph (5)
+      { pos: [0, 2.5, 8.0], lookAt: [0, 0, -2.0] }, // Final CTA (6)
+    ];
 
-    // Smoothly interpolate camera position
-    state.camera.position.lerp(targetPos, 0.05);
+    const c1 = cameraTargets[lowerIndex];
+    const c2 = cameraTargets[upperIndex];
 
-    // Smoothly update camera lookAt
+    const targetPos = new THREE.Vector3(
+      THREE.MathUtils.lerp(c1.pos[0], c2.pos[0], p),
+      THREE.MathUtils.lerp(c1.pos[1], c2.pos[1], p),
+      THREE.MathUtils.lerp(c1.pos[2], c2.pos[2], p)
+    );
+
+    const targetLookAt = new THREE.Vector3(
+      THREE.MathUtils.lerp(c1.lookAt[0], c2.lookAt[0], p),
+      THREE.MathUtils.lerp(c1.lookAt[1], c2.lookAt[1], p),
+      THREE.MathUtils.lerp(c1.lookAt[2], c2.lookAt[2], p)
+    );
+
+    // Add subtle mouse parallax
+    targetPos.x += mouseRef.current.x * 0.15;
+    targetPos.y += mouseRef.current.y * 0.15;
+
+    // Smoothly apply position (moderate damping for smoother motion)
+    const dampingFactor = 2.5; // balanced smoothness and responsiveness
+    state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, targetPos.x, dampingFactor, delta);
+    state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetPos.y, dampingFactor, delta);
+    state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetPos.z, dampingFactor, delta);
+    // Damping lookAt with same factor
     const currentLookAt = new THREE.Vector3(0, 0, -1).applyQuaternion(state.camera.quaternion).add(state.camera.position);
-    currentLookAt.lerp(targetLookAt, 0.05);
+    currentLookAt.x = THREE.MathUtils.damp(currentLookAt.x, targetLookAt.x, dampingFactor, delta);
+    currentLookAt.y = THREE.MathUtils.damp(currentLookAt.y, targetLookAt.y, dampingFactor, delta);
+    currentLookAt.z = THREE.MathUtils.damp(currentLookAt.z, targetLookAt.z, dampingFactor, delta);
     state.camera.lookAt(currentLookAt);
   });
 
   return null;
 }
 
-function VerticalLightBeams() {
-  const beamsRef = useRef<THREE.Group>(null);
+function FloatingGeometries() {
+  const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
-    if (beamsRef.current) {
-      beamsRef.current.children.forEach((beam, idx) => {
-        const material = (beam as THREE.Mesh).material as THREE.MeshBasicMaterial;
-        material.opacity = 0.05 + Math.sin(t * 1.5 + idx * 0.8) * 0.15;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = t * 0.05;
+      groupRef.current.children.forEach((child, i) => {
+        child.rotation.x = t * (0.1 + i * 0.05);
+        child.rotation.z = t * (0.1 + i * 0.05);
+        child.position.y += Math.sin(t * 1.5 + i) * 0.005;
       });
     }
   });
 
   return (
-    <group ref={beamsRef} position={[0, 0, 0]}>
-      {Array.from({ length: 14 }).map((_, i) => (
-        <mesh key={i} position={[(i - 6.5) * 2.5, 0.5, -8 + (i % 2) * 1.5]}>
-          <cylinderGeometry args={[0.015, 0.04, 10, 8]} />
-          <meshBasicMaterial color="#CDA464" transparent opacity={0.1} blending={THREE.AdditiveBlending} />
-        </mesh>
-      ))}
+    <group ref={groupRef}>
+      {Array.from({ length: 30 }).map((_, i) => {
+        const radius = 3 + Math.random() * 10;
+        const angle = (i / 30) * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        const y = (Math.random() - 0.5) * 10;
+        
+        return (
+          <mesh key={i} position={[x, y, z]}>
+            <octahedronGeometry args={[0.1 + Math.random() * 0.3, 0]} />
+            <meshPhysicalMaterial 
+              color={Math.random() > 0.3 ? "#CDA464" : "#222222"}
+              metalness={1.0}
+              roughness={0.1}
+              envMapIntensity={2.5}
+              clearcoat={1}
+              clearcoatRoughness={0.05}
+            />
+          </mesh>
+        );
+      })}
     </group>
   );
 }
@@ -163,30 +142,24 @@ function ArchitecturalGrid() {
 
   return (
     <group>
-      <VerticalLightBeams />
-      
-      {/* Floor Grid */}
       <group position={[0, -2.5, 0]}>
         <gridHelper
           ref={bottomGridRef}
           args={[120, 60, 0xCDA464, 0x222222]}
           position={[0, 0, 0]}
         />
-        {/* Floor fade plane */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
           <planeGeometry args={[120, 120]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.65} />
         </mesh>
       </group>
 
-      {/* Ceiling Grid */}
       <group position={[0, 3.5, 0]}>
         <gridHelper
           ref={topGridRef}
           args={[120, 60, 0xCDA464, 0x222222]}
           position={[0, 0, 0]}
         />
-        {/* Ceiling fade plane */}
         <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
           <planeGeometry args={[120, 120]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.65} />
@@ -236,7 +209,6 @@ function FloatingDataShards() {
     }
   });
 
-  // Balanced premium golden crystals floating in structured coordinates
   const shardPositions: [number, number, number][] = [
     [-4, 2, -2],
     [5, -2, -3],
@@ -276,9 +248,48 @@ function AxisCore() {
   const ring1Ref = useRef<THREE.Mesh>(null);
   const ring2Ref = useRef<THREE.Mesh>(null);
   const ring3Ref = useRef<THREE.Mesh>(null);
-  
+  const innerCoreRef = useRef<THREE.Group>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+  const ringSepRef = useRef(0);
   
+  const [isFrozen, setIsFrozen] = useState(false);
+
+  // Scroll lock state machine
+  // States: "idle" | "locked" | "frozen" | "exiting"
+  const lockState = useRef<"idle" | "locked" | "frozen" | "exiting">("idle");
+  const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
+  const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
+  const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
+
+  // Rotation accumulators (to resume spinning smoothly without jumps)
+  const freezeFactor = useRef(0);
+  const coreRotY = useRef(0);
+  const ring1RotY = useRef(0);
+  const ring1RotX = useRef(0);
+  const ring2RotY = useRef(0);
+  const ring2RotZ = useRef(0);
+  const ring3RotY = useRef(0);
+  const ring3RotX = useRef(0);
+  const innerCoreRotY = useRef(0);
+
+  const exitAndScroll = (targetSection: number) => {
+    lockState.current = "exiting";
+    exitAccumulator.current = 0;
+    lockCooldownUntil.current = Date.now() + 2000;
+    
+    if (typeof window !== "undefined") {
+      (window as any).__axisDotClick = true;
+      window.scrollTo({
+        top: targetSection * window.innerHeight,
+        behavior: "smooth"
+      });
+      setTimeout(() => {
+        (window as any).__axisDotClick = false;
+        lockState.current = "idle";
+      }, 1500);
+    }
+  };
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -288,141 +299,257 @@ function AxisCore() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const docHeight = typeof document !== "undefined" ? (document.documentElement.scrollHeight - window.innerHeight) : 1;
-    const scrollProgress = scrollY / Math.max(1, docHeight);
+  // Scroll event interception
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // Skip if programmatic scroll (dot click)
+      if ((window as any).__axisDotClick) return;
 
-    if (coreRef.current) {
-      coreRef.current.rotation.y = t * 0.12 + scrollProgress * Math.PI * 0.6;
-      coreRef.current.rotation.x = Math.sin(t * 0.15) * 0.08;
-      
-      // Target position adjusts as we scroll
-      const targetPos = new THREE.Vector3();
-      const getP = (start: number, end: number) => {
-        return Math.min(1, Math.max(0, (scrollProgress - start) / ((end - start) * 0.5)));
-      };
-
-      if (scrollProgress < 0.2) {
-        // Hero to What Axis Is: Core moves to the Left empty space
-        const p = getP(0, 0.2);
-        targetPos.set(
-          THREE.MathUtils.lerp(0, -2.5, p), // Move to left
-          THREE.MathUtils.lerp(0, -0.1, p),
-          THREE.MathUtils.lerp(0, -1.2, p)
-        );
-      } else if (scrollProgress < 0.4) {
-        // What Axis Is to What Axis Is Not: Core moves to the Right empty space
-        const p = getP(0.2, 0.4);
-        targetPos.set(
-          THREE.MathUtils.lerp(-2.5, 2.5, p), // Move to right
-          THREE.MathUtils.lerp(-0.1, 0.4, p),
-          THREE.MathUtils.lerp(-1.2, 0.8, p)
-        );
-      } else if (scrollProgress < 0.6) {
-        // What Axis Is Not to Panels: Core moves to center
-        const p = getP(0.4, 0.6);
-        targetPos.set(
-          THREE.MathUtils.lerp(2.5, 0, p), // Center horizontally
-          THREE.MathUtils.lerp(0.4, -0.4, p),
-          THREE.MathUtils.lerp(0.8, -1.5, p)
-        );
-      } else if (scrollProgress < 0.8) {
-        // Panels to Ecosystem
-        const p = getP(0.6, 0.8);
-        targetPos.set(
-          THREE.MathUtils.lerp(0, 0, p),
-          THREE.MathUtils.lerp(-0.4, 0, p),
-          THREE.MathUtils.lerp(-1.5, -0.5, p)
-        );
-      } else {
-        // Ecosystem to Final CTA: Core perfectly centered for final bold statement
-        const p = getP(0.8, 1.0);
-        targetPos.set(
-          THREE.MathUtils.lerp(0, 0, p),
-          THREE.MathUtils.lerp(0, 0, p), // Center vertically
-          THREE.MathUtils.lerp(-0.5, 0, p) // Center depth
-        );
+      if (lockState.current === "locked") {
+        // Still freezing — just eat the scroll
+        e.preventDefault();
+        return;
       }
-      
-      // Smooth mouse parallax
-      targetPos.x += mouseRef.current.x * 0.3;
-      targetPos.y += mouseRef.current.y * 0.3;
-      
-      coreRef.current.position.lerp(targetPos, 0.05);
+
+      if (lockState.current === "frozen") {
+        // Rings are aligned, graph is showing — accumulate exit scroll
+        e.preventDefault();
+        
+        // Prevent scroll accumulation for 2.5s to ensure user sees the graph
+        if (Date.now() - lockEntryTime.current < 2500) return;
+
+        exitAccumulator.current += e.deltaY;
+        
+        // Need ~1200px worth of scroll to exit (prevents accidental exits)
+        if (exitAccumulator.current > 1200) {
+          exitAndScroll(6); // scroll to next section
+        } else if (exitAccumulator.current < -1200) {
+          exitAndScroll(4); // scroll to prev section
+        }
+        return;
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (lockState.current === "locked" || lockState.current === "frozen") {
+        // Store starting Y
+        (window as any).__axisTouchY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if ((window as any).__axisDotClick) return;
+
+      if (lockState.current === "locked") {
+        e.preventDefault();
+        return;
+      }
+
+      if (lockState.current === "frozen") {
+        e.preventDefault();
+        
+        // Prevent scroll accumulation for 2.5s to ensure user sees the graph
+        if (Date.now() - lockEntryTime.current < 2500) return;
+
+        const startY = (window as any).__axisTouchY || e.touches[0].clientY;
+        const deltaY = startY - e.touches[0].clientY;
+        (window as any).__axisTouchY = e.touches[0].clientY;
+        
+        exitAccumulator.current += deltaY * 2;
+        
+        if (exitAccumulator.current > 1200) {
+          exitAndScroll(6);
+        } else if (exitAccumulator.current < -1200) {
+          exitAndScroll(4);
+        }
+        return;
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((window as any).__axisDotClick) return;
+
+      const scrollKeys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp", " "];
+      if ((lockState.current === "locked" || lockState.current === "frozen") && scrollKeys.includes(e.key)) {
+        e.preventDefault();
+        
+        if (lockState.current === "frozen") {
+          // Prevent scroll exit for 2.5s to ensure user sees the graph
+          if (Date.now() - lockEntryTime.current < 2500) return;
+
+          if (e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") {
+            exitAndScroll(6);
+          } else {
+            exitAndScroll(4);
+          }
+        }
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useFrame((state, delta) => {
+    const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    const vh = typeof window !== "undefined" ? window.innerHeight : 1;
+
+    // Detect if we've arrived at ecosystem section
+    const scrollRatio = scrollY / vh;
+    const isNearEcosystem = Math.abs(scrollRatio - 5.0) < 0.15;
+    const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
+    const now = Date.now();
+
+    // State machine transitions
+    if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
+      lockState.current = "locked";
+      exitAccumulator.current = 0;
+      // Snap to exact section 5 position
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 5 * vh, behavior: "auto" });
+      }
     }
 
-    // Rings separation for Clarity, Structure, Monetization stack
-    const separation = Math.max(0, (scrollProgress - 0.3) * 3);
-    const sepLimit = Math.min(1.0, separation);
+    // Target freeze is 1.0 when locked or frozen, 0 otherwise
+    const wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
+
+    // Smoothly damp freeze factor
+    freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, 4, delta);
+    const amp = 1.0 - freezeFactor.current;
+
+    // Transition locked → frozen once rings have settled
+    if (lockState.current === "locked" && freezeFactor.current > 0.92) {
+      lockState.current = "frozen";
+      lockEntryTime.current = Date.now();
+    }
+
+    // Update isFrozen React state (drives graph visibility)
+    const shouldBeFrozen = freezeFactor.current > 0.92;
+    if (shouldBeFrozen !== isFrozen) {
+      setIsFrozen(shouldBeFrozen);
+    }
+
+    // Continuous 1:1 scroll float for position
+    const rawSectionFloat = Math.min(6, Math.max(0, scrollRatio));
+    
+    if (coreRef.current && coreRef.current.userData.smoothedFloat === undefined) {
+      coreRef.current.userData.smoothedFloat = rawSectionFloat;
+    }
+    if (coreRef.current) {
+      coreRef.current.userData.smoothedFloat = THREE.MathUtils.damp(coreRef.current.userData.smoothedFloat, rawSectionFloat, 4, delta);
+    }
+    const sectionFloat = coreRef.current ? coreRef.current.userData.smoothedFloat : rawSectionFloat;
+    
+    const lowerIndex = Math.min(6, Math.floor(sectionFloat));
+    const upperIndex = Math.min(6, lowerIndex + 1);
+    const p = sectionFloat - lowerIndex;
+
+    const coreTargets = [
+      { pos: [0, -0.1, -1.2], sep: 0.0 }, // Hero (0)
+      { pos: [-2.5, -0.1, -1.2], sep: 1.0 }, // Is (1)
+      { pos: [2.5, 0.4, 0.8], sep: 1.0 }, // Is Not (2)
+      { pos: [0, -0.4, -1.5], sep: 1.0 }, // Panels (3)
+      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem Text (4)
+      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem Graph (5)
+      { pos: [0, 0, 0], sep: 1.0 }, // Final CTA (6)
+    ];
+
+    const c1 = coreTargets[lowerIndex];
+    const c2 = coreTargets[upperIndex];
+
+    const targetPos = new THREE.Vector3(
+      THREE.MathUtils.lerp(c1.pos[0], c2.pos[0], p),
+      THREE.MathUtils.lerp(c1.pos[1], c2.pos[1], p),
+      THREE.MathUtils.lerp(c1.pos[2], c2.pos[2], p)
+    );
+
+    const targetRingSepLimit = THREE.MathUtils.lerp(c1.sep, c2.sep, p);
+    
+    // Add subtle mouse parallax when not completely frozen
+    targetPos.x += mouseRef.current.x * 0.3 * amp;
+    targetPos.y += mouseRef.current.y * 0.3 * amp;
+
+    const t = state.clock.getElapsedTime();
+
+    // Accumulate rotation only when moving (amp > 0)
+    coreRotY.current += delta * 0.08 * amp;
+    ring1RotY.current += delta * 0.15 * amp;
+    ring1RotX.current += delta * 0.08 * amp;
+    ring2RotY.current += delta * 0.12 * amp;
+    ring2RotZ.current += delta * 0.06 * amp;
+    ring3RotY.current += delta * 0.20 * amp;
+    ring3RotX.current += delta * 0.10 * amp;
+    innerCoreRotY.current += delta * 0.25 * amp;
+
+    if (coreRef.current) {
+      coreRef.current.position.x = THREE.MathUtils.damp(coreRef.current.position.x, targetPos.x * amp, 4, delta);
+      coreRef.current.position.y = THREE.MathUtils.damp(coreRef.current.position.y, targetPos.y * amp, 4, delta);
+      coreRef.current.position.z = THREE.MathUtils.damp(coreRef.current.position.z, targetPos.z * amp, 4, delta);
+      
+      const targetCoreRotX = Math.sin(t * 0.15) * 0.08 * amp;
+      coreRef.current.rotation.y = THREE.MathUtils.lerp(coreRotY.current, 0, freezeFactor.current);
+      coreRef.current.rotation.x = THREE.MathUtils.lerp(targetCoreRotX, 0, freezeFactor.current);
+    }
+
+    // Smoothly animate ring separation to avoid popping
+    ringSepRef.current = THREE.MathUtils.damp(ringSepRef.current, targetRingSepLimit, 4, delta);
+    const ringSep = ringSepRef.current * amp;
     
     if (ring1Ref.current) {
-      ring1Ref.current.position.y = sepLimit * 0.55;
-      ring1Ref.current.rotation.y = t * 0.35;
-      ring1Ref.current.rotation.x = t * 0.08;
+      ring1Ref.current.position.y = ringSep * 0.55;
+      ring1Ref.current.rotation.y = THREE.MathUtils.lerp(ring1RotY.current, 0, freezeFactor.current);
+      ring1Ref.current.rotation.x = THREE.MathUtils.lerp(ring1RotX.current, 0, freezeFactor.current);
     }
     if (ring2Ref.current) {
       ring2Ref.current.position.y = 0;
-      ring2Ref.current.rotation.y = -t * 0.25;
-      ring2Ref.current.rotation.z = t * 0.12;
+      ring2Ref.current.rotation.y = THREE.MathUtils.lerp(ring2RotY.current, 0, freezeFactor.current);
+      ring2Ref.current.rotation.z = THREE.MathUtils.lerp(ring2RotZ.current, 0, freezeFactor.current);
     }
     if (ring3Ref.current) {
-      ring3Ref.current.position.y = -sepLimit * 0.55;
-      ring3Ref.current.rotation.y = t * 0.45;
-      ring3Ref.current.rotation.x = -t * 0.15;
+      ring3Ref.current.position.y = -ringSep * 0.55;
+      ring3Ref.current.rotation.y = THREE.MathUtils.lerp(ring3RotY.current, 0, freezeFactor.current);
+      ring3Ref.current.rotation.x = THREE.MathUtils.lerp(ring3RotX.current, 0, freezeFactor.current);
+    }
+
+    if (innerCoreRef.current) {
+      const targetInnerCorePosY = Math.sin(t * 2.5) * 0.15 * amp;
+      innerCoreRef.current.position.y = THREE.MathUtils.lerp(targetInnerCorePosY, 0, freezeFactor.current);
+      innerCoreRef.current.rotation.y = THREE.MathUtils.lerp(innerCoreRotY.current, 0, freezeFactor.current);
+      
+      const targetInnerCoreRotX = Math.sin(t * 0.8) * 0.1 * amp;
+      innerCoreRef.current.rotation.x = THREE.MathUtils.lerp(targetInnerCoreRotX, 0, freezeFactor.current);
     }
   });
 
   return (
     <group ref={coreRef}>
-      {/* Premium glow ambient light inside */}
       <pointLight color="#CDA464" intensity={6} distance={8} />
-      
-      {/* Ring 1 (Top - Clarity) */}
-      <mesh ref={ring1Ref}>
-        <torusGeometry args={[1.2, 0.06, 16, 64]} />
-        <MeshTransmissionMaterial
-          backside
-          thickness={0.7}
-          roughness={0.12}
-          transmission={0.96}
-          ior={1.3}
-          chromaticAberration={0.04}
-          color="#F2E8C6"
-        />
-      </mesh>
+      <group>
+        <mesh ref={ring1Ref}>
+          <torusGeometry args={[1.2, 0.06, 16, 64]} />
+          <MeshTransmissionMaterial backside thickness={0.7} roughness={0.12} transmission={0.96} ior={1.3} chromaticAberration={0.04} color="#F2E8C6" />
+        </mesh>
+        <mesh ref={ring2Ref}>
+          <torusGeometry args={[1.45, 0.06, 16, 64]} />
+          <MeshTransmissionMaterial backside thickness={0.7} roughness={0.08} transmission={0.96} ior={1.4} chromaticAberration={0.07} color="#CDA464" />
+        </mesh>
+        <mesh ref={ring3Ref}>
+          <torusGeometry args={[1.1, 0.06, 16, 64]} />
+          <MeshTransmissionMaterial backside thickness={0.7} roughness={0.18} transmission={0.96} ior={1.35} chromaticAberration={0.05} color="#EFEFEF" />
+        </mesh>
+      </group>
 
-      {/* Ring 2 (Middle - Structure) */}
-      <mesh ref={ring2Ref}>
-        <torusGeometry args={[1.45, 0.06, 16, 64]} />
-        <MeshTransmissionMaterial
-          backside
-          thickness={0.7}
-          roughness={0.08}
-          transmission={0.96}
-          ior={1.4}
-          chromaticAberration={0.07}
-          color="#CDA464"
-        />
-      </mesh>
-
-      {/* Ring 3 (Bottom - Monetization) */}
-      <mesh ref={ring3Ref}>
-        <torusGeometry args={[1.1, 0.06, 16, 64]} />
-        <MeshTransmissionMaterial
-          backside
-          thickness={0.7}
-          roughness={0.18}
-          transmission={0.96}
-          ior={1.35}
-          chromaticAberration={0.05}
-          color="#EFEFEF"
-        />
-      </mesh>
-
-      {/* Crystalline Core Monolith */}
-      <Float speed={2.5} floatIntensity={0.8} rotationIntensity={0.8}>
+      {/* Crystalline Core Monolith — manually controlled, freezes at ecosystem */}
+      <group ref={innerCoreRef}>
         <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
           <octahedronGeometry args={[0.42]} />
           <meshPhysicalMaterial
@@ -445,7 +572,14 @@ function AxisCore() {
             opacity={0.18}
           />
         </mesh>
-      </Float>
+      </group>
+
+      {/* Mount graph perfectly locked to the 3D core */}
+      <Html center zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
+        <div style={{ pointerEvents: isFrozen ? 'auto' : 'none' }}>
+          <EcosystemGraph isActive={isFrozen} />
+        </div>
+      </Html>
     </group>
   );
 }
@@ -478,11 +612,15 @@ export default function CinematicScene() {
       >
         <CinematicCamera />
         <CinematicLighting />
+        {/* Environment removed to avoid HDR fetch errors */}
+
+        {/* --- SCENE OBJECTS --- */}
         <ArchitecturalGrid />
+        <FloatingGeometries />
         <FloatingParticles />
         <FloatingDataShards />
         <AxisCore />
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom luminanceThreshold={1.2} mipmapBlur intensity={1.5} />
         </EffectComposer>
       </Canvas>
