@@ -1,6 +1,5 @@
-/* ─── Global Scroll Snapping ─── */
+/* ─── Global Scroll Snapping (Removed for 2D Layout) ─── */
 html {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -45,8 +44,6 @@ html {
   padding: 4rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .section-hero {

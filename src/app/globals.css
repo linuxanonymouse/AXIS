@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ─── AXIS — Cinematic & Structural UI ─── */
 :root {
   --bg: #000000;

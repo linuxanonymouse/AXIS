@@ -47,6 +47,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrains.variable} ${playfair.variable} h-full antialiased`}
     >
+      <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+      </head>
       <body>{children}</body>
     </html>
   );
