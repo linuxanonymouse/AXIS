@@ -42,8 +42,7 @@ const FOV_DAMP = 3;
 
 export default function PlanetCamera({
   stageIndex,
-  stageLocal,
-}: PlanetCameraProps) {
+  stageLocal}: PlanetCameraProps) {
   const { camera } = useThree();
   const keyframes = useMemo(() => buildCameraKeyframes(), []);
   const pos = useRef(new THREE.Vector3(0, 0, 10.5));

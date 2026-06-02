@@ -1,4 +1,4 @@
-/** Local NASA / Solar System Scope textures — /public/textures */
+/** Local NASA / Solar System Scope textures /public/textures */
 
 const P = "/textures/planets";
 const SPACE = "/textures/space";

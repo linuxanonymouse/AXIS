@@ -1,47 +1,66 @@
 import Link from "next/link";
-import {
-  SITE,
-  ROUTES,
-  FOOTER_LINKS,
-  FOOTER_DIVISIONS,
-} from "@/lib/constants";
+import "./Footer.css";
 
 export default function Footer() {
+  const mainLinks = [
+    { label: "Overview", href: "/overview" },
+    { label: "Divisions", href: "/divisions" },
+    { label: "Diagnostic", href: "/diagnostic" },
+    { label: "Insights", href: "/insights" },
+    { label: "Contact", href: "/contact" }
+  ];
+
+  const divisionLinks = [
+    { label: "Operations", href: "/divisions/operations" },
+    { label: "Studio", href: "/divisions/studio" },
+    { label: "Intelligence", href: "/divisions/intelligence" },
+    { label: "Media", href: "/divisions/media" },
+    { label: "Ventures", href: "/divisions/ventures" }
+  ];
+
   return (
     <footer className="footer">
       <div className="footer__inner">
+        
+        {/* Brand */}
         <div className="footer__brand">
-          <Link href={ROUTES.home} className="footer__logo">
-            {SITE.name}
-          </Link>
+          <Link href="/" className="footer__logo">AXIS</Link>
         </div>
 
+        {/* Links Container */}
         <div className="footer__columns">
-          <ul className="footer__list">
-            {FOOTER_LINKS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>{item.label}</Link>
-              </li>
+          
+          {/* Main Links */}
+          <div className="footer__list">
+            {mainLinks.map(link => (
+              <Link key={link.href} href={link.href} className="footer__link">
+                {link.label}
+              </Link>
             ))}
-          </ul>
-          <ul className="footer__list footer__list--muted">
-            {FOOTER_DIVISIONS.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>{item.label}</Link>
-              </li>
+          </div>
+
+          {/* Division Links */}
+          <div className="footer__list">
+            {divisionLinks.map(link => (
+              <Link key={link.href} href={link.href} className="footer__link footer__link--muted">
+                {link.label}
+              </Link>
             ))}
-          </ul>
+          </div>
+
         </div>
 
-        <div className="footer__meta">
-          <a href={`mailto:${SITE.email}`} className="footer__email">
-            {SITE.email}
-          </a>
-          <div className="footer__legal">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms</Link>
-            <Link href="/disclaimer">Disclaimer</Link>
-          </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="footer__bottom">
+        <a href="mailto:operations@axisoperations.ca" className="footer__email">
+          operations@axisoperations.ca
+        </a>
+        <div className="footer__legal">
+          <Link href="/privacy" className="footer__legal-link">Privacy Policy</Link>
+          <Link href="/terms" className="footer__legal-link">Terms</Link>
+          <Link href="/disclaimer" className="footer__legal-link">Disclaimer</Link>
         </div>
       </div>
     </footer>

@@ -7,8 +7,7 @@ import * as THREE from "three";
 import { configureColorTexture } from "@/lib/configureTexture";
 import {
   getPlanetPosition,
-  type PlanetConfig,
-} from "@/lib/solar";
+  type PlanetConfig} from "@/lib/solar";
 
 type RealisticPlanetProps = {
   config: PlanetConfig;
@@ -19,8 +18,7 @@ type RealisticPlanetProps = {
 export default function RealisticPlanet({
   config,
   mapUrl,
-  ringUrl,
-}: RealisticPlanetProps) {
+  ringUrl}: RealisticPlanetProps) {
   const groupRef = useRef<THREE.Group>(null);
   const spin = useRef(0);
   const maps = useTexture(ringUrl ? [mapUrl, ringUrl] : [mapUrl]);

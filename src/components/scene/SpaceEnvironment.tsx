@@ -64,7 +64,7 @@ export default function SpaceEnvironment() {
       />
 
       <Sparkles
-        count={800}
+        count={1500}
         scale={140}
         size={2.5}
         speed={0.15}

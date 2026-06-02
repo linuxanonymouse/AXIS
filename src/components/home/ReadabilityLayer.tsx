@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useScrollProgress } from "@/context/ScrollContext";
 import { JOURNEY_STAGES } from "@/lib/journey";
 
-/** Side scrims + top progress — keeps copy readable over the 3D scene */
+/** Side scrims + top progress keeps copy readable over the 3D scene */
 export default function ReadabilityLayer() {
   const { stageIndex, journeyProgress } = useScrollProgress();
   const stage = JOURNEY_STAGES[stageIndex];

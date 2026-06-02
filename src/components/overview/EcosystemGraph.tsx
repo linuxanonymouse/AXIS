@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Brain, Play, DollarSign, Building2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
+export default function EcosystemGraph({ isActive, centerLayout = false }: { isActive?: boolean, centerLayout?: boolean }) {
   const containerFade = {
     hidden: { 
       opacity: 0, 
@@ -122,17 +122,38 @@ export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
     }
   };
 
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Increase sizing algorithm to force the graph to be large and legible
+      const availableWidth = Math.min(window.innerWidth - 16, 800);
+      const availableHeight = Math.min(window.innerHeight - 100, 800);
+      const minScale = Math.min(availableWidth, availableHeight) / 800;
+      // Allow the graph to shrink to fit mobile screens
+      setScale(Math.max(0.3, minScale));
+    };
+    
+    // Initial calculation
+    handleResize();
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    // The outer wrapper reserves the EXACT scaled height so the page doesn't jump
-    <div style={{ width: `800px`, height: `800px`, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ position: 'relative', width: `${800 * scale}px`, height: `${800 * scale}px`, margin: '0 auto', transform: centerLayout ? 'none' : (typeof window !== 'undefined' && window.innerWidth < 1024 ? 'none' : 'translateX(-70px)') }}>
       
       {/* The 800x800 perfect square that scales up and down like an image, responding to SCROLL position! */}
       <motion.div 
         className="ecosystem-graph"
         style={{ 
-          position: 'relative', 
+          position: 'absolute', 
+          top: '50%',
+          left: '50%',
           width: '800px', 
-          height: '800px',
+          height: '800px', 
+          transform: `translate(-50%, -50%) scale(${scale})`,
           transformOrigin: 'center center'
         }}
         variants={containerFade}
@@ -170,12 +191,12 @@ export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
             <motion.line variants={drawLine} x1="230" y1="770" x2="770" y2="230" />
           </g>
 
-          {/* Straight Connection Lines to Satellites (Diagonal) */}
+          {/* Straight Connection Lines to Satellites */}
           <g stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" markerEnd="url(#arrow)" markerStart="url(#arrow)">
-            <motion.line variants={drawLine} x1="400" y1="400" x2="280" y2="280" />
-            <motion.line variants={drawLine} x1="600" y1="400" x2="720" y2="280" />
-            <motion.line variants={drawLine} x1="400" y1="600" x2="280" y2="720" />
-            <motion.line variants={drawLine} x1="600" y1="600" x2="720" y2="720" />
+            <motion.line variants={drawLine} x1="500" y1="280" x2="500" y2="380" />
+            <motion.line variants={drawLine} x1="500" y1="620" x2="500" y2="720" />
+            <motion.line variants={drawLine} x1="280" y1="500" x2="380" y2="500" />
+            <motion.line variants={drawLine} x1="620" y1="500" x2="720" y2="500" />
           </g>
 
           {/* ─── ACTIVE DATA FLOWS (Fades in after build, then runs infinitely) ─── */}
@@ -184,31 +205,31 @@ export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
             <g strokeWidth="2" fill="none" filter="url(#glow)">
               {/* Data flowing OUT from Axis Operations */}
               <g className="flow-line-out" stroke="var(--gold)">
-                <path d="M 400 400 L 280 280" strokeDasharray="6 24" />
-                <path d="M 600 400 L 720 280" strokeDasharray="6 24" />
-                <path d="M 400 600 L 280 720" strokeDasharray="6 24" />
-                <path d="M 600 600 L 720 720" strokeDasharray="6 24" />
+                <path d="M 504 380 L 504 280" strokeDasharray="6 24" />
+                <path d="M 496 620 L 496 720" strokeDasharray="6 24" />
+                <path d="M 380 496 L 280 496" strokeDasharray="6 24" />
+                <path d="M 620 504 L 720 504" strokeDasharray="6 24" />
               </g>
 
               {/* Data flowing IN to Axis Operations */}
               <g className="flow-line-in" stroke="rgba(255,255,255,0.7)">
-                <path d="M 280 280 L 400 400" strokeDasharray="6 24" />
-                <path d="M 720 280 L 600 400" strokeDasharray="6 24" />
-                <path d="M 280 720 L 400 600" strokeDasharray="6 24" />
-                <path d="M 720 720 L 600 600" strokeDasharray="6 24" />
+                <path d="M 496 380 L 496 280" strokeDasharray="6 24" />
+                <path d="M 504 620 L 504 720" strokeDasharray="6 24" />
+                <path d="M 380 504 L 280 504" strokeDasharray="6 24" />
+                <path d="M 620 496 L 720 496" strokeDasharray="6 24" />
               </g>
             </g>
 
             {/* Curved Outer Arrows between Satellites (Clockwise) */}
             <g stroke="rgba(205, 164, 100, 0.4)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-gold)">
-              {/* Top-Left to Top-Right */}
-              <path d="M 230 180 A 450 450 0 0 1 770 180" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Top-Right to Bottom-Right */}
-              <path d="M 820 230 A 450 450 0 0 1 820 770" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Bottom-Right to Bottom-Left */}
-              <path d="M 770 820 A 450 450 0 0 1 230 820" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Bottom-Left to Top-Left */}
-              <path d="M 180 770 A 450 450 0 0 1 180 230" strokeDasharray="5 25" className="flow-line-out" />
+              {/* Top to Right */}
+              <path d="M 580 128 A 380 380 0 0 1 872 420" strokeDasharray="5 25" className="flow-line-out" />
+              {/* Right to Bottom */}
+              <path d="M 872 580 A 380 380 0 0 1 580 872" strokeDasharray="5 25" className="flow-line-out" />
+              {/* Bottom to Left */}
+              <path d="M 420 872 A 380 380 0 0 1 128 580" strokeDasharray="5 25" className="flow-line-out" />
+              {/* Left to Top */}
+              <path d="M 128 420 A 380 380 0 0 1 420 128" strokeDasharray="5 25" className="flow-line-out" />
             </g>
 
             {/* Intersection Dots */}
@@ -221,14 +242,14 @@ export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
               <circle cx="230" cy="770" r="4" />
               <circle cx="770" cy="230" r="4" />
               
-              <circle cx="400" cy="400" r="4" />
-              <circle cx="600" cy="400" r="4" />
-              <circle cx="400" cy="600" r="4" />
-              <circle cx="600" cy="600" r="4" />
-              <circle cx="280" cy="280" r="4" />
-              <circle cx="720" cy="280" r="4" />
-              <circle cx="280" cy="720" r="4" />
-              <circle cx="720" cy="720" r="4" />
+              <circle cx="500" cy="280" r="4" />
+              <circle cx="500" cy="380" r="4" />
+              <circle cx="500" cy="620" r="4" />
+              <circle cx="500" cy="720" r="4" />
+              <circle cx="280" cy="500" r="4" />
+              <circle cx="380" cy="500" r="4" />
+              <circle cx="620" cy="500" r="4" />
+              <circle cx="720" cy="500" r="4" />
             </motion.g>
           </motion.g>
         </svg>
@@ -247,61 +268,49 @@ export default function EcosystemGraph({ isActive }: { isActive?: boolean }) {
           </motion.div>
         </div>
 
-        {/* Top-Left Node: Studio */}
-        <div style={{ position: 'absolute', zIndex: 10, top: '184px', left: '184px', transform: 'translate(-50%, -50%)' }}>
+        {/* Top Node: Intelligence */}
+        <div style={{ position: 'absolute', zIndex: 10, top: '96px', left: '400px', transform: 'translate(-50%, -50%)' }}>
           <motion.div variants={nodeEntrance}>
-            <motion.div variants={nodeFloat} animate="float" className="flex flex-col items-center">
-              <div className="ecosystem-graph-node satellite-node node-blue group mb-4">
-                <Building2 className="w-8 h-8 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-center absolute top-full mt-2 w-32">
-                <h4 className="text-[0.65rem] font-bold tracking-widest text-[#85C1EB] uppercase mb-1">Axis Studio</h4>
-                <p className="text-[0.6rem] text-gray-400 leading-tight">Infrastructure<br/>Systems<br/>Automation</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Top-Right Node: Intelligence */}
-        <div style={{ position: 'absolute', zIndex: 10, top: '184px', left: '616px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
-            <motion.div variants={nodeFloat} animate="float" className="flex items-center">
+            <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-purple group">
-                <Brain className="w-8 h-8 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-left ml-4 absolute left-full w-40">
-                <h4 className="text-[0.65rem] font-bold tracking-widest text-[#B89CF2] uppercase mb-1">Axis Intelligence</h4>
-                <p className="text-[0.6rem] text-gray-400 leading-tight">Optimization<br/>Data Systems<br/>Decision Control</p>
+                <Brain className="w-8 h-8 mb-2 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Intelligence</h4>
               </div>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Bottom-Left Node: Ventures */}
-        <div style={{ position: 'absolute', zIndex: 10, top: '616px', left: '184px', transform: 'translate(-50%, -50%)' }}>
+        {/* Right Node: Media */}
+        <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '704px', transform: 'translate(-50%, -50%)' }}>
           <motion.div variants={nodeEntrance}>
-            <motion.div variants={nodeFloat} animate="float" className="flex items-center">
+            <motion.div variants={nodeFloat} animate="float">
+              <div className="ecosystem-graph-node satellite-node node-blue group">
+                <Play className="w-8 h-8 mb-2 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Media</h4>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Node: Ventures */}
+        <div style={{ position: 'absolute', zIndex: 10, top: '704px', left: '400px', transform: 'translate(-50%, -50%)' }}>
+          <motion.div variants={nodeEntrance}>
+            <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-green group">
-                <DollarSign className="w-8 h-8 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-left ml-4 absolute left-full w-40">
-                <h4 className="text-[0.65rem] font-bold tracking-widest text-[#9ED8A6] uppercase mb-1">Axis Ventures</h4>
-                <p className="text-[0.6rem] text-gray-400 leading-tight">Partnerships<br/>Expansion<br/>Monetization</p>
+                <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Ventures</h4>
               </div>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Bottom-Right Node: Media */}
-        <div style={{ position: 'absolute', zIndex: 10, top: '616px', left: '616px', transform: 'translate(-50%, -50%)' }}>
+        {/* Left Node: Studio */}
+        <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '96px', transform: 'translate(-50%, -50%)' }}>
           <motion.div variants={nodeEntrance}>
-            <motion.div variants={nodeFloat} animate="float" className="flex items-center">
+            <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-orange group">
-                <Play className="w-8 h-8 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
-              </div>
-              <div className="text-left ml-4 absolute left-full w-40">
-                <h4 className="text-[0.65rem] font-bold tracking-widest text-[#E2A687] uppercase mb-1">Axis Media</h4>
-                <p className="text-[0.6rem] text-gray-400 leading-tight">Distribution<br/>Audience Systems<br/>Perception Control</p>
+                <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
+                <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Studio</h4>
               </div>
             </motion.div>
           </motion.div>

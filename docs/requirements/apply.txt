@@ -1,0 +1,509 @@
+﻿Axis Alignment Application
+Access Type
+Private CTA Page
+This page should not sit in the main navigation like a normal public page.
+Users should access it only through:
+Begin Diagnostic
+Start Strategic Diagnostic
+Apply Access
+________________
+
+
+PAGE LABEL
+Strategic Diagnostic Intake
+Signature Role
+The Application Layer
+Hero Statement
+Structure begins with diagnosis.
+Core Line
+Complete the diagnostic to determine where Axis can be applied.
+________________
+
+
+PAGE PURPOSE
+The Axis Alignment Application is the actual intake experience behind the Strategic Diagnostic.
+This is not a form.
+This is not a survey.
+This is not a contact page.
+This is the private evaluation system used to assess:
+Alignment
+Readiness
+Structural constraints
+Growth potential
+Axis application pathway
+The user should feel like they are entering a serious institutional application, not filling out a basic questionnaire.
+________________
+
+
+GLOBAL UX STRUCTURE
+Desktop Layout
+Left Side Panel
+Fixed branded panel with:
+AXIS logo
+Axis Alignment Application
+Strategic Diagnostic Intake
+The Application Layer
+Short positioning statement
+Confidentiality note
+Support email
+Right Side Panel
+Main application experience:
+Progress tracker
+Current step title
+Question fields
+Back / Continue buttons
+Save and continue option
+Submission review screen
+________________
+
+
+Mobile Layout
+Single column.
+Top area:
+AXIS logo
+Step number
+Progress bar
+Current section title
+Then:
+Question group
+Back / Continue button
+No long form scrolling.
+No clutter.
+No browser bar blocking fields.
+________________
+
+
+APPLICATION FLOW
+User-facing flow should be 6 screens only.
+Behind the scenes, the responses should still map into the full Axis diagnostic categories.
+________________
+
+
+SCREEN 01
+Access Overview
+Purpose
+Set the tone before the user begins.
+Copy
+You are about to enter the Axis evaluation system.
+This diagnostic is used to assess alignment, readiness, structural constraints, and where Axis can create impact.
+Notice Box
+This application is for serious inquiries only.
+Submission does not guarantee engagement.
+All applications are reviewed for fit and alignment.
+Three Trust Points
+Structured Evaluation
+We evaluate your systems, growth, and operational reality.
+Data Driven Analysis
+Your responses power the Axis diagnostic engine.
+Private & Confidential
+Your information is protected and used only for internal evaluation.
+What to Expect
+This application takes 8 to 12 minutes to complete.
+Answer each question as accurately as possible.
+You will review your answers before submitting.
+If aligned, next steps will be issued after review.
+Button
+Begin Application
+________________
+
+
+SCREEN 02
+Organization Profile
+Purpose
+Understand who is applying and what organization is being evaluated.
+Fields
+Name
+Email
+Organization
+Website
+Industry
+Location
+Role
+Role Dropdown
+Founder
+Owner
+Executive
+Operator
+Marketing Lead
+Operations Lead
+Partner
+Other
+If Other is selected, reveal:
+Please describe your role.
+________________
+
+
+SCREEN 03
+Growth & Business Stage
+Purpose
+Understand the current size, maturity, and operating reality of the organization.
+Fields
+Current monthly revenue range
+Dropdown:
+0 to 10K
+10K to 50K
+50K to 250K
+250K to 1M
+1M+
+Prefer not to say
+Team size
+Dropdown:
+1
+2 to 5
+6 to 15
+16 to 50
+50+
+Business model
+Dropdown:
+Service based
+E-commerce
+Education / coaching
+Sports / programs
+Media / creator
+SaaS / technology
+Nonprofit
+Agency
+Marketplace
+Other
+If Other is selected, reveal:
+Please describe your business model.
+Current Primary Objective
+Dropdown:
+Scale growth
+Stabilize operations
+Improve conversion
+Fix inefficiencies
+Build infrastructure
+Increase revenue
+Improve reporting
+Expand partnerships
+Improve distribution
+Other
+If Other is selected, reveal:
+Please describe your current objective.
+Business Stage
+Dropdown:
+Early traction
+Growth stage
+Operational pressure
+Scaling stage
+Expansion stage
+Restructuring
+Other
+If Other is selected, reveal:
+Please describe your current stage.
+________________
+
+
+SCREEN 04
+Infrastructure, Distribution & Intelligence
+Purpose
+Evaluate whether the organization has the systems, audience flow, and performance visibility required to scale.
+Infrastructure Questions
+Do you have a defined system or funnel for conversion?
+Options:
+Yes, fully defined
+Somewhat defined
+Not clearly defined
+No
+Are your tools integrated?
+CRM, email, website, forms, automations, reporting.
+Options:
+Fully integrated
+Partially integrated
+Basic setup only
+Not integrated
+Not sure
+How automated is your operation?
+Options:
+Highly automated
+Some automations
+Mostly manual
+Fully manual
+Not sure
+________________
+
+
+Distribution Questions
+Primary traffic source?
+Options:
+Paid ads
+Organic social
+Referrals
+Email
+SEO
+Influencers / creators
+Partnerships
+Offline / in-person
+No clear traffic source
+Other
+If Other is selected, reveal:
+Please describe your primary traffic source.
+Content consistency?
+Options:
+Very consistent
+Somewhat consistent
+Inconsistent
+Rarely posting
+No content system
+Do you use paid ads?
+Options:
+Yes, actively
+Yes, occasionally
+No, but planning to
+No
+Do you leverage influencers or user-generated content?
+Options:
+Yes, structured system
+Yes, occasionally
+No
+Not sure how
+Approximate monthly traffic or leads?
+Number field
+________________
+
+
+Intelligence Questions
+Do you track KPIs clearly?
+Options:
+Yes, clearly
+Somewhat
+Not consistently
+No
+How are decisions made?
+Options:
+Based on clear data
+Based on partial data
+Mostly based on instinct
+Reactive decisions
+Not sure
+Do you have a structured reporting system?
+Options:
+Yes
+Somewhat
+No
+Not sure
+Where do you currently lack visibility?
+Options:
+Revenue
+Conversion
+Marketing performance
+Operations
+Customer journey
+Team performance
+Reporting
+All of the above
+Other
+If Other is selected, reveal:
+Please describe where visibility is missing.
+________________
+
+
+SCREEN 05
+Monetization, Expansion & Constraints
+Purpose
+Understand where value is being lost and where leverage may exist.
+Monetization Questions
+Is your offer clearly defined?
+Options:
+Yes
+Somewhat
+No
+Needs refinement
+Is your pricing structured and optimized?
+Options:
+Yes
+Somewhat
+No
+Not sure
+Where is revenue most likely being lost?
+Options:
+Lead generation
+Conversion
+Pricing
+Follow-up
+Operations
+Retention
+Upsells
+Partnerships
+Not sure
+Other
+If Other is selected, reveal:
+Please describe where revenue may be lost.
+________________
+
+
+Expansion Questions
+Do you leverage partnerships or expansion channels?
+Options:
+Yes, structured partnerships
+Yes, informal relationships
+Some opportunities exist
+No
+Not sure
+Where do you see the biggest expansion opportunity?
+Options:
+New customers
+New markets
+Partnerships
+Media / audience growth
+Productized offers
+Technology / automation
+Strategic collaborations
+Other
+If Other is selected, reveal:
+Please describe the expansion opportunity.
+________________
+
+
+Constraint Questions
+What feels most broken right now?
+Long text field
+What would make the biggest difference in the next 90 days?
+Long text field
+What is your timeline?
+Options:
+Immediately
+Within 30 days
+Within 60 days
+Within 90 days
+Exploring for later
+________________
+
+
+SCREEN 06
+Review & Submit
+Purpose
+Let the applicant confirm everything before submission.
+Layout
+Show a clean summary of responses by section:
+Organization Profile
+Growth & Business Stage
+Infrastructure, Distribution & Intelligence
+Monetization, Expansion & Constraints
+Final Confirmation Text
+By submitting this diagnostic, you understand this application is used to evaluate alignment, readiness, and where Axis may be applied.
+Submission does not guarantee engagement.
+Checkbox
+I confirm the information submitted is accurate.
+Submit Button
+Submit Diagnostic
+________________
+
+
+AFTER SUBMISSION SCREEN
+Title
+Submission Received
+Copy
+Your Strategic Diagnostic has been received.
+Axis will review the submission and issue next steps if alignment is confirmed.
+Supporting Line
+This is an automated confirmation. Internal review will determine whether the opportunity is aligned with the Axis system.
+Button
+Return to Axis
+________________
+
+
+BACKEND REQUIREMENTS
+Keisha and the backend team should connect:
+Form submission handling
+AI prompt processing
+Scoring logic
+Diagnostic output email
+Internal email to Axis
+ClickUp or Airtable record creation
+Team notification
+PDF or branded report output if needed
+Save and continue functionality if possible
+Applicant confirmation email
+Internal review status field
+________________
+
+
+AI DIAGNOSTIC OUTPUT REQUIREMENTS
+Once submitted, the AI should generate an internal diagnostic that includes:
+Overall alignment score
+Infrastructure score
+Distribution score
+Intelligence score
+Monetization score
+Expansion score
+Primary constraint
+Secondary constraints
+Strategic insight
+Business maturity classification
+Recommended Axis entry pathway
+Suggested next step
+Internal notes for review
+________________
+
+
+KEY UX RULES
+No native ClickUp public form.
+Dropdowns must open cleanly and never cover questions.
+Every dropdown that may require flexibility should include Other.
+Every Other option should reveal a text field.
+Progress bar must show where the user is.
+Mobile must be clean and easy to complete.
+Buttons must remain clear:
+Back
+Continue
+Save & Continue Later
+Submit Diagnostic
+Keep the experience tight.
+The user should never feel like they are filling out a long government form.
+________________
+
+
+DESIGN STANDARD
+This page should feel:
+* private
+
+* serious
+
+* premium
+
+* confidential
+
+* structured
+
+* intelligent
+
+* application based
+
+* mobile first
+
+Visual tone:
+   * black
+
+   * champagne gold
+
+   * dark glass
+
+   * subtle Axis light
+
+   * thin dividers
+
+   * secure interface
+
+   * premium form fields
+
+   * controlled spacing
+
+Avoid:
+      * native ClickUp forms
+
+      * long scrolling forms
+
+      * generic survey design
+
+      * bright form colors
+
+      * crowded fields
+
+      * weak confirmation screens
+
+      * casual wording
+
+Final feeling:
+The user is not filling out a form. They are entering the Axis evaluation system.

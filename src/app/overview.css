@@ -1,5 +1,6 @@
-/* ─── Global Scroll Snapping (Removed for 2D Layout) ─── */
+/* ─── Global Scroll Snapping ─── */
 html {
+  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -7,7 +8,7 @@ html {
 .axis-main {
   position: relative;
   min-height: 100vh;
-  background-color: var(--black);
+  background-color: transparent;
   color: var(--ivory);
   overflow-x: hidden;
   font-family: var(--font-sans);
@@ -44,6 +45,8 @@ html {
   padding: 4rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .section-hero {
@@ -451,3 +454,117 @@ html {
   0% { transform: translateY(200%); }
   100% { transform: translateY(-100%); }
 }
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+
+  .overview-section {
+    min-height: auto;
+    padding: 3rem 1.25rem;
+  }
+
+  .section-split {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .split-col {
+    text-align: center;
+  }
+
+  .split-col.is-left {
+    border-right: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 2rem;
+  }
+
+  .split-list li {
+    font-size: 0.95rem;
+  }
+
+  .section-panels {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cinematic-panel {
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+  }
+
+  .cinematic-panel:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  .panel-title {
+    font-size: 1.4rem;
+  }
+
+  .text-luxury-heading {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .text-luxury-subheading {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .text-body-large {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .btn-gold,
+  .btn-white {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.72rem;
+  }
+
+  .cinematic-backdrop-glow,
+  .split-glow-right,
+  .split-glow-left {
+    display: none;
+  }
+
+  /* Navigation dots — hide on mobile */
+  .nav-dots {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .text-luxury-heading {
+    font-size: 2rem;
+  }
+
+  .cinematic-panel {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* ─── Global Scroll Locks for Overview Page ─── */
+html.snap-scroll {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+html.snap-scroll body {
+  overflow-x: hidden;
+}
+

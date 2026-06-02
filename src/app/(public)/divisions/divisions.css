@@ -1,0 +1,412 @@
+.divisions-main {
+  background-color: transparent;
+  min-height: 100vh;
+  color: #fff;
+}
+
+.divisions-content-wrapper {
+  position: relative;
+  z-index: 10;
+  background-color: transparent;
+}
+
+/* SECTION 01: Hero Opening */
+.divisions-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8rem 2rem 4rem;
+}
+
+.divisions-hero-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.chamber {
+  flex: 1;
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.5s ease;
+}
+
+.chamber:hover {
+  background-color: var(--chamber-color);
+  opacity: 0.2;
+}
+
+.divisions-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 800px;
+}
+
+.divisions-hero-title {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .divisions-hero-title {
+    font-size: 4.5rem;
+  }
+}
+
+.divisions-hero-text {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+.divisions-hero-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .divisions-hero-ctas {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/* SECTION 02: The Axis System */
+.divisions-system {
+  padding: 8rem 2rem;
+  background-color: rgba(2, 2, 2, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.divisions-system-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 4rem;
+  color: #fff;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.divisions-graph-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+}
+
+/* SECTION 03: The Five Divisions */
+.divisions-cards-section {
+  padding: 8rem 2rem;
+  background-color: rgba(5, 5, 5, 0.8);
+}
+
+.divisions-cards-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.division-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3rem;
+  overflow: hidden;
+  transition: border-color 0.4s ease;
+}
+
+.division-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.division-card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  opacity: 0.5;
+  transition: opacity 0.4s ease, width 0.4s ease;
+}
+
+.division-card:hover .division-card-glow {
+  opacity: 1;
+  width: 6px;
+}
+
+.division-card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.division-number {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.division-name {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.division-subtitle {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.division-desc {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  max-width: 700px;
+  margin-bottom: 3rem;
+}
+
+.division-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .division-ctas {
+    flex-direction: row;
+  }
+}
+
+/* SECTION 04: Sequence */
+.divisions-sequence {
+  padding: 8rem 2rem;
+  background-color: rgba(2, 2, 2, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.divisions-sequence-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sequence-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .sequence-flow {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.sequence-step {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 1.5rem;
+  background: rgba(205, 164, 100, 0.05);
+  border: 1px solid rgba(205, 164, 100, 0.2);
+  width: 100%;
+  max-width: 300px;
+}
+
+@media (min-width: 1024px) {
+  .sequence-step {
+    width: auto;
+  }
+}
+
+.sequence-arrow {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .sequence-arrow {
+    transform: rotate(-90deg);
+  }
+}
+
+.sequence-text {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* SECTION 05: Final CTA */
+.divisions-final-cta {
+  padding: 10rem 2rem;
+  background-color: rgba(5, 5, 5, 0.8);
+  text-align: center;
+}
+
+.final-cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.final-cta-heading {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.final-cta-text {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 3rem;
+}
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 640px) {
+  .divisions-hero {
+    padding: 5.5rem 1.25rem 3rem;
+    min-height: auto;
+  }
+
+  .divisions-hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem) !important;
+    margin-bottom: 1.25rem;
+  }
+
+  .divisions-hero-text {
+    font-size: 0.92rem;
+    margin-bottom: 2rem;
+  }
+
+  .divisions-hero-ctas {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .divisions-system {
+    padding: 4rem 1.25rem;
+  }
+
+  .divisions-graph-container {
+    min-height: 320px;
+    overflow: hidden;
+  }
+
+  .section-heading {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: 2rem;
+  }
+
+  .divisions-cards-section {
+    padding: 4rem 1.25rem;
+  }
+
+  .divisions-cards-inner {
+    gap: 2rem;
+  }
+
+  .division-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .division-number {
+    font-size: 1.15rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .division-name {
+    font-size: 1.6rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .division-subtitle {
+    font-size: 0.78rem;
+    margin-bottom: 1rem;
+  }
+
+  .division-desc {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .division-ctas {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .divisions-sequence {
+    padding: 4rem 1.25rem;
+  }
+
+  .sequence-step {
+    font-size: 0.75rem;
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .sequence-text {
+    font-size: 0.95rem;
+  }
+
+  .divisions-final-cta {
+    padding: 5rem 1.25rem;
+  }
+
+  .final-cta-heading {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  }
+
+  .final-cta-text {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+}
+

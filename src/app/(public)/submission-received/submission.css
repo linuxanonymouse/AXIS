@@ -1,0 +1,27 @@
+.submission {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7.5rem 1.5rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+.submission__title {
+  margin: 0;
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.submission__body {
+  margin: 0;
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.8;
+}
+

@@ -76,7 +76,7 @@ export const JOURNEY_STAGES: JourneyStage[] = [
     align: "right",
     eyebrow: "The Axis Ecosystem",
     title: "Five interconnected layers. One system.",
-    body: "Operations · Studio · Intelligence · Media · Ventures — each layer performs a distinct function. Together, a complete system built for scalable growth.",
+    body: "Operations · Studio · Intelligence · Media · Ventures each layer performs a distinct function. Together, a complete system built for scalable growth.",
     cta: [{ label: "Explore Divisions", href: ROUTES.divisions, primary: true }],
   },
   {

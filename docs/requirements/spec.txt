@@ -1,0 +1,917 @@
+﻿AXIS WEBSITE BUILD SPECIFICATION
+Final Developer Ready Version
+This document is the locked website build specification for Axis.
+The goal is to build a premium, cinematic, institutional website that positions Axis as an operating system for scalable organizations, not as an agency, consultancy, or basic service provider.
+The website must feel:
+Premium
+Cinematic
+Structured
+Selective
+Intelligent
+Timeless
+No generic SaaS layouts.
+No agency templates.
+No crowded sections.
+No basic form design.
+________________
+
+
+1. Locked Public Sitemap
+These are the public facing website pages.
+
+
+#
+	Page
+	Navigation Label
+	Purpose
+	01
+	Homepage
+	Logo only or Home
+	Cinematic entry point
+	02
+	Axis Overview
+	Overview
+	Explain what Axis is
+	03
+	Axis Divisions
+	Divisions
+	Show the five operating layers
+	04
+	Axis Operations
+	Operations
+	Strategic Advisory, Command Layer
+	05
+	Axis Studio
+	Studio
+	Infrastructure Deployment, Deployment Layer
+	06
+	Axis Intelligence
+	Intelligence
+	Data & AI Systems, Control Layer
+	07
+	Axis Media
+	Media
+	Distribution Ecosystems, Distribution Layer
+	08
+	Axis Ventures
+	Ventures
+	Strategic Partnerships, Expansion Layer
+	09
+	Strategic Diagnostic
+	Diagnostic
+	Public entry page for the application
+	10
+	Insights
+	Insights
+	Strategic Doctrine and CMS content
+	11
+	Contact
+	Contact
+	Minimal direct communication page
+	________________
+
+
+2. Locked Private / System Pages
+These pages should not appear in the main navigation.
+
+
+#
+	Page
+	Access
+	Purpose
+	12
+	Axis Alignment Application
+	CTA only
+	Actual 6 screen diagnostic intake
+	13
+	Diagnostic Output
+	Internal/private
+	AI generated report and review page
+	14
+	Submission Received
+	After submit
+	Confirmation page
+	15
+	404 Page
+	System
+	Premium error page
+	________________
+
+
+3. Locked Desktop Navigation
+Use this final desktop navigation:
+Overview
+Divisions
+Insights
+Diagnostic
+Contact
+Primary button:
+Apply Access
+The division pages should not all appear in the top desktop navigation because it will make the nav feel crowded. Users can access each division through the Divisions page.
+________________
+
+
+4. Locked Mobile Navigation
+Mobile menu should be fullscreen overlay.
+Menu items:
+Overview
+Divisions
+Operations
+Studio
+Intelligence
+Media
+Ventures
+Diagnostic
+Insights
+Contact
+Bottom CTA:
+Apply Access
+Bottom email:
+operations@axisoperations.ca
+Mobile menu must feel elegant, large, and spacious.
+________________
+
+
+5. Page by Page Build Table
+01. Homepage
+Purpose: Cinematic first impression.
+Structure: Fullscreen video hero only.
+Primary CTA: Start Strategic Diagnostic
+Secondary CTA: Explore Axis
+Requirements:
+* Fullscreen looping video
+
+* Minimal text
+
+* Minimal navigation
+
+* No homepage service sections
+
+* No heavy scrolling
+
+* Desktop and mobile video versions
+
+* Dark luxury visual system
+
+________________
+
+
+02. Axis Overview
+Purpose: Explain what Axis is.
+Core Message: Axis is an operating system for scalable organizations.
+Sections:
+   1. Hero Opening
+
+   2. What Axis Is / What Axis Is Not
+
+   3. Clarity → Structure → Monetization
+
+   4. The Axis Ecosystem
+
+   5. Final Statement + CTA
+
+Primary CTA:
+Start Strategic Diagnostic
+Secondary CTA:
+Explore Divisions
+________________
+
+
+03. Axis Divisions
+Purpose: Show five connected operating layers.
+Hero Title: Five Layers. One Operating System.
+Sections:
+      1. Hero Opening
+
+      2. Axis System Map
+
+      3. Five Division Cards
+
+      4. How the Divisions Work Together
+
+      5. Final CTA
+
+Each division card requires:
+         * Division name
+
+         * Division subtitle
+
+         * Short description
+
+         * Explore Division button
+
+         * View Division Brief button
+
+________________
+
+
+04. Axis Operations
+Division Label: Strategic Advisory
+Signature Role: The Command Layer
+Core Message: Structure comes before scale.
+Sections:
+            1. Hero Opening
+
+            2. The Strategic Problem
+
+            3. Strategic Infrastructure Design
+
+            4. The Axis Infrastructure Method
+
+            5. What Changes
+
+            6. Role Within Axis
+
+            7. Final CTA
+
+Visual tone:
+Deep blue black, command room, strategic maps, gold accents.
+________________
+
+
+05. Axis Studio
+Division Label: Infrastructure Deployment
+Signature Role: The Deployment Layer
+Core Message: Strategy becomes infrastructure.
+Sections:
+               1. Hero Opening
+
+               2. The Infrastructure Problem
+
+               3. Infrastructure That Supports Scale
+
+               4. From Strategy to System
+
+               5. What Changes
+
+               6. Role Within Axis
+
+               7. Final CTA
+
+Visual tone:
+Blue, glass architecture, digital grids, system pathways.
+________________
+
+
+06. Axis Intelligence
+Division Label: Data & AI Systems
+Signature Role: The Control Layer
+Core Message: Systems operate. Intelligence compounds.
+Sections:
+                  1. Hero Opening
+
+                  2. The Intelligence Problem
+
+                  3. From Observation to Control
+
+                  4. The Intelligence Stack
+
+                  5. Continuous Control Loop
+
+                  6. Performance Constraint Detection
+
+                  7. Role Within Axis
+
+                  8. Final CTA
+
+Visual tone:
+Black, lava purple, intelligence core, neural pathways, control room.
+________________
+
+
+07. Axis Media
+Division Label: Distribution Ecosystems
+Signature Role: The Distribution Layer
+Core Message: Distribution is infrastructure.
+Sections:
+                     1. Hero Opening
+
+                     2. The Distribution Problem
+
+                     3. From Content Output to Distribution Control
+
+                     4. Distribution Infrastructure
+
+                     5. From Attention to Ecosystem Control
+
+                     6. What Changes
+
+                     7. Role Within Axis
+
+                     8. Final CTA
+
+Visual tone:
+Black, amber gold, silver, stage lights, media command room.
+________________
+
+
+08. Axis Ventures
+Division Label: Strategic Partnerships
+Signature Role: The Expansion Layer
+Core Message: Access is not leverage. Alignment is.
+Sections:
+                        1. Hero Opening
+
+                        2. The Partnership Problem
+
+                        3. From Access to Leverage
+
+                        4. Partnership Infrastructure
+
+                        5. From Opportunity to Structured Expansion
+
+                        6. What Changes
+
+                        7. Role Within Axis
+
+                        8. Final CTA
+
+Visual tone:
+Black, emerald green, champagne gold, strategic gateways, partnership paths.
+________________
+
+
+09. Strategic Diagnostic
+Public Page Label: Axis Alignment Application
+Signature Role: The Entry Layer
+Core Message: Diagnosis before deployment.
+Purpose:
+Public page that explains the diagnostic before the user enters the application.
+Sections:
+                           1. Hero Opening
+
+                           2. Why the Diagnostic Exists
+
+                           3. Evaluation Framework
+
+                           4. How the Diagnostic Works
+
+                           5. AI Diagnostic Output Preview
+
+                           6. Intake Experience
+
+                           7. Selective Access Positioning
+
+                           8. Final CTA
+
+CTA:
+Begin Diagnostic
+This links to the private Axis Alignment Application.
+________________
+
+
+10. Insights
+Page Label: Strategic Doctrine
+Signature Role: The Intelligence Library
+Core Message: Doctrine, not noise.
+Sections:
+                              1. Hero Opening
+
+                              2. Featured Doctrine
+
+                              3. Explore by System Layer
+
+                              4. Latest Doctrine
+
+                              5. Operating Principles
+
+                              6. Receive Axis Briefs
+
+                              7. Final CTA
+
+This page must be CMS based.
+________________
+
+
+11. Contact
+Page Label: Strategic Inquiry
+Signature Role: The Communication Layer
+Core Message: One clear channel. No noise.
+Structure:
+                                 * Centered layout
+
+                                 * Minimal copy
+
+                                 * Center email
+
+                                 * One CTA button
+
+Copy:
+Contact
+Strategic Inquiry
+For aligned opportunities, partnerships, institutional inquiries, and direct communication.
+operations@axisoperations.ca
+For structured evaluation, begin with the Strategic Diagnostic.
+Button:
+Start Strategic Diagnostic
+No form.
+No map.
+No phone number.
+________________
+
+
+6. Private Page Build Details
+12. Axis Alignment Application
+Purpose: Actual 6 screen intake experience.
+Access: CTA only. Not in main nav.
+User facing screens:
+                                    1. Access Overview
+
+                                    2. Organization Profile
+
+                                    3. Growth & Business Stage
+
+                                    4. Infrastructure, Distribution & Intelligence
+
+                                    5. Monetization, Expansion & Constraints
+
+                                    6. Review & Submit
+
+Requirements:
+                                       * Multi-step application
+
+                                       * Progress tracker
+
+                                       * Back / Continue buttons
+
+                                       * Save and continue later if possible
+
+                                       * Other option logic
+
+                                       * Clean dropdown behavior
+
+                                       * Mobile first
+
+                                       * No native ClickUp public form
+
+                                       * Branded Axis interface
+
+________________
+
+
+13. Diagnostic Output
+Purpose: AI generated report system.
+Access: Internal/private/report/PDF.
+Versions:
+                                          1. Internal Axis Review
+
+                                          2. Client Facing Diagnostic Summary
+
+Internal report must include:
+                                             * Status tag
+
+                                             * Executive summary
+
+                                             * Alignment scorecard
+
+                                             * Primary constraint
+
+                                             * Secondary constraints
+
+                                             * Recommended Axis pathway
+
+                                             * Internal review decision
+
+                                             * Internal notes
+
+                                             * Next step recommendation
+
+                                             * Client facing summary
+
+________________
+
+
+14. Submission Received
+Copy:
+Submission Received
+Your Strategic Diagnostic has been received.
+Axis will review the submission and issue next steps if alignment is confirmed.
+This is an automated confirmation. Internal review will determine whether the opportunity is aligned with the Axis system.
+Button:
+Return to Axis
+________________
+
+
+15. 404 Page
+Copy:
+This path does not exist.
+Return to the Axis system.
+Button:
+Return Home
+________________
+
+
+7. CTA and Link Map
+Global CTA Links
+
+
+Button
+	Link Destination
+	Apply Access
+	Strategic Diagnostic page
+	Start Strategic Diagnostic
+	Strategic Diagnostic page
+	Begin Diagnostic
+	Axis Alignment Application
+	Explore Axis
+	Axis Overview
+	Explore Divisions
+	Axis Divisions
+	Contact Axis
+	Contact
+	Return to Axis
+	Homepage
+	________________
+
+
+8. Division Brief Link Map
+Each division page and division card needs a secondary document link.
+
+
+Division
+	Button
+	URL Placeholder
+	Axis Operations
+	View Strategic Advisory Brief
+	[INSERT OPERATIONS DECK LINK]
+	Axis Studio
+	View Studio Brief
+	[INSERT STUDIO DECK LINK]
+	Axis Intelligence
+	View Intelligence Brief
+	[INSERT INTELLIGENCE DECK LINK]
+	Axis Media
+	View Media Brief
+	[INSERT MEDIA DECK LINK]
+	Axis Ventures
+	View Ventures Brief
+	[INSERT VENTURES DECK LINK]
+	The developer should leave these as editable CMS or admin controlled links if possible.
+________________
+
+
+9. Backend Automation Flow
+Final locked backend flow:
+Website intake submission
+→ Airtable or database record created
+→ Make.com or n8n automation triggered
+→ OpenAI diagnostic prompt processes responses
+→ AI generates internal diagnostic output
+→ Internal Axis notification email sent
+→ ClickUp task created in Axis Operations Master Queue
+→ Applicant confirmation email sent
+→ Report stored as private record or generated PDF
+→ Axis team reviews status
+→ Client facing summary sent only if approved
+Recommended stack:
+Website frontend
+Airtable or database
+Make.com or n8n
+OpenAI
+ClickUp
+Gmail or transactional email tool
+PDF generator if needed
+________________
+
+
+10. AI Diagnostic Prompt Requirements
+The AI prompt must generate the following fields:
+Organization Name
+Applicant Name
+Email
+Business Model
+Revenue Range
+Team Size
+Primary Objective
+Business Stage
+Overall Alignment Score
+Infrastructure Score
+Distribution Score
+Intelligence Score
+Monetization Score
+Expansion Score
+Primary Constraint
+Primary Constraint Explanation
+Secondary Constraints
+Recommended Axis Pathway
+Business Maturity Classification
+Strategic Insight
+Internal Review Status
+Next Step Recommendation
+Client Facing Summary
+Internal Notes
+________________
+
+
+Scoring Categories
+Scores should be out of 100:
+Overall Alignment
+Infrastructure
+Distribution
+Intelligence
+Monetization
+Expansion
+________________
+
+
+Internal Review Status Options
+Aligned
+Potential Fit
+Not Currently Aligned
+Requires Follow Up
+Needs More Information
+________________
+
+
+Next Step Options
+Schedule strategic review call
+Send custom proposal
+Request more information
+Send division brief
+Place in nurture sequence
+Decline politely
+Revisit later
+________________
+
+
+Recommended Axis Pathway Options
+Axis Operations Only
+Axis Operations → Axis Studio
+Axis Operations → Axis Studio → Axis Intelligence
+Axis Operations → Axis Media
+Axis Intelligence → Axis Operations
+Axis Media → Axis Ventures
+Full Axis Ecosystem
+________________
+
+
+11. CMS Requirements for Insights
+Insights must be CMS based.
+Each article needs:
+Title
+Slug
+Category
+Author
+Date
+Reading time
+Featured image
+Short abstract
+Article body
+SEO title
+SEO description
+Related articles
+CTA module
+Featured toggle
+Draft / published status
+Categories:
+Strategy
+Infrastructure
+Intelligence
+Distribution
+Monetization
+Expansion
+________________
+
+
+12. Global Design System
+Color System
+Primary:
+Black
+Obsidian
+Charcoal
+Accent:
+Champagne gold
+Warm bronze
+Ivory
+Division colors:
+Operations: amber gold
+Studio: electric blue
+Intelligence: lava purple
+Media: amber / silver
+Ventures: emerald green
+________________
+
+
+Typography
+Headlines:
+Luxury serif
+Large scale
+High contrast
+Editorial feel
+Body:
+Clean sans serif
+Readable
+Minimal
+Structured
+Buttons:
+Uppercase
+Wide letter spacing
+Thin borders
+Gold hover states
+________________
+
+
+Motion
+Motion must be:
+Slow
+Cinematic
+Restrained
+Intentional
+Premium
+Use:
+Fade-ins
+Soft parallax
+Light movement
+Fog movement
+Hover glow
+Menu overlay transitions
+Smooth page transitions
+Avoid:
+Fast flashy animation
+Cheap tech effects
+Random moving icons
+Cartoon motion
+Generic SaaS animations
+________________
+
+
+13. Footer System
+Footer should be minimal.
+Include:
+AXIS
+Overview
+Divisions
+Diagnostic
+Insights
+Contact
+Operations
+Studio
+Intelligence
+Media
+Ventures
+operations@axisoperations.ca
+Privacy Policy
+Terms
+Disclaimer
+Social icons only if ready.
+Do not make the footer busy.
+________________
+
+
+14. Mobile Rules
+Mobile must be premium.
+Rules:
+                                                * No clutter
+
+                                                * No tiny diagrams
+
+                                                * No forced desktop layouts
+
+                                                * No hidden buttons
+
+                                                * No dropdowns blocking fields
+
+                                                * No browser bar covering inputs
+
+                                                * Clean vertical stacking
+
+                                                * Large readable typography
+
+                                                * Simple CTA placement
+
+                                                * Ecosystem maps convert into stacked flows
+
+                                                * Videos must have mobile optimized versions
+
+________________
+
+
+15. Performance Requirements
+Developers must optimize:
+Hero video files
+Mobile video files
+Image compression
+Lazy loading
+Font loading
+Animation performance
+Caching
+SEO metadata
+Open Graph images
+Sitemap
+404 page
+Form speed
+Application submission speed
+The site must feel cinematic but still load fast.
+________________
+
+
+16. Developer Build Order
+Build in this order:
+                                                   1. Global design system
+
+                                                   2. Header and fullscreen menu overlay
+
+                                                   3. Footer system
+
+                                                   4. Homepage
+
+                                                   5. Axis Overview
+
+                                                   6. Divisions page
+
+                                                   7. Division pages
+
+                                                   8. Strategic Diagnostic page
+
+                                                   9. Axis Alignment Application
+
+                                                   10. Backend automation flow
+
+                                                   11. Diagnostic Output system
+
+                                                   12. Insights CMS
+
+                                                   13. Contact page
+
+                                                   14. Submission Received page
+
+                                                   15. 404 page
+
+                                                   16. Mobile optimization
+
+                                                   17. QA testing
+
+________________
+
+
+17. Final QA Checklist
+Before launch, test:
+Desktop layout
+Mobile layout
+Tablet layout
+Menu open / close
+All CTA buttons
+All division links
+All deck links
+Email mailto link
+Footer links
+Homepage video loop
+Mobile video fallback
+Application form
+Progress tracker
+Dropdown behavior
+Other text fields
+Back / Continue buttons
+Save and continue later, if included
+Submit Diagnostic button
+Submission confirmation page
+AI diagnostic output
+Internal notification email
+Applicant confirmation email
+ClickUp task creation
+Airtable/database record creation
+CMS article publishing
+SEO metadata
+Open Graph images
+Page speed
+404 page
+Browser compatibility
+________________
+
+
+Final Website Summary
+Public Website Pages
+                                                      1. Homepage
+
+                                                      2. Axis Overview
+
+                                                      3. Axis Divisions
+
+                                                      4. Axis Operations
+
+                                                      5. Axis Studio
+
+                                                      6. Axis Intelligence
+
+                                                      7. Axis Media
+
+                                                      8. Axis Ventures
+
+                                                      9. Strategic Diagnostic
+
+                                                      10. Insights
+
+                                                      11. Contact
+
+Private / System Pages
+                                                         12. Axis Alignment Application
+
+                                                         13. Diagnostic Output
+
+                                                         14. Submission Received
+
+                                                         15. 404 Page
+
+This is the locked build specification.
+The website should feel like:
+a living strategic operating system, not a company website.

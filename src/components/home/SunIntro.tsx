@@ -19,7 +19,7 @@ const fadeUp = {
   },
 };
 
-/** Transparent copy locked to viewport center — sits on the Sun disc */
+/** Transparent copy locked to viewport center sits on the Sun disc */
 export default function SunIntro({ stage, active }: SunIntroProps) {
   const bodies = Array.isArray(stage.body) ? stage.body : [stage.body];
 

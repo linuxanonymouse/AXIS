@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-/** Node.js API — live organizational telemetry */
+/** Node.js API live organizational telemetry */
 export async function GET() {
   const stats = {
     clients: 284 + Math.floor(Math.random() * 3),

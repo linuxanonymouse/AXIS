@@ -1,0 +1,326 @@
+﻿Strategic Diagnostic
+Navigation Label
+Diagnostic
+Public Page Label
+Axis Alignment Application
+Signature Role
+The Entry Layer
+Hero Statement
+Alignment comes before access.
+Core Line
+Diagnosis before deployment.
+________________
+
+
+PAGE PURPOSE
+The Strategic Diagnostic page is the formal entry point into the Axis ecosystem.
+This page should not feel like a contact form, inquiry page, or lead capture funnel.
+It should feel like a private evaluation gateway.
+The purpose is to determine whether Axis can create leverage inside the organization and where the system should be applied first.
+The visitor should understand:
+Axis does not begin with a sales call. Axis begins with diagnosis.
+________________
+
+
+SECTION 01
+Hero Opening
+Visual Direction
+This page should feel selective, serious, and institutional.
+Use:
+* dark architectural gateway
+
+* champagne gold light paths
+
+* diagnostic grid system
+
+* application interface elements
+
+* soft fog
+
+* controlled light beams
+
+* Axis symbol embedded into the environment
+
+* private evaluation chamber feeling
+
+This should feel like the user is entering a controlled assessment system.
+Not a basic form.
+Not a Calendly page.
+Not a ClickUp form.
+Not a general contact page.
+________________
+
+
+Hero Copy
+Axis Alignment Application
+Strategic Diagnostic
+The Entry Layer
+Alignment comes before access.
+The Axis Strategic Diagnostic identifies structural constraints, evaluates growth readiness, and determines where Axis can be applied.
+Side Micro Text
+Not every opportunity requires Axis.
+Not every organization is aligned.
+CTA Button
+Begin Diagnostic
+________________
+
+
+SECTION 02
+Why the Diagnostic Exists
+Heading
+Diagnosis precedes deployment.
+Copy
+Most organizations misdiagnose growth problems.
+They assume they need more marketing, more people, more tools, or more activity.
+Axis evaluates what is happening underneath the surface:
+Revenue structure
+Infrastructure maturity
+Operational constraints
+Distribution capacity
+Performance visibility
+Expansion readiness
+Closing Line
+The objective is not to collect information.
+The objective is to determine where structure is required.
+________________
+
+
+SECTION 03
+The Evaluation Framework
+Heading
+The Evaluation Framework
+Layout
+Six premium evaluation cards.
+Each card should feel like a diagnostic category, not a form section.
+________________
+
+
+Card 01
+Revenue Environment
+How revenue is created, captured, lost, and scaled.
+________________
+
+
+Card 02
+Infrastructure Maturity
+How systems, tools, workflows, and platforms support or restrict growth.
+________________
+
+
+Card 03
+Operational Readiness
+How decisions, ownership, execution, and team flow are currently structured.
+________________
+
+
+Card 04
+Distribution Capacity
+How attention, content, audience, and acquisition channels are controlled.
+________________
+
+
+Card 05
+Intelligence & Reporting
+How performance is tracked, interpreted, and converted into decisions.
+________________
+
+
+Card 06
+Expansion Potential
+Where partnerships, new channels, or strategic opportunities may create leverage.
+________________
+
+
+SECTION 04
+How the Diagnostic Works
+Heading
+From Submission to Strategic Direction
+Layout
+Horizontal flow on desktop.
+Vertical stacked flow on mobile.
+________________
+
+
+Step 01
+Submit Diagnostic
+The organization completes the structured intake.
+________________
+
+
+Step 02
+AI Review
+Responses are processed through the Axis diagnostic engine and scoring logic.
+________________
+
+
+Step 03
+Strategic Assessment
+The system evaluates constraints, maturity, opportunity, and likely entry point.
+________________
+
+
+Step 04
+Internal Review
+Axis reviews the diagnostic output to confirm alignment and determine next steps.
+________________
+
+
+Step 05
+Response Issued
+The organization receives direction based on fit, readiness, and strategic opportunity.
+________________
+
+
+SECTION 05
+AI Diagnostic Output
+Heading
+What Happens After Submission
+Copy
+Once submitted, the diagnostic generates an internal evaluation that may include:
+Overall score
+Infrastructure score
+Distribution score
+Intelligence score
+Monetization score
+Primary constraint
+Secondary constraints
+Strategic insight
+Recommended Axis pathway
+Next step recommendation
+Design Direction
+Show a premium preview of the diagnostic output.
+This should feel like a confidential institutional review, not a plain email.
+Use:
+   * branded report interface
+
+   * dark card layout
+
+   * gold scoring details
+
+   * category scores
+
+   * primary constraint section
+
+   * recommended Axis pathway
+
+   * next step recommendation
+
+________________
+
+
+SECTION 06
+The Intake Experience
+Heading
+Built as a Website Intake, Not a Native Form
+Copy
+The Axis Alignment Application should be built directly inside the Axis website so the experience can be fully controlled across design, spacing, dropdown behavior, mobile responsiveness, and brand presentation.
+The frontend must feel custom, premium, and structured.
+Required Frontend Features
+Multi-step application
+Progress indicator
+Clean dropdown behavior
+Other/type option on relevant questions
+Mobile-first layout
+Save and continue if possible
+Clear validation
+No fields hidden by browser bars
+Fully branded Axis interface
+Secure and confidential submission experience
+Backend Requirements
+Form submission handling
+AI prompt processing
+Scoring logic
+Email automation
+Internal storage
+ClickUp or Airtable routing
+Team notification
+Branded email or PDF output if needed
+Important Direction
+Do not use the native ClickUp form UI for the public experience.
+ClickUp can still be used behind the scenes for routing, storage, and internal task management.
+________________
+
+
+SECTION 07
+Selective Access Positioning
+Heading
+Axis is applied where structure can create leverage.
+Copy
+This diagnostic does not guarantee engagement.
+It determines whether Axis is the right operating system for the organization’s current stage.
+Axis is best applied where:
+Revenue already exists
+Growth is constrained
+Systems are fragmented
+Execution pressure is increasing
+Structure is required
+Supporting Line
+The purpose is not volume.
+The purpose is alignment.
+________________
+
+
+SECTION 08
+Final CTA
+Main Statement
+Begin with diagnosis. Proceed with alignment.
+Supporting Copy
+Complete the Strategic Diagnostic to determine where Axis can be applied and whether the organization is aligned for the next stage.
+CTA Buttons
+Start Strategic Diagnostic
+View Diagnostic Overview
+________________
+
+
+DESIGN STANDARD
+This page should feel:
+      * selective
+
+      * institutional
+
+      * intelligent
+
+      * controlled
+
+      * premium
+
+      * serious
+
+      * secure
+
+      * conversion-focused
+
+Visual tone:
+         * black
+
+         * champagne gold
+
+         * dark glass
+
+         * diagnostic grids
+
+         * private gateway visuals
+
+         * soft fog
+
+         * branded application interface
+
+         * confidential report styling
+
+Avoid:
+            * basic contact form design
+
+            * native ClickUp form UI
+
+            * generic questionnaire layout
+
+            * casual “book a call” language
+
+            * desperate lead generation energy
+
+            * cluttered form screens
+
+            * weak confirmation emails
+
+The page should position the Strategic Diagnostic as:
+The entry layer into the Axis ecosystem.

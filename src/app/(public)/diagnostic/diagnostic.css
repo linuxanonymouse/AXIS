@@ -1,0 +1,342 @@
+.axis-page__content {
+  position: relative;
+  z-index: 10;
+}
+
+.axis-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7.5rem 1.5rem 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.axis-hero__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.axis-hero__title {
+  margin: 0;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+}
+
+.axis-hero__body {
+  margin: 1.5rem auto 0;
+  max-width: 720px;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.axis-hero__ctas {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.axis-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.62rem;
+  transition: all 0.35s var(--ease-premium);
+}
+
+.axis-btn--primary {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.axis-btn:hover {
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.axis-section {
+  padding: 5rem 1.5rem 6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.axis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.axis-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 1.5rem 1.4rem;
+}
+
+.axis-card h2 {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.axis-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.axis-hero__micro {
+  margin: 1rem auto 0;
+  max-width: 520px;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.axis-section__title {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.axis-section__lead {
+  margin: 0 0 2rem;
+  max-width: 720px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.axis-grid--six {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.axis-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.diagnostic-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.diagnostic-flow__step {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem 1rem;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.diagnostic-flow__num {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+}
+
+.diagnostic-flow__step h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.diagnostic-flow__step p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.diagnostic-report {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.25rem;
+  border: 1px solid rgba(205, 164, 100, 0.25);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 1.5rem;
+}
+
+.diagnostic-report__scores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.diagnostic-report__score {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1rem;
+}
+
+.diagnostic-report__score-label {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.diagnostic-report__score-value {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  color: var(--champagne);
+}
+
+.diagnostic-report__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.diagnostic-report__constraint {
+  margin: 0 0 1rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.diagnostic-report__pathway {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.6;
+}
+
+.axis-section--cta {
+  text-align: center;
+  padding-bottom: 8rem;
+}
+
+.axis-section--cta .axis-section__lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 900px) {
+  .axis-grid,
+  .axis-grid--six {
+    grid-template-columns: 1fr;
+  }
+
+  .diagnostic-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .diagnostic-report {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 640px) {
+  .axis-hero {
+    padding: 5.5rem 1rem 3rem;
+    min-height: auto;
+  }
+
+  .axis-hero__title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+    letter-spacing: 0.04em;
+  }
+
+  .axis-hero__body {
+    font-size: 0.92rem;
+    margin-top: 1rem;
+  }
+
+  .axis-hero__ctas {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.75rem;
+  }
+
+  .axis-btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .axis-section {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .axis-section__title {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+  }
+
+  .axis-card {
+    padding: 1.25rem 1.15rem;
+  }
+
+  .axis-card h2 {
+    font-size: 0.8rem;
+  }
+
+  .axis-card p {
+    font-size: 0.88rem;
+  }
+
+  .diagnostic-flow__step {
+    padding: 1rem 0.85rem;
+  }
+
+  .diagnostic-report {
+    padding: 1.25rem;
+  }
+
+  .diagnostic-report__scores {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .diagnostic-report__score {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .diagnostic-report__score-label {
+    font-size: 0.55rem;
+  }
+
+  .diagnostic-report__score-value {
+    font-size: 1.35rem;
+  }
+
+  .diagnostic-report__constraint {
+    font-size: 1.2rem;
+  }
+
+  .axis-section--cta {
+    padding-bottom: 5rem;
+  }
+}
+
+

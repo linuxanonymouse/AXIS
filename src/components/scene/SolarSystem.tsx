@@ -15,8 +15,7 @@ const TEXTURE_BY_PLANET: Record<string, string> = {
   Venus: PLANET_TEXTURES.venus,
   Mars: PLANET_TEXTURES.mars,
   Jupiter: PLANET_TEXTURES.jupiter,
-  Saturn: PLANET_TEXTURES.saturn,
-};
+  Saturn: PLANET_TEXTURES.saturn};
 
 function OrbitPath({ radius }: { radius: number }) {
   const points: [number, number, number][] = [];

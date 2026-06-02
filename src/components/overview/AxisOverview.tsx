@@ -1,410 +1,268 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { X } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import EcosystemGraph from "./EcosystemGraph";
-
-// Reusable animation variants
-const fadeUp = {
-  hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    filter: "blur(0px)",
-    transition: { duration: 1.0, ease: "easeOut" as const } 
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-  }
-};
+import Link from "next/link";
 
 export default function AxisOverview() {
+  const [activeSection, setActiveSection] = useState(0);
+
+  // Enable global snap scrolling only for this page
+  useEffect(() => {
+    document.documentElement.classList.add('snap-scroll');
+    return () => {
+      document.documentElement.classList.remove('snap-scroll');
+    };
+  }, []);
+
+  // Update activeSection based on scroll position to keep navigation dots in sync
+  useEffect(() => {
+    const handleScroll = () => {
+      const vh = window.innerHeight || 1;
+      const scrollVh = window.scrollY / vh;
+      const index = Math.round(scrollVh);
+      setActiveSection(Math.min(6, Math.max(0, index)));
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    // Initial check
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToNext = () => {
+    if (typeof window !== "undefined") {
+      (window as any).__axisDotClick = true;
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+      setTimeout(() => {
+        (window as any).__axisDotClick = false;
+      }, 1200);
+    }
+  };
+
+  const scrollToSection = (idx: number) => {
+    if (typeof window !== "undefined") {
+      (window as any).__axisDotClick = true;
+      window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+      setTimeout(() => {
+        (window as any).__axisDotClick = false;
+      }, 1200);
+    }
+  };
+
+  const containerStagger = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1,
+      }
+    }
+  };
+
+  const childFadeUp = {
+    hidden: { opacity: 0, y: 40, filter: "blur(12px)" },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as const } 
+    }
+  };
+
+  const lineDraw = {
+    hidden: { scaleX: 0, originX: 0 },
+    visible: { 
+      scaleX: 1, 
+      transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] as const } 
+    }
+  };
+
+  const artisticCard = {
+    hidden: { opacity: 0, scale: 0.8, rotateX: 45, filter: "blur(15px)" },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotateX: 0, 
+      filter: "blur(0px)",
+      transition: { duration: 1.2, type: "spring" as const, bounce: 0.4 } 
+    }
+  };
+
   return (
-    <div className="w-full bg-[#0a0a0a] text-white overflow-hidden">
-      
-      {/* SECTION 1: HERO */}
-      <HeroSection />
-
-      {/* SECTION 2: WHAT AXIS IS / IS NOT */}
-      <DefinitionSection />
-
-      {/* SECTION 3: CLARITY -> STRUCTURE -> MONETIZATION */}
-      <PillarsSection />
-
-      {/* SECTION 4: THE AXIS ECOSYSTEM */}
-      <EcosystemSection />
-
-      {/* SECTION 5: FINAL CTA */}
-      <FinalCTASection />
-
-    </div>
-  );
-}
-
-function HeroSection() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"]
-  });
-  
-  // Removed conflicting scroll scale in favor of infinite breathing
-  // Fade out text on scroll
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
-
-  return (
-    <section 
-      ref={ref}
-      className="relative w-full min-h-screen flex items-center justify-start px-8 md:px-24 pt-20 overflow-hidden"
-    >
-      {/* Parallax Background with slow breathing effect */}
-      <motion.div 
-        className="absolute inset-0 z-0 origin-center"
-        style={{
-          backgroundImage: "url('/images/hero_bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center"
-        }}
-        animate={{
-          scale: [1.05, 1.1, 1.05],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-
-      <motion.div 
-        className="relative z-10 max-w-2xl"
-        style={{ opacity, y }}
-        variants={staggerContainer}
+    <div className="w-full">
+      {/* SECTION 01 Hero Opening */}
+      <motion.section 
+        className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
-        animate="visible"
+        animate={activeSection === 0 ? "visible" : "hidden"}
+        variants={containerStagger}
       >
-        <motion.h1 
-          className="text-6xl md:text-8xl font-serif text-white mb-4 tracking-widest flex gap-2"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-            }
-          }}
-        >
-          {["A", "X", "I", "S"].map((letter, i) => (
-            <motion.span 
-              key={i} 
-              variants={{
-                hidden: { opacity: 0, y: 20, filter: "blur(8px)" },
-                visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } }
-              }}
-            >
-              {letter}
-            </motion.span>
-          ))}
-        </motion.h1>
-        <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-light text-[var(--ivory)] mb-8 leading-snug">
-          Operating System for<br />Scalable Organizations
-        </motion.h2>
-        
-        <motion.div 
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: { scaleX: 1, opacity: 0.8, transition: { duration: 1.2, delay: 0.6, ease: "easeInOut" } }
-          }} 
-          style={{ originX: 0 }}
-          className="w-16 h-[2px] bg-[var(--gold)] mb-8" 
-        />
-        
-        <motion.p variants={fadeUp} className="text-body-large text-gray-300 mb-12 max-w-xl text-lg">
+        <div className="cinematic-backdrop-glow" />
+        <motion.h1 variants={childFadeUp} className="text-luxury-heading text-shimmer">AXIS</motion.h1>
+        <motion.div variants={childFadeUp} className="eyebrow">Operating System for Scalable Organizations</motion.div>
+        <motion.p variants={childFadeUp} className="text-body-large mt-8">
           Axis aligns infrastructure, intelligence, distribution, and monetization into a coordinated operating environment designed for scalable growth.
         </motion.p>
-        
-        <motion.div variants={fadeUp} className="flex flex-wrap gap-6">
-          <button className="btn-gold bg-[var(--gold)]/10 hover:bg-[var(--gold)]/20 transition-all">Explore the Ecosystem</button>
-          <button className="btn-white backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all">Begin Alignment</button>
+        <motion.div variants={childFadeUp} className="hero-ctas mt-8">
+          <button className="btn-gold" onClick={() => scrollToSection(4)}>Explore the Ecosystem</button>
+          <button className="btn-white" onClick={() => scrollToSection(1)}>Begin Alignment</button>
         </motion.div>
-      </motion.div>
-    </section>
-  );
-}
+      </motion.section>
 
-function DefinitionSection() {
-  return (
-    <section className="w-full py-32 px-8 md:px-24 bg-[#0a0a0a] relative z-20 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
-      <motion.div 
-        className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8 items-start"
-        variants={staggerContainer}
+      {/* SECTION 02 What Axis Is */}
+      <motion.section 
+        className={`overview-section ${activeSection === 1 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        animate={activeSection === 1 ? "visible" : "hidden"}
+        variants={containerStagger}
       >
-        {/* Left Column: What Axis Is */}
-        <div className="pr-0 md:pr-16">
-          <motion.h4 variants={fadeUp} className="text-[var(--gold)] text-xs tracking-[0.2em] font-mono uppercase mb-10 opacity-90">
-            What Axis Is
-          </motion.h4>
-          <motion.h3 variants={fadeUp} className="text-3xl md:text-[2.75rem] font-serif leading-snug text-white opacity-90">
-            Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
-          </motion.h3>
-        </div>
-
-        {/* Vertical Divider (Desktop only) */}
-        <div className="hidden md:block absolute left-1/2 top-32 bottom-32 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent" />
-
-        {/* Right Column: What Axis Is Not */}
-        <div className="md:pl-16 pt-8 md:pt-0">
-          <motion.h4 variants={fadeUp} className="text-[var(--gold)] text-xs tracking-[0.2em] font-mono uppercase mb-10 opacity-90">
-            What Axis Is Not
-          </motion.h4>
+        <div className="split-glow-right" />
+        <div className="section-split relative w-full">
+          {/* Empty left column for the 3D Core */}
+          <div className="split-col is-left lg:border-none"></div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10 mb-12 border-y border-white/10 py-8">
-            {[
-              "Not an agency.",
-              "Not advisory theater.",
-              "Not growth tactics.",
-              "Not static strategy."
-            ].map((text, i) => (
-              <motion.div key={i} variants={fadeUp} className="flex flex-col items-center text-center px-4 group">
-                <motion.div 
-                  className="w-16 h-16 rounded-full border border-[var(--gold)]/30 flex items-center justify-center mb-6 text-[var(--gold)] bg-[var(--gold)]/5 group-hover:bg-[var(--gold)]/20 transition-colors shadow-[0_0_15px_rgba(205,164,100,0.1)] group-hover:shadow-[0_0_30px_rgba(205,164,100,0.4)]"
-                  whileHover={{ rotate: 180, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                >
-                  <X size={24} strokeWidth={1} />
-                </motion.div>
-                <p className="text-xs text-gray-400 leading-relaxed font-mono tracking-wide">{text}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.p variants={fadeUp} className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg">
-            Axis identifies where revenue is being created but not captured, and what structural constraints are preventing it.
-          </motion.p>
-        </div>
-      </motion.div>
-    </section>
-  );
-}
-
-function PillarsSection() {
-  const pillars = [
-    {
-      num: "01",
-      title: "CLARITY",
-      desc: "Understanding what is actually happening versus what is assumed.",
-      bg: "url('/images/clarity_bg.png')"
-    },
-    {
-      num: "02",
-      title: "STRUCTURE",
-      desc: "Designing systems where execution becomes predictable and scalable.",
-      bg: "url('/images/structure_bg.png')"
-    },
-    {
-      num: "03",
-      title: "MONETIZATION",
-      desc: "Capturing and compounding value once structure is aligned.",
-      bg: "url('/images/monetization_bg.png')"
-    }
-  ];
-
-  return (
-    <section className="w-full bg-[#0a0a0a]">
-      <div className="grid grid-cols-1 md:grid-cols-3 w-full h-auto min-h-[500px]">
-        {pillars.map((pillar, i) => (
-          <motion.div 
-            key={pillar.title}
-            variants={fadeUp}
-            className="group relative h-[500px] md:h-[600px] overflow-hidden rounded-sm flex flex-col justify-end p-8 border border-white/5 cursor-pointer"
-          >
-            <motion.div 
-              className="absolute inset-0 z-0 bg-cover bg-center"
-              style={{ backgroundImage: pillar.bg }}
-              animate={{
-                scale: [1.05, 1.15, 1.05],
-              }}
-              transition={{
-                duration: 25 + i * 5, // Staggered durations so they don't sync up perfectly
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-            {/* Dynamic glowing border on hover */}
-            <div className="absolute inset-0 z-0 border border-[var(--gold)]/0 group-hover:border-[var(--gold)]/30 transition-colors duration-700" />
-            <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-            
-            <motion.div 
-              className="relative z-10"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <motion.div 
-                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-                className="text-[var(--gold)] font-mono text-xs tracking-[0.2em] mb-2"
-              >
-                {pillar.num}
-              </motion.div>
-              <motion.h3 
-                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-                className="text-2xl md:text-3xl font-serif text-white mb-4"
-              >
-                {pillar.title}
-              </motion.h3>
-              <motion.p 
-                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-                className="text-gray-400 text-sm md:text-base leading-relaxed"
-              >
-                {pillar.desc}
-              </motion.p>
-            </motion.div>
-            
-            {/* Arrow connecting next pillar (except last one) */}
-            {i < 2 && (
-              <div className="hidden md:block absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-20 text-[var(--gold)]/30 text-2xl">
-                →
-              </div>
-            )}
+          <motion.div variants={childFadeUp} className="split-col is-right">
+            <h2 className="text-luxury-subheading text-shimmer">What Axis Is</h2>
+            <p className="text-body-large">
+              Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
+            </p>
+            <p className="text-body-regular mt-4">
+              Axis does not add complexity.<br/>
+              Axis removes friction.
+            </p>
           </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-}
+        </div>
+      </motion.section>
 
-function EcosystemSection() {
-  return (
-    <section className="w-full py-32 px-8 md:px-24 bg-[#0a0a0a] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        
-        {/* Left: Text */}
-        <motion.div 
-          className="relative z-20 pt-10 md:pt-20"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h4 variants={fadeUp} className="text-[var(--gold)] text-xs tracking-[0.2em] font-mono uppercase mb-6 opacity-90">
-            The Axis Ecosystem
-          </motion.h4>
-          <motion.h3 variants={fadeUp} className="text-3xl md:text-[2.75rem] font-serif text-white leading-snug mb-8 opacity-90">
-            Five interconnected<br />layers. One system.
-          </motion.h3>
+      {/* SECTION 03 What Axis Is Not */}
+      <motion.section 
+        className={`overview-section ${activeSection === 2 ? "active" : ""}`}
+        initial="hidden"
+        animate={activeSection === 2 ? "visible" : "hidden"}
+        variants={containerStagger}
+      >
+        <div className="split-glow-left" />
+        <div className="section-split relative w-full">
+          <motion.div variants={childFadeUp} className="split-col is-left lg:border-none">
+            <h2 className="text-luxury-subheading text-shimmer">What Axis Is Not</h2>
+            <ul className="split-list">
+              <li>Not an agency.</li>
+              <li>Not advisory theater.</li>
+              <li>Not growth tactics.</li>
+              <li>Not static strategy.</li>
+            </ul>
+            <p className="text-body-regular mt-8">
+              Axis identifies where revenue is being created but not captured, and what structural constraints are preventing it.
+            </p>
+          </motion.div>
 
-          <motion.div variants={fadeUp} className="w-12 h-[1px] bg-[var(--gold)] mb-8 opacity-60" />
+          {/* Empty right column for the 3D Core */}
+          <div className="split-col is-right"></div>
+        </div>
+      </motion.section>
 
-          <motion.p variants={fadeUp} className="text-gray-400 text-sm md:text-base leading-relaxed max-w-sm mb-8 font-light">
+      {/* SECTION 04 Clarity → Structure → Monetization */}
+      <motion.section 
+        className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
+        initial="hidden"
+        animate={activeSection === 3 ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 0.1 } }
+        }}
+      >
+        <div className="cinematic-backdrop-glow" />
+        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }} className="flex flex-wrap items-center justify-center gap-4 mb-12 text-luxury-subheading">
+          <motion.span variants={childFadeUp} className="text-shimmer">Clarity</motion.span>
+          <motion.span variants={childFadeUp} className="text-[var(--gold)] opacity-50">→</motion.span>
+          <motion.span variants={childFadeUp} className="text-shimmer">Structure</motion.span>
+          <motion.span variants={childFadeUp} className="text-[var(--gold)] opacity-50">→</motion.span>
+          <motion.span variants={childFadeUp} className="text-shimmer">Monetization</motion.span>
+        </motion.div>
+        <motion.div variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15 } } }} className="section-panels w-full" style={{ perspective: "1200px" }}>
+          {[
+            { num: "01.", title: "Clarity", desc: "Understanding what is actually happening versus what is assumed." },
+            { num: "02.", title: "Structure", desc: "Designing systems where execution becomes predictable and scalable." },
+            { num: "03.", title: "Monetization", desc: "Capturing and compounding value once structure is aligned." }
+          ].map((panel, idx) => (
+            <motion.div key={idx} variants={artisticCard} className="cinematic-panel group">
+              <div className="panel-number transition-colors duration-500 group-hover:text-[var(--ivory)]">{panel.num}</div>
+              <h3 className="panel-title">{panel.title}</h3>
+              <p className="text-body-regular">{panel.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+
+      {/* SECTION 05 The Axis Ecosystem */}
+      <motion.section 
+        className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
+        style={{ minHeight: '200vh' }}
+        initial="hidden"
+        animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
+        variants={containerStagger}
+      >
+        <div className="cinematic-backdrop-glow" />
+        <div className="absolute top-12 left-0 right-0 z-10 pointer-events-none px-4">
+          <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
+          <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
+          <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
             Each layer performs a distinct function. Together, they form a complete system built for scalable growth.
           </motion.p>
-        </motion.div>
+        </div>
+      </motion.section>
 
-        {/* Right: Graph */}
-        <motion.div 
-          className="relative z-10 flex justify-center items-center h-[500px] md:h-[700px] lg:h-[800px] w-full"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-200px" }}
-        >
-          {/* We use absolute positioning to prevent the 800px graph from breaking the CSS grid layout width */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-[0.4] sm:scale-[0.5] md:scale-[0.7] lg:scale-[0.85] xl:scale-100">
-            <EcosystemGraph isActive={true} />
-          </div>
-        </motion.div>
-
-      </div>
-    </section>
-  );
-}
-
-function FinalCTASection() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
-  
-  // Parallax the background image slightly
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-
-  return (
-    <section 
-      ref={ref}
-      className="relative w-full py-40 px-8 md:px-24 flex flex-col items-center justify-center text-center overflow-hidden"
-    >
-      {/* Background Image with Parallax */}
-      <motion.div 
-        className="absolute inset-0 z-0 origin-top"
-        style={{
-          backgroundImage: "url('/images/footer_bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          y
-        }}
-      />
-
-      {/* Dark overlay */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0a0a0a] via-black/60 to-[#0a0a0a]" />
-
-        <motion.div 
-          className="relative z-10 max-w-4xl"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2 
-            className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-12 leading-tight"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-            }}
-          >
-            {["AXIS", "does", "not", "create", "demand.", "AXIS", "makes", "existing", "value", "unavoidable."].map((word, i) => (
-              <motion.span 
-                key={i} 
-                className={word === "AXIS" || word === "unavoidable." ? "text-[var(--gold)] inline-block mr-3" : "inline-block mr-3"}
-                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } } }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </motion.h2>
-        
-        <motion.div variants={fadeUp} className="w-12 h-[1px] bg-white/20 mb-8 mx-auto" />
-
-        <motion.h3 variants={fadeUp} className="text-xl md:text-2xl text-gray-300 font-light mb-4 tracking-wide">
-          Begin Alignment
-        </motion.h3>
-        
-        <motion.p variants={fadeUp} className="text-gray-400 text-sm md:text-base leading-relaxed mb-12 max-w-xl mx-auto">
+      {/* SECTION 06 Final Statement + CTA */}
+      <motion.section 
+        className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
+        initial="hidden"
+        animate={activeSection === 6 ? "visible" : "hidden"}
+        variants={containerStagger}
+      >
+        <div className="cinematic-backdrop-glow" />
+        <motion.h2 variants={childFadeUp} className="text-luxury-subheading mb-4">
+          AXIS does not create demand.<br/>
+          AXIS makes existing value unavoidable.
+        </motion.h2>
+        <motion.p variants={childFadeUp} className="text-body-large mt-6 mb-12 mx-auto" style={{ maxWidth: '800px' }}>
           Axis is applied inside organizations where revenue already exists, growth is constrained, and structure is required.
         </motion.p>
-        
-        <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-6">
-          <button className="btn-gold bg-[var(--gold)]/10 hover:bg-[var(--gold)]/20 transition-all">Start Strategic Diagnostic</button>
-          <button className="btn-white border border-white/20 bg-transparent hover:bg-white/5 transition-colors">Explore Divisions</button>
+        <motion.div variants={childFadeUp} className="hero-ctas">
+          <Link href="/diagnostic" className="btn-gold">Start Strategic Diagnostic</Link>
+          <Link href="/divisions" className="btn-white">Explore Divisions</Link>
         </motion.div>
-      </motion.div>
-    </section>
+      </motion.section>
+
+      {/* Scroll Helper Navigation */}
+      <div className="fixed bottom-12 right-12 z-[100] flex flex-col items-center gap-6 hidden md:flex">
+        {/* Navigation Dots */}
+        <div className="flex flex-col gap-3">
+          {[0, 1, 2, 3, 4, 5, 6].map(idx => (
+            <button 
+              key={idx} 
+              onClick={() => scrollToSection(idx)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === idx ? 'bg-[var(--gold)] scale-[1.5] shadow-[0_0_10px_rgba(205,164,100,0.8)]' : 'bg-white/20 hover:bg-white/50'}`}
+              aria-label={`Scroll to section ${idx + 1}`}
+            />
+          ))}
+        </div>
+        
+        {/* Next Section Arrow */}
+        {activeSection < 6 && (
+          <button 
+            onClick={scrollToNext}
+            className="w-10 h-10 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-[var(--gold)] hover:bg-white/10 hover:border-white/30 transition-all animate-bounce shadow-lg"
+            aria-label="Scroll to next section"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

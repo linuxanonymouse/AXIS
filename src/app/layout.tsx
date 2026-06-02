@@ -5,6 +5,7 @@ import "./axis-ui.css";
 import "./overview.css";
 import "../components/layout/navbar.css";
 import { SITE } from "@/lib/constants";
+import GlobalSceneWrapper from "@/components/scene/GlobalSceneWrapper";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,7 +29,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} — Operating System for Scalable Organizations`,
+  title: `${SITE.name} Operating System for Scalable Organizations`,
   description: SITE.description,
   openGraph: {
     title: SITE.name,
@@ -47,10 +48,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrains.variable} ${playfair.variable} h-full antialiased`}
     >
-      <head>
-        <script src="https://cdn.tailwindcss.com"></script>
-      </head>
-      <body>{children}</body>
+      <body>
+        <GlobalSceneWrapper />
+        {children}
+      </body>
     </html>
   );
 }

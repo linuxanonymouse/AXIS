@@ -20,15 +20,8 @@ export default function SceneCanvas() {
 
   return (
     <div className="scene-canvas" aria-hidden>
-      <Canvas
-        dpr={[1, 2]}
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: "high-performance",
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.12,
-        }}
+      <Canvas dpr={1}
+        
         className="scene-canvas__gl"
       >
         <PerspectiveCamera

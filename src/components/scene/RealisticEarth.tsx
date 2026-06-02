@@ -8,8 +8,7 @@ import { PLANET_TEXTURES } from "@/lib/textures";
 import { configureColorTexture } from "@/lib/configureTexture";
 import {
   getPlanetPosition,
-  type PlanetConfig,
-} from "@/lib/solar";
+  type PlanetConfig} from "@/lib/solar";
 
 type RealisticEarthProps = {
   config: PlanetConfig;

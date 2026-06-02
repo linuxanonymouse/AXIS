@@ -21,10 +21,24 @@
   padding: 1rem 2.5rem;
 }
 
+.navbar--menu-open {
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
 .navbar__logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.navbar__logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -108,58 +122,34 @@
   gap: 1.5rem;
 }
 
-.navbar__btn-secondary {
-  display: none;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.navbar__btn-secondary:hover {
-  color: var(--ivory);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-/* Glowing CTA button */
-@keyframes btn-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(205, 164, 100, 0.15), inset 0 0 6px rgba(205, 164, 100, 0.05); }
-  50% { box-shadow: 0 0 18px rgba(205, 164, 100, 0.35), inset 0 0 12px rgba(205, 164, 100, 0.1); }
-}
-
-.navbar__btn-primary {
+.navbar__btn-apply {
   display: none;
   background: rgba(205, 164, 100, 0.1);
   border: 1px solid rgba(205, 164, 100, 0.3);
   color: var(--gold);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  padding: 0.6rem 1.25rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  animation: btn-glow 4s ease-in-out infinite;
+  text-decoration: none;
 }
 
-.navbar__btn-primary:hover {
+.navbar__btn-apply:hover {
   background: var(--gold);
   color: var(--black);
   box-shadow: 0 0 25px rgba(205, 164, 100, 0.6), 0 0 60px rgba(205, 164, 100, 0.2);
-  animation: none;
 }
 
-@media (min-width: 768px) {
-  .navbar__btn-secondary,
-  .navbar__btn-primary {
-    display: block;
+@media (min-width: 1024px) {
+  .navbar__btn-apply {
+    display: inline-flex;
   }
 }
+
+/* Removed old secondary and primary buttons */
 
 /* Mobile menu lines */
 .menu-trigger {
@@ -185,6 +175,17 @@
 .menu-trigger:hover .menu-line-long { width: 24px; background: var(--gold); }
 .menu-trigger:hover .menu-line-short { width: 24px; background: var(--gold); }
 
+.menu-trigger.open .menu-line-long {
+  transform: rotate(45deg) translate(4px, 4px);
+  background: var(--gold);
+}
+
+.menu-trigger.open .menu-line-short {
+  width: 24px;
+  transform: rotate(-45deg) translate(4px, -4px);
+  background: var(--gold);
+}
+
 .navbar__mobile-btn {
   display: block;
 }
@@ -192,5 +193,105 @@
 @media (min-width: 1024px) {
   .navbar__mobile-btn {
     display: none;
+  }
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: #050505;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6rem 2rem;
+}
+
+@media (min-width: 1024px) {
+  .mobile-menu-overlay {
+    display: none;
+  }
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.mobile-menu-link {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-link:hover {
+  color: var(--gold);
+}
+
+.mobile-menu-footer {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-menu-btn-apply {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: rgba(205, 164, 100, 0.1);
+  border: 1px solid rgba(205, 164, 100, 0.3);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 1rem;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+.mobile-menu-email {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-email:hover {
+  color: white;
+}
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 1rem 1.25rem;
+  }
+
+  .navbar--scrolled {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .navbar__brand {
+    font-size: 1rem;
+  }
+
+  .mobile-menu-overlay {
+    padding: 5rem 1.5rem;
+  }
+
+  .mobile-menu-link {
+    font-size: 1.25rem;
+  }
+
+  .mobile-menu-links {
+    gap: 1.25rem;
   }
 }

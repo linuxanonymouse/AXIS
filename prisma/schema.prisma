@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model DiagnosticApplication {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Core intake (current + extended forms)
+  organizationName String
+  applicantName    String
+  email            String
+  businessModel    String
+  revenueRange     String
+  teamSize         String
+  primaryObjective String
+  businessStage    String
+
+  website  String?
+  industry String?
+  location String?
+  role     String?
+
+  /// Full multi-step payload when the extended application ships
+  rawResponses Json?
+
+  draftToken       String?
+  submissionStatus String  @default("submitted")
+
+  // AI / review outputs
+  isProcessed              Boolean @default(false)
+  overallAlignmentScore    Int?
+  infrastructureScore      Int?
+  distributionScore        Int?
+  intelligenceScore        Int?
+  monetizationScore        Int?
+  expansionScore           Int?
+
+  primaryConstraint            String?
+  primaryConstraintExplanation String?
+  secondaryConstraints         String?
+  recommendedAxisPathway       String?
+  businessMaturityClass        String?
+  strategicInsight             String?
+
+  internalReviewStatus   String? @default("Pending")
+  nextStepRecommendation String?
+  clientFacingSummary    String?
+  internalNotes          String?
+
+  ipHash    String?
+  userAgent String?
+}
+
+model ContactSubmission {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+
+  name         String
+  organization String
+  email        String
+  brief        String
+
+  phone          String?
+  website        String?
+  projectType    String?
+  budget         String?
+  timeline       String?
+  referralSource String?
+
+  sourcePath String?
+  userAgent  String?
+  ipHash     String?
+}
+
+model InsightArticle {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title         String
+  slug          String   @unique
+  category      String
+  author        String
+  publishDate   DateTime @default(now())
+  readingTime   Int
+  featuredImage String?
+
+  shortAbstract String
+  articleBody   String
+
+  seoTitle       String?
+  seoDescription String?
+  relatedSlugs   String?
+
+  ctaModule  String?
+  isFeatured Boolean @default(false)
+  status     String  @default("DRAFT")
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+
+  email      String  @unique
+  role       String?
+  company    String?
+  sourcePath String?
+}
+
+model SystemSetting {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  key         String  @unique
+  value       String
+  description String?
+}
+
+model AdminUser {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  
+  email     String   @unique
+  password  String   // bcrypt hashed
+  name      String?
+}
+
+model DeploymentRequest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectName       String
+  email             String
+  requestCategory   String
+  techStack         String?
+  currentProcess    String?
+  bottleneck        String?
+  desiredOutcome    String?
+  businessImpact    String?
+  systemAccess      String?
+  completionDate    String?
+  internalOwner     String?
+  priority          String?
+  supportUrl        String?
+
+  status            String @default("Pending")
+  ipHash            String?
+  userAgent         String?
+}
+
+model OperatorApplication {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name                   String
+  email                  String
+  currentRole            String?
+  experienceDuration     String?
+  activeClients          String?
+  clientAcquisition      String?
+  realisticClients       String?
+  revenueRange           String?
+  primaryLimitation      String?
+  deliveryMethod         String?
+  relationshipManagement String?
+  interestReason         String?
+  timeline               String?
+  bringClients           String?
+  whiteLabelComfort      String?
+  portfolioUrl           String?
+
+  status                 String @default("Pending")
+  ipHash                 String?
+  userAgent              String?
+}
+
+model SystemSettings {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  globalKey         String   @unique @default("global")
+  diagnosticEnabled Boolean  @default(true)
+  deploymentEnabled Boolean  @default(true)
+  operatorEnabled   Boolean  @default(true)
+  updatedAt         DateTime @updatedAt
+}

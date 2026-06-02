@@ -1,0 +1,233 @@
+.media-main {
+  background-color: transparent;
+  min-height: 100vh;
+  color: #fff;
+}
+
+/* SECTION 01: Hero Opening */
+.media-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8rem 2rem 4rem;
+}
+
+.media-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  z-index: 0;
+}
+
+.media-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 800px;
+}
+
+.media-division-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #CDA464;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+}
+
+.media-hero-title {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .media-hero-title {
+    font-size: 5rem;
+  }
+}
+
+.media-hero-subtitle {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.media-hero-text {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.media-hero-microtext {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #CDA464;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 3rem;
+  opacity: 0.8;
+}
+
+.media-hero-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .media-hero-ctas {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/* SECTION 02: Problem */
+.media-problem {
+  padding: 8rem 2rem;
+  background-color: rgba(3, 2, 1, 0.6);
+  border-top: 1px solid rgba(205, 164, 100, 0.1);
+}
+
+.media-problem-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .media-problem-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.problem-text-content {
+  max-width: 600px;
+}
+
+.media-problem-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* SECTION 03: Systems */
+.media-systems {
+  padding: 8rem 2rem;
+  background-color: rgba(5, 3, 2, 0.6);
+}
+
+.media-systems-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.systems-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .systems-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.system-card {
+  background: rgba(205, 164, 100, 0.02);
+  border: 1px solid rgba(205, 164, 100, 0.1);
+  padding: 3rem;
+  transition: all 0.4s ease;
+}
+
+.system-card:hover {
+  background: rgba(205, 164, 100, 0.05);
+  border-color: rgba(205, 164, 100, 0.3);
+  transform: translateY(-5px);
+}
+
+/* SECTION 04: Flow */
+.media-flow {
+  padding: 8rem 2rem;
+  background-color: rgba(3, 2, 1, 0.6);
+}
+
+.media-flow-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* SECTION 05: Changes */
+.media-changes {
+  padding: 8rem 2rem;
+  background-color: rgba(5, 3, 2, 0.6);
+}
+
+.media-changes-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.media-changes-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+}
+
+@media (min-width: 768px) {
+  .media-changes-split {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.media-changes-before, .media-changes-after {
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* SECTION 06: Role */
+.media-role {
+  padding: 8rem 2rem;
+  background-color: rgba(3, 2, 1, 0.6);
+}
+
+.media-role-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .media-role-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* SECTION 07: Final CTA */
+.media-final-cta {
+  padding: 10rem 2rem;
+  background-color: rgba(5, 3, 2, 0.8);
+  text-align: center;
+}

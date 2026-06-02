@@ -1,0 +1,236 @@
+/* ─── Article page ─── */
+
+.article-loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-notfound {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 7rem 1.5rem;
+  gap: 1rem;
+}
+
+.article-shell {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 5rem;
+}
+
+/* Back link */
+.article-back {
+  margin-bottom: 3rem;
+}
+
+.article-back__link {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.3s var(--ease-premium);
+}
+
+.article-back__link:hover {
+  color: var(--gold);
+}
+
+/* Header */
+.article-header {
+  margin-bottom: 3rem;
+}
+
+.article-header__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.article-title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ivory);
+}
+
+.article-abstract {
+  margin: 0 0 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.65);
+  font-style: italic;
+}
+
+.article-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Featured image */
+.article-image {
+  width: 100%;
+  height: clamp(220px, 40vw, 420px);
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(255, 255, 255, 0.04);
+  margin-bottom: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Body */
+.article-body {
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 4rem;
+}
+
+.article-body h2 {
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ivory);
+  margin: 2.5rem 0 1rem;
+  line-height: 1.25;
+}
+
+.article-body h3 {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ivory);
+  margin: 2rem 0 0.75rem;
+}
+
+.article-body p {
+  margin: 0 0 1.25rem;
+}
+
+.article-body p:last-child {
+  margin-bottom: 0;
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.article-body li {
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.article-body strong {
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.article-body em {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.article-body blockquote {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border-left: 2px solid var(--gold);
+  background: rgba(205, 164, 100, 0.05);
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.article-body a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.3s;
+}
+
+.article-body a:hover {
+  color: var(--champagne);
+}
+
+.article-body hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2.5rem 0;
+}
+
+/* CTA module */
+.article-cta-module {
+  position: relative;
+  border: 1px solid rgba(205, 164, 100, 0.25);
+  background: rgba(205, 164, 100, 0.04);
+  padding: 2.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.article-cta-module__corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(205, 164, 100, 0.5);
+  border-style: solid;
+}
+
+.article-cta-module__corner--tl {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.article-cta-module__corner--tr {
+  top: -1px;
+  right: -1px;
+  border-width: 1px 1px 0 0;
+}
+
+.article-cta-module__corner--bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 1px 1px;
+}
+
+.article-cta-module__corner--br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1px 1px 0;
+}
+
+.article-cta-module__eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.article-cta-module__text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.article-cta-module__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
