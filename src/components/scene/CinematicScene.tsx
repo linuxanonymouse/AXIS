@@ -24,7 +24,10 @@ function CinematicCamera() {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     const vh = typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1;
     
-    const rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
+    let rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
+    if (typeof window !== "undefined" && (window as any).__axisLockFactor !== undefined) {
+      rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 5.0, (window as any).__axisLockFactor);
+    }
     
     // Smooth the scroll value itself using THREE.MathUtils.damp to prevent stutter
     if (state.camera.userData.smoothedFloat === undefined) {
@@ -430,6 +433,11 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     // Smoothly damp freeze factor
     freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, wantFreeze === 0 ? 15 : 4, delta);
     const amp = 1.0 - freezeFactor.current;
+    
+    // Expose globally for CinematicCamera to stay locked
+    if (typeof window !== "undefined") {
+      (window as any).__axisLockFactor = freezeFactor.current;
+    }
 
     // Transition locked → frozen once rings have settled
     if (lockState.current === "locked" && freezeFactor.current > 0.92) {
@@ -444,7 +452,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
 
     // Continuous 1:1 scroll float for position
-    const rawSectionFloat = Math.min(6, Math.max(0, scrollRatio));
+    let rawSectionFloat = Math.min(6, Math.max(0, scrollRatio));
+    rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 5.0, freezeFactor.current);
     
     if (coreRef.current && coreRef.current.userData.smoothedFloat === undefined) {
       coreRef.current.userData.smoothedFloat = rawSectionFloat;
