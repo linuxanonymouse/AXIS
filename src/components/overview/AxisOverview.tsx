@@ -127,13 +127,10 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          {/* Vertical architectural line separating 3D Core and Text on Desktop */}
-          <div className="hidden lg:block absolute left-1/2 top-[15%] bottom-[15%] w-[1px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent opacity-80" style={{ boxShadow: '0 0 20px 2px rgba(205,164,100,0.5)' }} />
+          {/* Empty left column for the 3D Core with right border to act as separator */}
+          <div className="split-col is-left hidden lg:block border-r border-white/10"></div>
           
-          {/* Empty left column for the 3D Core */}
-          <div className="split-col is-left lg:border-none"></div>
-          
-          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16">
+          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0">
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
@@ -154,10 +151,24 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          {/* Vertical architectural line separating Text and 3D Core on Desktop */}
-          <div className="hidden lg:block absolute left-1/2 top-[15%] bottom-[15%] w-[1px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent opacity-80" style={{ boxShadow: '0 0 20px 2px rgba(205,164,100,0.5)' }} />
-
-          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16">
+          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 hidden lg:block">
+            <h2 className="text-luxury-subheading">What Axis Is Not</h2>
+            <ul className="split-list">
+              <li>Not an agency.</li>
+              <li>Not advisory theater.</li>
+              <li>Not growth tactics.</li>
+              <li>Not static strategy.</li>
+            </ul>
+            <p className="text-body-regular mt-8">
+              Axis identifies where revenue is being created but not captured, and what structural constraints are preventing it.
+            </p>
+          </motion.div>
+          
+          {/* Empty right column for the 3D Core with left border to act as separator */}
+          <div className="split-col is-right hidden lg:block border-l border-white/10"></div>
+          
+          {/* Mobile view fallback (text only, rings handle their own background) */}
+          <motion.div variants={childFadeUp} className="split-col is-left lg:hidden pt-8">
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
