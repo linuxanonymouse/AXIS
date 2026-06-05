@@ -11,10 +11,18 @@ export default function AxisOverview() {
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const vh = window.innerHeight || 1;
-      const scrollVh = window.scrollY / vh;
-      const index = Math.round(scrollVh);
-      setActiveSection(Math.min(6, Math.max(0, index)));
+      const sections = document.querySelectorAll(".overview-section");
+      let currentIndex = 0;
+      let minDistance = Infinity;
+      sections.forEach((section, i) => {
+        const rect = section.getBoundingClientRect();
+        const distance = Math.abs(rect.top - window.innerHeight * 0.3);
+        if (distance < minDistance) {
+          minDistance = distance;
+          currentIndex = i;
+        }
+      });
+      setActiveSection(currentIndex);
     };
     
     window.addEventListener("scroll", handleScroll);
@@ -89,7 +97,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
+        animate={activeSection === 0 ? "visible" : "hidden"}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
@@ -108,7 +116,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section ${activeSection === 1 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
+        animate={activeSection === 1 ? "visible" : "hidden"}
         variants={containerStagger}
       >
         <div className="split-glow-right" />
@@ -133,7 +141,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section ${activeSection === 2 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
+        animate={activeSection === 2 ? "visible" : "hidden"}
         variants={containerStagger}
       >
         <div className="split-glow-left" />
@@ -160,7 +168,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
+        animate={activeSection === 3 ? "visible" : "hidden"}
         variants={{
           hidden: { opacity: 0 },
           visible: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 0.1 } }
@@ -194,7 +202,7 @@ export default function AxisOverview() {
         className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
         style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.1 }}
+        animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
         onViewportEnter={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: true })) }}
         onViewportLeave={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: false })) }}
         variants={containerStagger}
@@ -213,7 +221,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
         initial="hidden"
-        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
+        animate={activeSection === 6 ? "visible" : "hidden"}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
