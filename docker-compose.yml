@@ -14,5 +14,21 @@ services:
       timeout: 5s
       retries: 10
 
+  axis-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: axis-web
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      # Ensure you pass your production DATABASE_URL here if it connects to the mongodb container
+      - DATABASE_URL=mongodb://axis-mongodb:27017/axis?replicaSet=rs0
+    depends_on:
+      - mongodb
+
 volumes:
   axis_mongo_data:
