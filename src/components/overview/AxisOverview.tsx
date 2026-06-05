@@ -128,7 +128,7 @@ export default function AxisOverview() {
       >
         <div className="section-split relative w-full">
           {/* Vertical architectural line separating 3D Core and Text on Desktop */}
-          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10" />
+          <div className="hidden lg:block absolute left-1/2 top-[15%] bottom-[15%] w-[1px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent opacity-80" style={{ boxShadow: '0 0 20px 2px rgba(205,164,100,0.5)' }} />
           
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left lg:border-none"></div>
@@ -155,7 +155,7 @@ export default function AxisOverview() {
       >
         <div className="section-split relative w-full">
           {/* Vertical architectural line separating Text and 3D Core on Desktop */}
-          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10" />
+          <div className="hidden lg:block absolute left-1/2 top-[15%] bottom-[15%] w-[1px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent opacity-80" style={{ boxShadow: '0 0 20px 2px rgba(205,164,100,0.5)' }} />
 
           <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16">
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
