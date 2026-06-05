@@ -130,17 +130,8 @@ export default function AxisOverview() {
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left hidden lg:block"></div>
           
-          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0 relative">
-            {/* Golden glowing separator line on Desktop */}
-            <div 
-              className="hidden lg:block absolute left-0 w-[1px]"
-              style={{ 
-                top: '-2rem', 
-                bottom: '-2rem', 
-                background: 'linear-gradient(to bottom, transparent, #CDA464, transparent)', 
-                boxShadow: '0 0 15px rgba(205,164,100,0.5)' 
-              }}
-            />
+          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0 relative architectural-line-left">
+            
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
@@ -161,17 +152,8 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0 relative">
-            {/* Golden glowing separator line on Desktop */}
-            <div 
-              className="hidden lg:block absolute right-0 w-[1px]"
-              style={{ 
-                top: '-2rem', 
-                bottom: '-2rem', 
-                background: 'linear-gradient(to bottom, transparent, #CDA464, transparent)', 
-                boxShadow: '0 0 15px rgba(205,164,100,0.5)' 
-              }}
-            />
+          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0 relative architectural-line-right">
+            
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
@@ -291,6 +273,8 @@ export default function AxisOverview() {
     </div>
   );
 }
+
+
 
 
 
