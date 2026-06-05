@@ -11,7 +11,8 @@ export default function AxisOverview() {
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const vh = window.innerHeight || 1;
+      const vhNode = document.getElementById('axis-section-0');
+      const vh = vhNode ? vhNode.clientHeight : (window.innerHeight || 1);
       const scrollVh = window.scrollY / vh;
       const index = Math.round(scrollVh);
       setActiveSection(Math.min(6, Math.max(0, index)));
@@ -87,6 +88,7 @@ export default function AxisOverview() {
     <div className="w-full">
       {/* SECTION 01 Hero Opening */}
       <motion.section 
+        id="axis-section-0"
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
@@ -111,11 +113,14 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="section-split relative w-full">
+        <div className="section-split relative w-full h-full flex items-center">
+          {/* Desktop vertical separator */}
+          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10 -translate-x-1/2" />
+          
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left lg:border-none"></div>
           
-          <motion.div variants={childFadeUp} className="split-col is-right border-l border-white/20 pl-8">
+          <motion.div variants={childFadeUp} className="split-col is-right pl-8">
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
@@ -135,8 +140,11 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="section-split relative w-full">
-          <motion.div variants={childFadeUp} className="split-col is-left border-l border-white/20 pl-8">
+        <div className="section-split relative w-full h-full flex items-center">
+          {/* Desktop vertical separator */}
+          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10 -translate-x-1/2" />
+
+          <motion.div variants={childFadeUp} className="split-col is-left pl-8">
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>

@@ -22,7 +22,8 @@ function CinematicCamera() {
 
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const vh = typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1;
+    const vhNode = typeof document !== "undefined" ? document.getElementById('axis-section-0') : null;
+    const vh = vhNode ? vhNode.clientHeight : (typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1);
     
     let rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
     if (typeof window !== "undefined" && (window as any).__axisLockFactor !== undefined) {
@@ -407,7 +408,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const vh = typeof window !== "undefined" ? window.innerHeight : 1;
+    const vhNode = typeof document !== "undefined" ? document.getElementById('axis-section-0') : null;
+    const vh = vhNode ? vhNode.clientHeight : (typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1);
 
     // Track if scrolling has paused
     if (Math.abs(scrollY - lastScrollY.current) > 2) {
