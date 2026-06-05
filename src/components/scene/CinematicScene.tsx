@@ -450,7 +450,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     const isNearEcosystem = scrollRatio >= 4.3 && scrollRatio <= 4.9;
     const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
     const now = Date.now();
-    const isOverview = typeof window !== "undefined" && window.location.pathname === '/overview';
+    const isOverview = typeof window !== "undefined" && (window.location.pathname === '/overview' || window.location.pathname === '/');
 
     // State machine transitions
     if (isOverview) {
@@ -706,6 +706,7 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
 
 
 
