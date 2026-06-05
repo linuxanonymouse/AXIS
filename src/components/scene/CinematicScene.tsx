@@ -260,6 +260,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
   const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
   const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
+  const lastScrollY = useRef(0);
+  const timeSinceLastScroll = useRef(0);
 
   // Rotation accumulators (to resume spinning smoothly without jumps)
   const freezeFactor = useRef(0);
@@ -407,6 +409,15 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     const vh = typeof window !== "undefined" ? window.innerHeight : 1;
 
+    // Track if scrolling has paused
+    if (Math.abs(scrollY - lastScrollY.current) > 2) {
+      timeSinceLastScroll.current = 0;
+      lastScrollY.current = scrollY;
+    } else {
+      timeSinceLastScroll.current += delta;
+    }
+    const isScrollingStopped = timeSinceLastScroll.current > 0.15; // Require 150ms of rest
+
     // Detect if we've arrived at ecosystem section
     const scrollRatio = scrollY / vh;
     const isNearEcosystem = Math.abs(scrollRatio - 5.0) < 0.15;
@@ -416,7 +427,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
     // State machine transitions
     if (isOverview) {
-      if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
+      if (lockState.current === "idle" && isNearEcosystem && isScrollingStopped && !isProgrammatic && now > lockCooldownUntil.current) {
         lockState.current = "locked";
         exitAccumulator.current = 0;
         if (typeof document !== "undefined") {
