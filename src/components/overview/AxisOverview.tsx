@@ -127,14 +127,15 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          {/* Empty left column for the 3D Core with animated separator */}
+          {/* Empty left column for the 3D Core with animated golden separator */}
           <div className="split-col is-left hidden lg:block relative">
             <motion.div 
-              initial={{ scaleY: 0, opacity: 0 }}
-              whileInView={{ scaleY: 1, opacity: 0.4 }}
-              viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 1.0, ease: "easeInOut" }}
-              className="absolute right-0 top-[15%] bottom-[15%] w-[1px] bg-[var(--gold)] origin-center"
+              className="absolute right-0 top-[10%] bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
+              initial={{ opacity: 0, scaleY: 0 }}
+              whileInView={{ opacity: 1, scaleY: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              style={{ transformOrigin: "center" }}
             />
           </div>
           
@@ -172,14 +173,15 @@ export default function AxisOverview() {
             </p>
           </motion.div>
           
-          {/* Empty right column for the 3D Core with animated separator */}
+          {/* Empty right column for the 3D Core with animated golden separator */}
           <div className="split-col is-right hidden lg:block relative">
             <motion.div 
-              initial={{ scaleY: 0, opacity: 0 }}
-              whileInView={{ scaleY: 1, opacity: 0.4 }}
-              viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 1.0, ease: "easeInOut" }}
-              className="absolute left-0 top-[15%] bottom-[15%] w-[1px] bg-[var(--gold)] origin-center"
+              className="absolute left-0 top-[10%] bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
+              initial={{ opacity: 0, scaleY: 0 }}
+              whileInView={{ opacity: 1, scaleY: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              style={{ transformOrigin: "center" }}
             />
           </div>
         </div>

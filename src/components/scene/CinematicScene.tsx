@@ -8,6 +8,41 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { motion } from "framer-motion";
 import EcosystemGraph from "../overview/EcosystemGraph";
 
+const getScrollRatio = (scrollY: number) => {
+  if (typeof document === "undefined") return 0;
+  const sections = document.querySelectorAll('.overview-section');
+  if (sections.length === 6) {
+    let currentIdx = 0;
+    let prevTop = 0;
+    let nextTop = window.innerHeight;
+    
+    for (let i = 0; i < sections.length; i++) {
+      const el = sections[i] as HTMLElement;
+      const top = el.offsetTop;
+      const height = el.offsetHeight;
+      
+      if (scrollY >= top && scrollY < top + height) {
+        currentIdx = i;
+        prevTop = top;
+        nextTop = top + height;
+        break;
+      } else if (i === sections.length - 1 && scrollY >= top + height) {
+        currentIdx = i;
+        prevTop = top;
+        nextTop = top + height;
+      }
+    }
+    
+    const localProgress = (scrollY - prevTop) / Math.max(1, nextTop - prevTop);
+    return Math.min(5, Math.max(0, currentIdx + localProgress));
+  }
+  
+  let vh = window.innerHeight;
+  const el = document.getElementById('axis-dvh-ref');
+  if (el) vh = el.clientHeight || vh;
+  return Math.min(5, Math.max(0, scrollY / vh));
+};
+
 function CinematicCamera() {
   const mouseRef = useRef({ x: 0, y: 0 });
   
@@ -23,16 +58,9 @@ function CinematicCamera() {
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     
-    // Consistent 100dvh calculation matching AxisCore
-    let vh = 1;
-    if (typeof window !== "undefined") {
-      const el = document.getElementById('axis-dvh-ref');
-      vh = el ? el.clientHeight : window.innerHeight;
-    }
-    
-    let rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
+    let rawSectionFloat = getScrollRatio(scrollY);
     if (typeof window !== "undefined" && (window as any).__axisLockFactor !== undefined) {
-      rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 5.0, (window as any).__axisLockFactor);
+      rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 4.5, (window as any).__axisLockFactor);
     }
     
     // Smooth the scroll value itself using THREE.MathUtils.damp to prevent stutter
@@ -44,8 +72,8 @@ function CinematicCamera() {
     const sectionFloat = state.camera.userData.smoothedFloat;
     
     // Determine the two indices to interpolate between
-    const lowerIndex = Math.min(6, Math.floor(sectionFloat));
-    const upperIndex = Math.min(6, lowerIndex + 1);
+    const lowerIndex = Math.min(5, Math.floor(sectionFloat));
+    const upperIndex = Math.min(5, lowerIndex + 1);
     const p = sectionFloat - lowerIndex;
 
     const cameraTargets = [
@@ -53,9 +81,8 @@ function CinematicCamera() {
       { pos: [-0.5, 0.8, 6.0], lookAt: [-1.0, -0.1, -0.5] }, // Is (1)
       { pos: [0.5, 0.8, 6.0], lookAt: [1.0, -0.1, -0.5] }, // Is Not (2)
       { pos: [0, -0.5, 4.0], lookAt: [0, -0.5, -1.0] }, // Panels (3)
-      { pos: [0, 0, 5.5], lookAt: [0, 0, 0] }, // Ecosystem Text (4)
-      { pos: [0, 0, 5.5], lookAt: [0, 0, 0] }, // Ecosystem Graph (5)
-      { pos: [0, 2.5, 8.0], lookAt: [0, 0, -2.0] }, // Final CTA (6)
+      { pos: [0, 0, 5.5], lookAt: [0, 0, 0] }, // Ecosystem (4)
+      { pos: [0, 2.5, 8.0], lookAt: [0, 0, -2.0] }, // Final CTA (5)
     ];
 
     const c1 = cameraTargets[lowerIndex];
@@ -414,26 +441,9 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
     
-    // Accurate 100dvh calculation for mobile browsers to prevent scroll desync
-    let vh = 1;
-    if (typeof window !== "undefined") {
-      let el = document.getElementById('axis-dvh-ref');
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'axis-dvh-ref';
-        el.style.height = '100dvh';
-        el.style.position = 'absolute';
-        el.style.top = '0';
-        el.style.visibility = 'hidden';
-        el.style.pointerEvents = 'none';
-        document.body.appendChild(el);
-      }
-      vh = el.clientHeight || window.innerHeight;
-    }
-
     // Detect if we've arrived at ecosystem section
-    const scrollRatio = scrollY / vh;
-    const isNearEcosystem = Math.abs(scrollRatio - 5.0) < 0.15;
+    const scrollRatio = getScrollRatio(scrollY);
+    const isNearEcosystem = Math.abs(scrollRatio - 4.5) < 0.15;
     const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
     const now = Date.now();
     const isOverview = typeof window !== "undefined" && window.location.pathname === '/overview';
@@ -448,7 +458,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
         }
         // Snap to exact section 5 position
         if (typeof window !== "undefined") {
-          window.scrollTo({ top: 5 * vh, behavior: "auto" });
+          const sections = document.querySelectorAll('.overview-section'); if (sections[4]) window.scrollTo({ top: (sections[4] as HTMLElement).offsetTop + (sections[4] as HTMLElement).offsetHeight / 2, behavior: "auto" });
         }
       }
     } else {
@@ -459,7 +469,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
 
     // If kinetic scroll on mobile overpowered the overflow hidden, gracefully abort
-    if ((lockState.current === "locked" || lockState.current === "frozen") && Math.abs(scrollRatio - 5.0) > 0.6) {
+    if ((lockState.current === "locked" || lockState.current === "frozen") && Math.abs(scrollRatio - 4.5) > 0.6) {
       lockState.current = "idle";
       if (typeof document !== "undefined") {
         document.body.style.overflow = "";
@@ -494,8 +504,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
 
     // Continuous 1:1 scroll float for position
-    let rawSectionFloat = Math.min(6, Math.max(0, scrollRatio));
-    rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 5.0, freezeFactor.current);
+    let rawSectionFloat = Math.min(5, Math.max(0, scrollRatio));
+    rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 4.5, freezeFactor.current);
     
     if (coreRef.current && coreRef.current.userData.smoothedFloat === undefined) {
       coreRef.current.userData.smoothedFloat = rawSectionFloat;
@@ -510,8 +520,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
     const sectionFloat = coreRef.current ? coreRef.current.userData.smoothedFloat : rawSectionFloat;
     
-    const lowerIndex = Math.min(6, Math.floor(sectionFloat));
-    const upperIndex = Math.min(6, lowerIndex + 1);
+    const lowerIndex = Math.min(5, Math.floor(sectionFloat));
+    const upperIndex = Math.min(5, lowerIndex + 1);
     const p = sectionFloat - lowerIndex;
 
     const coreTargets = [
@@ -519,9 +529,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       { pos: [-2.5, -0.1, -1.2], sep: 1.0 }, // Is (1)
       { pos: [2.5, 0.4, 0.8], sep: 1.0 }, // Is Not (2)
       { pos: [0, -0.4, -1.5], sep: 1.0 }, // Panels (3)
-      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem Text (4)
-      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem Graph (5)
-      { pos: [0, 0, 0], sep: 1.0 }, // Final CTA (6)
+      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem (4)
+      { pos: [0, 0, 0], sep: 1.0 }, // Final CTA (5)
     ];
 
     const c1 = coreTargets[lowerIndex];
@@ -693,6 +702,9 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
+
+
 
 
 
