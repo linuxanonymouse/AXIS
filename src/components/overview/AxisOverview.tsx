@@ -26,14 +26,23 @@ export default function AxisOverview() {
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const vh = getDvh();
-      const scrollVh = window.scrollY / vh;
-      const index = Math.round(scrollVh);
-      setActiveSection(Math.min(6, Math.max(0, index)));
+      const scrollY = window.scrollY;
+      const sections = document.querySelectorAll('.overview-section');
+      let currentIdx = 0;
+      
+      for (let i = 0; i < sections.length; i++) {
+        const el = sections[i] as HTMLElement;
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+        
+        if (scrollY >= top - window.innerHeight / 2) {
+          currentIdx = i;
+        }
+      }
+      setActiveSection(currentIdx);
     };
     
     window.addEventListener("scroll", handleScroll);
-    // Initial check
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -41,7 +50,14 @@ export default function AxisOverview() {
   const scrollToNext = () => {
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
-      window.scrollBy({ top: getDvh(), behavior: 'smooth' });
+      const sections = document.querySelectorAll('.overview-section');
+      const nextIdx = Math.min(sections.length - 1, activeSection + 1);
+      const targetEl = sections[nextIdx] as HTMLElement;
+      let targetTop = targetEl ? targetEl.offsetTop : window.scrollY + window.innerHeight;
+      
+      if (nextIdx === 4 && targetEl) targetTop += targetEl.offsetHeight / 2;
+      
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
       setTimeout(() => {
         (window as any).__axisDotClick = false;
       }, 1200);
@@ -51,7 +67,13 @@ export default function AxisOverview() {
   const scrollToSection = (idx: number) => {
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
-      window.scrollTo({ top: idx * getDvh(), behavior: 'smooth' });
+      const sections = document.querySelectorAll('.overview-section');
+      const targetEl = sections[idx] as HTMLElement;
+      let targetTop = targetEl ? targetEl.offsetTop : idx * window.innerHeight;
+      
+      if (idx === 4 && targetEl) targetTop += targetEl.offsetHeight / 2;
+      
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
       setTimeout(() => {
         (window as any).__axisDotClick = false;
       }, 1200);
@@ -273,6 +295,7 @@ export default function AxisOverview() {
     </div>
   );
 }
+
 
 
 
