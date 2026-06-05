@@ -127,8 +127,16 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          {/* Empty left column for the 3D Core with right border to act as separator */}
-          <div className="split-col is-left hidden lg:block border-r border-white/10"></div>
+          {/* Empty left column for the 3D Core with animated separator */}
+          <div className="split-col is-left hidden lg:block relative">
+            <motion.div 
+              initial={{ scaleY: 0, opacity: 0 }}
+              whileInView={{ scaleY: 1, opacity: 1 }}
+              viewport={{ once: false, amount: 0.5 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute right-0 top-[15%] bottom-[15%] w-[2px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.8)] origin-center"
+            />
+          </div>
           
           <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0">
             <h2 className="text-luxury-subheading">What Axis Is</h2>
@@ -164,8 +172,16 @@ export default function AxisOverview() {
             </p>
           </motion.div>
           
-          {/* Empty right column for the 3D Core with left border to act as separator */}
-          <div className="split-col is-right hidden lg:block border-l border-white/10"></div>
+          {/* Empty right column for the 3D Core with animated separator */}
+          <div className="split-col is-right hidden lg:block relative">
+            <motion.div 
+              initial={{ scaleY: 0, opacity: 0 }}
+              whileInView={{ scaleY: 1, opacity: 1 }}
+              viewport={{ once: false, amount: 0.5 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute left-0 top-[15%] bottom-[15%] w-[2px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.8)] origin-center"
+            />
+          </div>
         </div>
       </motion.section>
 
