@@ -250,11 +250,11 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const ringSepRef = useRef(0);
   
   const [isFrozen, setIsFrozen] = useState(false);
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 1024 : false);
 
   useEffect(() => {
-    setIsMobileDevice(window.innerWidth < 768);
-    const handleResize = () => setIsMobileDevice(window.innerWidth < 768);
+    setIsMobileDevice(window.innerWidth <= 1024);
+    const handleResize = () => setIsMobileDevice(window.innerWidth <= 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -668,5 +668,6 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
 
 
