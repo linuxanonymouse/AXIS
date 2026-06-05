@@ -428,7 +428,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
 
     // Smoothly damp freeze factor
-    freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, 4, delta);
+    freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, wantFreeze === 0 ? 15 : 4, delta);
     const amp = 1.0 - freezeFactor.current;
 
     // Transition locked → frozen once rings have settled
@@ -609,18 +609,7 @@ function CinematicLighting() {
 }
 
 export default function CinematicScene({ showGraph = false }: { showGraph?: boolean }) {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  if (isMobile) {
-    return <div className="scene-bg" />;
-  }
 
   return (
     <div className="scene-bg">
@@ -648,4 +637,6 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
+
 
