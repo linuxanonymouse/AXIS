@@ -307,7 +307,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const ring3RotX = useRef(0);
   const innerCoreRotY = useRef(0);
 
-  const exitAndScroll = (targetSection: number) => {
+  const exitAndScroll = (targetIndex: number) => {
     lockState.current = "exiting";
     exitAccumulator.current = 0;
     lockCooldownUntil.current = Date.now() + 2000;
@@ -318,8 +318,12 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
+      const sections = document.querySelectorAll('.overview-section');
+      const targetEl = sections[targetIndex] as HTMLElement;
+      const targetTop = targetEl ? targetEl.offsetTop : targetIndex * window.innerHeight;
+      
       window.scrollTo({
-        top: targetSection * window.innerHeight,
+        top: targetTop,
         behavior: "smooth"
       });
       setTimeout(() => {
@@ -361,9 +365,9 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
         
         // Need ~1200px worth of scroll to exit (prevents accidental exits)
         if (exitAccumulator.current > 1200) {
-          exitAndScroll(6); // scroll to next section
+          exitAndScroll(5); // scroll to next section
         } else if (exitAccumulator.current < -1200) {
-          exitAndScroll(4); // scroll to prev section
+          exitAndScroll(3); // scroll to prev section
         }
         return;
       }
@@ -397,9 +401,9 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
         exitAccumulator.current += deltaY * 2;
         
         if (exitAccumulator.current > 1200) {
-          exitAndScroll(6);
+          exitAndScroll(5);
         } else if (exitAccumulator.current < -1200) {
-          exitAndScroll(4);
+          exitAndScroll(3);
         }
         return;
       }
@@ -417,9 +421,9 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
           if (Date.now() - lockEntryTime.current < 2500) return;
 
           if (e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") {
-            exitAndScroll(6);
+            exitAndScroll(5);
           } else {
-            exitAndScroll(4);
+            exitAndScroll(3);
           }
         }
       }
@@ -702,6 +706,7 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
 
 
 
