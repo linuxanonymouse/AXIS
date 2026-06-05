@@ -127,19 +127,18 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          {/* Empty left column for the 3D Core with animated golden separator */}
-          <div className="split-col is-left hidden lg:block relative">
+          {/* Empty left column for the 3D Core */}
+          <div className="split-col is-left hidden lg:block"></div>
+          
+          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0 relative">
             <motion.div 
-              className="absolute right-0 top-[10%] bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
+              className="hidden lg:block absolute left-0 top-[-2rem] bottom-[-2rem] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
               initial={{ opacity: 0, scaleY: 0 }}
               whileInView={{ opacity: 1, scaleY: 1 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 1.5, ease: "easeOut" }}
               style={{ transformOrigin: "center" }}
             />
-          </div>
-          
-          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0">
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
@@ -160,7 +159,15 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0">
+          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0 relative">
+            <motion.div 
+              className="hidden lg:block absolute right-0 top-[-2rem] bottom-[-2rem] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
+              initial={{ opacity: 0, scaleY: 0 }}
+              whileInView={{ opacity: 1, scaleY: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+              style={{ transformOrigin: "center" }}
+            />
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
@@ -173,17 +180,8 @@ export default function AxisOverview() {
             </p>
           </motion.div>
           
-          {/* Empty right column for the 3D Core with animated golden separator */}
-          <div className="split-col is-right hidden lg:block relative">
-            <motion.div 
-              className="absolute left-0 top-[10%] bottom-[10%] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
-              initial={{ opacity: 0, scaleY: 0 }}
-              whileInView={{ opacity: 1, scaleY: 1 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              style={{ transformOrigin: "center" }}
-            />
-          </div>
+          {/* Empty right column for the 3D Core */}
+          <div className="split-col is-right hidden lg:block"></div>
         </div>
       </motion.section>
 
