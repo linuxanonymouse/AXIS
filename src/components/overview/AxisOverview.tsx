@@ -8,14 +8,6 @@ import Link from "next/link";
 export default function AxisOverview() {
   const [activeSection, setActiveSection] = useState(0);
 
-  // Enable global snap scrolling only for this page
-  useEffect(() => {
-    document.documentElement.classList.add('snap-scroll');
-    return () => {
-      document.documentElement.classList.remove('snap-scroll');
-    };
-  }, []);
-
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
@@ -56,19 +48,19 @@ export default function AxisOverview() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
       }
     }
   };
 
   const childFadeUp = {
-    hidden: { opacity: 0, y: 40, filter: "blur(12px)" },
+    hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
     visible: { 
       opacity: 1, 
       y: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as const } 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } 
     }
   };
 
@@ -76,18 +68,18 @@ export default function AxisOverview() {
     hidden: { scaleX: 0, originX: 0 },
     visible: { 
       scaleX: 1, 
-      transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] as const } 
+      transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const } 
     }
   };
 
   const artisticCard = {
-    hidden: { opacity: 0, scale: 0.8, rotateX: 45, filter: "blur(15px)" },
+    hidden: { opacity: 0, scale: 0.9, rotateX: 20, filter: "blur(10px)" },
     visible: { 
       opacity: 1, 
       scale: 1, 
       rotateX: 0, 
       filter: "blur(0px)",
-      transition: { duration: 1.2, type: "spring" as const, bounce: 0.4 } 
+      transition: { duration: 0.8, type: "spring" as const, bounce: 0.3 } 
     }
   };
 
@@ -97,7 +89,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
-        animate={activeSection === 0 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
@@ -116,7 +108,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section ${activeSection === 1 ? "active" : ""}`}
         initial="hidden"
-        animate={activeSection === 1 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="split-glow-right" />
@@ -141,7 +133,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section ${activeSection === 2 ? "active" : ""}`}
         initial="hidden"
-        animate={activeSection === 2 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="split-glow-left" />
@@ -168,7 +160,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
         initial="hidden"
-        animate={activeSection === 3 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={{
           hidden: { opacity: 0 },
           visible: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 0.1 } }
@@ -200,13 +192,13 @@ export default function AxisOverview() {
       {/* SECTION 05 The Axis Ecosystem */}
       <motion.section 
         className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
-        style={{ minHeight: '200vh' }}
+        style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
         initial="hidden"
-        animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.1 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
-        <div className="absolute top-12 left-0 right-0 z-10 pointer-events-none px-4">
+        <div className="sticky top-32 left-0 right-0 z-10 pointer-events-none px-4 flex flex-col items-center justify-center text-center">
           <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
           <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
           <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
@@ -219,7 +211,7 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
         initial="hidden"
-        animate={activeSection === 6 ? "visible" : "hidden"}
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
@@ -266,3 +258,4 @@ export default function AxisOverview() {
     </div>
   );
 }
+

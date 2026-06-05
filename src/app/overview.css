@@ -1,6 +1,5 @@
-/* ─── Global Scroll Snapping ─── */
+/* ─── Global Scroll Behavior ─── */
 html {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -235,10 +234,19 @@ html {
 /* ─── Split Section Specific ─── */
 .split-col {
   padding: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* On mobile, an empty split-col (used for the 3D core) should take up vertical space so text doesn't cover the animation */
+@media (max-width: 1023px) {
+  .split-col:empty {
+    min-height: 40vh;
+  }
 }
 
 .split-col.is-left {
-  border-right: 1px solid var(--gold);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .split-col.is-right {
@@ -558,13 +566,5 @@ html {
   }
 }
 
-/* ─── Global Scroll Locks for Overview Page ─── */
-html.snap-scroll {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
 
-html.snap-scroll body {
-  overflow-x: hidden;
-}
 
