@@ -434,6 +434,14 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       lockState.current = "idle";
     }
 
+    // If kinetic scroll on mobile overpowered the overflow hidden, gracefully abort
+    if ((lockState.current === "locked" || lockState.current === "frozen") && Math.abs(scrollRatio - 5.0) > 0.6) {
+      lockState.current = "idle";
+      if (typeof document !== "undefined") {
+        document.body.style.overflow = "";
+      }
+    }
+
     // Target freeze is 1.0 when locked or frozen, 0 otherwise
     let wantFreeze = 0.0;
     if (isOverview) {

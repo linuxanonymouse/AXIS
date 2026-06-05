@@ -111,13 +111,12 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="split-glow-right" />
         <div className="section-split relative w-full">
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left lg:border-none"></div>
           
-          <motion.div variants={childFadeUp} className="split-col is-right">
-            <h2 className="text-luxury-subheading text-shimmer">What Axis Is</h2>
+          <motion.div variants={childFadeUp} className="split-col is-right border-l border-white/20 pl-8">
+            <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
             </p>
@@ -136,10 +135,9 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="split-glow-left" />
         <div className="section-split relative w-full">
-          <motion.div variants={childFadeUp} className="split-col is-left lg:border-none">
-            <h2 className="text-luxury-subheading text-shimmer">What Axis Is Not</h2>
+          <motion.div variants={childFadeUp} className="split-col is-left border-l border-white/20 pl-8">
+            <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
               <li>Not advisory theater.</li>
