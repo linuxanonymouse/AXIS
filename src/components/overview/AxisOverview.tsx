@@ -198,7 +198,7 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
-        <div className="absolute top-12 left-0 right-0 z-10 pointer-events-none px-4 flex flex-col items-center justify-center text-center">
+        <div className="sticky top-12 left-0 right-0 z-10 pointer-events-none px-4 flex flex-col items-center justify-center text-center">
           <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
           <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
           <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
@@ -258,6 +258,7 @@ export default function AxisOverview() {
     </div>
   );
 }
+
 
 
 
