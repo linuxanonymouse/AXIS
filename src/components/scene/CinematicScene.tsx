@@ -250,14 +250,6 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const ringSepRef = useRef(0);
   
   const [isFrozen, setIsFrozen] = useState(false);
-  const [isMobileDevice, setIsMobileDevice] = useState(() => typeof window !== 'undefined' ? window.innerWidth <= 1024 : false);
-
-  useEffect(() => {
-    setIsMobileDevice(window.innerWidth <= 1024);
-    const handleResize = () => setIsMobileDevice(window.innerWidth <= 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Scroll lock state machine
   // States: "idle" | "locked" | "frozen" | "exiting"
@@ -265,15 +257,6 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
   const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
   const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
-  const isEcosystemDomVisible = useRef(false); // tied to DOM instead of scroll math
-
-  useEffect(() => {
-    const onEcosystemChange = (e: any) => {
-      isEcosystemDomVisible.current = e.detail;
-    };
-    window.addEventListener("axis-ecosystem", onEcosystemChange);
-    return () => window.removeEventListener("axis-ecosystem", onEcosystemChange);
-  }, []);
 
   // Rotation accumulators (to resume spinning smoothly without jumps)
   const freezeFactor = useRef(0);
@@ -444,7 +427,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     if (isOverview && isDesktop) {
       wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
     } else if (isOverview && !isDesktop) {
-      wantFreeze = isEcosystemDomVisible.current ? 1.0 : 0.0;
+      wantFreeze = isNearEcosystem ? 1.0 : 0.0;
     }
 
     // Smoothly damp freeze factor
@@ -561,15 +544,15 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       <group>
         <mesh ref={ring1Ref}>
           <torusGeometry args={[1.2, 0.06, 16, 64]} />
-          {isMobileDevice ? <meshPhysicalMaterial color="#F2E8C6" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#F2E8C6" />}
+          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#F2E8C6" />
         </mesh>
         <mesh ref={ring2Ref}>
           <torusGeometry args={[1.45, 0.06, 16, 64]} />
-          {isMobileDevice ? <meshPhysicalMaterial color="#CDA464" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#CDA464" />}
+          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#CDA464" />
         </mesh>
         <mesh ref={ring3Ref}>
           <torusGeometry args={[1.1, 0.06, 16, 64]} />
-          {isMobileDevice ? <meshPhysicalMaterial color="#EFEFEF" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#EFEFEF" />}
+          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#EFEFEF" />
         </mesh>
       </group>
 
@@ -668,6 +651,4 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
-
-
 

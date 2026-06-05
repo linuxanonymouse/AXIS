@@ -11,31 +11,10 @@ export default function AxisOverview() {
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const sections = document.querySelectorAll(".overview-section");
-      let currentIndex = 0;
-      let minDistance = Infinity;
-      let isEcosystemActive = false;
-
-      sections.forEach((section, i) => {
-        const rect = section.getBoundingClientRect();
-        const distance = Math.abs(rect.top - window.innerHeight * 0.3);
-        if (distance < minDistance) {
-          minDistance = distance;
-          currentIndex = i;
-        }
-        
-        // Section 5 is at index 4. Check if it's visible on screen.
-        if (i === 4) {
-          if (rect.top < window.innerHeight && rect.bottom > 0) {
-            isEcosystemActive = true;
-          }
-        }
-      });
-      setActiveSection(currentIndex);
-
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: isEcosystemActive }));
-      }
+      const vh = window.innerHeight || 1;
+      const scrollVh = window.scrollY / vh;
+      const index = Math.round(scrollVh);
+      setActiveSection(Math.min(6, Math.max(0, index)));
     };
     
     window.addEventListener("scroll", handleScroll);
@@ -109,7 +88,8 @@ export default function AxisOverview() {
       {/* SECTION 01 Hero Opening */}
       <motion.section 
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
-        animate={activeSection === 0 ? "visible" : "hidden"}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
@@ -127,7 +107,8 @@ export default function AxisOverview() {
       {/* SECTION 02 What Axis Is */}
       <motion.section 
         className={`overview-section ${activeSection === 1 ? "active" : ""}`}
-        animate={activeSection === 1 ? "visible" : "hidden"}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="split-glow-right" />
@@ -151,7 +132,8 @@ export default function AxisOverview() {
       {/* SECTION 03 What Axis Is Not */}
       <motion.section 
         className={`overview-section ${activeSection === 2 ? "active" : ""}`}
-        animate={activeSection === 2 ? "visible" : "hidden"}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="split-glow-left" />
@@ -177,7 +159,8 @@ export default function AxisOverview() {
       {/* SECTION 04 Clarity → Structure → Monetization */}
       <motion.section 
         className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
-        animate={activeSection === 3 ? "visible" : "hidden"}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={{
           hidden: { opacity: 0 },
           visible: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 0.1 } }
@@ -210,9 +193,8 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
         style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
-        animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
-        onViewportEnter={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: true })) }}
-        onViewportLeave={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: false })) }}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.1 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
@@ -228,7 +210,8 @@ export default function AxisOverview() {
       {/* SECTION 06 Final Statement + CTA */}
       <motion.section 
         className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
-        animate={activeSection === 6 ? "visible" : "hidden"}
+        initial="hidden"
+        whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
