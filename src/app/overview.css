@@ -5,6 +5,7 @@ html {
 
 /* ─── Axis Overview Layout Styles ─── */
 .axis-main {
+  overflow-x: hidden;
   position: relative;
   min-height: 100vh;
   background-color: transparent;
@@ -564,6 +565,7 @@ html {
     padding: 1.5rem 1.25rem;
   }
 }
+
 
 
 
