@@ -84,7 +84,7 @@ export default function AdminLoginPage() {
               required 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@axis.com"
+              placeholder=""
               autoComplete="email"
             />
           </div>
@@ -219,3 +219,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+
