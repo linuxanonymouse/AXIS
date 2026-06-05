@@ -7,7 +7,7 @@ html {
 .axis-main {
   overflow-x: hidden;
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   background-color: transparent;
   color: var(--ivory);
     font-family: var(--font-sans);
@@ -37,7 +37,7 @@ html {
 /* ─── Section Shared Styles ─── */
 .overview-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -444,7 +444,7 @@ html {
 .structural-line-wrapper {
   position: relative;
   width: 1px;
-  height: 100vh;
+  height: 100dvh;
   background: rgba(255,255,255,0.03);
   overflow: hidden;
 }
@@ -565,6 +565,7 @@ html {
     padding: 1.5rem 1.25rem;
   }
 }
+
 
 
 

@@ -406,10 +406,9 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
     const now = Date.now();
     const isOverview = typeof window !== "undefined" && window.location.pathname === '/overview';
-    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
 
     // State machine transitions
-    if (isOverview && isDesktop) {
+    if (isOverview) {
       if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
         lockState.current = "locked";
         exitAccumulator.current = 0;
@@ -424,10 +423,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
     // Target freeze is 1.0 when locked or frozen, 0 otherwise
     let wantFreeze = 0.0;
-    if (isOverview && isDesktop) {
+    if (isOverview) {
       wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
-    } else if (isOverview && !isDesktop) {
-      wantFreeze = isNearEcosystem ? 1.0 : 0.0;
     }
 
     // Smoothly damp freeze factor

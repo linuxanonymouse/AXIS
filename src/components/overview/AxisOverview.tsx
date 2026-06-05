@@ -192,7 +192,7 @@ export default function AxisOverview() {
       {/* SECTION 05 The Axis Ecosystem */}
       <motion.section 
         className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
-        style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
+        style={{ minHeight: '200dvh', display: 'block', paddingTop: '0' }}
         initial="hidden"
         whileInView="visible" viewport={{ once: false, amount: 0.1 }}
         variants={containerStagger}
@@ -258,4 +258,5 @@ export default function AxisOverview() {
     </div>
   );
 }
+
 
