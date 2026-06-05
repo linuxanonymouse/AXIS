@@ -447,7 +447,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     
     // Detect if we've arrived at ecosystem section
     const scrollRatio = getScrollRatio(scrollY);
-    const isNearEcosystem = Math.abs(scrollRatio - 4.5) < 0.15;
+    const isNearEcosystem = scrollRatio >= 4.3 && scrollRatio <= 4.9;
     const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
     const now = Date.now();
     const isOverview = typeof window !== "undefined" && window.location.pathname === '/overview';
@@ -706,6 +706,7 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
 
 
 
