@@ -250,6 +250,14 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const ringSepRef = useRef(0);
   
   const [isFrozen, setIsFrozen] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  useEffect(() => {
+    setIsMobileDevice(window.innerWidth < 768);
+    const handleResize = () => setIsMobileDevice(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Scroll lock state machine
   // States: "idle" | "locked" | "frozen" | "exiting"
@@ -553,15 +561,15 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       <group>
         <mesh ref={ring1Ref}>
           <torusGeometry args={[1.2, 0.06, 16, 64]} />
-          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#F2E8C6" />
+          {isMobileDevice ? <meshPhysicalMaterial color="#F2E8C6" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#F2E8C6" />}
         </mesh>
         <mesh ref={ring2Ref}>
           <torusGeometry args={[1.45, 0.06, 16, 64]} />
-          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#CDA464" />
+          {isMobileDevice ? <meshPhysicalMaterial color="#CDA464" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#CDA464" />}
         </mesh>
         <mesh ref={ring3Ref}>
           <torusGeometry args={[1.1, 0.06, 16, 64]} />
-          <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#EFEFEF" />
+          {isMobileDevice ? <meshPhysicalMaterial color="#EFEFEF" metalness={0.2} roughness={0.05} transmission={1} thickness={1.5} ior={1.5} clearcoat={1} /> : <MeshTransmissionMaterial resolution={256} samples={4} thickness={1.5} roughness={0.05} transmission={1} ior={1.5} clearcoat={1} clearcoatRoughness={0} chromaticAberration={0.05} color="#EFEFEF" />}
         </mesh>
       </group>
 
@@ -660,4 +668,5 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
 

@@ -9,8 +9,7 @@ html {
   min-height: 100vh;
   background-color: transparent;
   color: var(--ivory);
-  overflow-x: hidden;
-  font-family: var(--font-sans);
+    font-family: var(--font-sans);
 }
 
 .axis-content {
@@ -565,6 +564,7 @@ html {
     padding: 1.5rem 1.25rem;
   }
 }
+
 
 
 
