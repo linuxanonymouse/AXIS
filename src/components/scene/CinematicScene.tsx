@@ -313,7 +313,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     lockCooldownUntil.current = Date.now() + 2000;
     
     if (typeof document !== "undefined") {
-      document.body.style.overflow = "";
+      document.body.style.overflow = ""; document.documentElement.style.overflow = "";
     }
     
     if (typeof window !== "undefined") {
@@ -458,16 +458,16 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
         lockState.current = "locked";
         exitAccumulator.current = 0;
         if (typeof document !== "undefined") {
-          document.body.style.overflow = "hidden";
+          document.body.style.overflow = "hidden"; document.documentElement.style.overflow = "hidden";
         }
         // Snap to exact section 5 position
         if (typeof window !== "undefined") {
-          const sections = document.querySelectorAll('.overview-section'); if (sections[4]) window.scrollTo({ top: (sections[4] as HTMLElement).offsetTop + (sections[4] as HTMLElement).offsetHeight / 2, behavior: "auto" });
+          
         }
       }
     } else {
       if (lockState.current !== "idle" && typeof document !== "undefined") {
-        document.body.style.overflow = "";
+        document.body.style.overflow = ""; document.documentElement.style.overflow = "";
       }
       lockState.current = "idle";
     }
@@ -476,7 +476,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     if ((lockState.current === "locked" || lockState.current === "frozen") && Math.abs(scrollRatio - 4.5) > 0.6) {
       lockState.current = "idle";
       if (typeof document !== "undefined") {
-        document.body.style.overflow = "";
+        document.body.style.overflow = ""; document.documentElement.style.overflow = "";
       }
     }
 
@@ -706,6 +706,8 @@ export default function CinematicScene({ showGraph = false }: { showGraph?: bool
     </div>
   );
 }
+
+
 
 
 
