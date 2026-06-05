@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     
     response.cookies.set('axis_admin_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' && process.env.REQUIRE_HTTPS === 'true',
       sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24, // 24 hours
@@ -58,3 +58,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
