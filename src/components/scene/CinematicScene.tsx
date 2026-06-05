@@ -427,7 +427,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     if (isOverview && isDesktop) {
       wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
     } else if (isOverview && !isDesktop) {
-      wantFreeze = isNearEcosystem ? 1.0 : 0.0;
+      wantFreeze = (scrollRatio >= 3.5 && scrollRatio <= 6.5) ? 1.0 : 0.0;
     }
 
     // Smoothly damp freeze factor
