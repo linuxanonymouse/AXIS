@@ -151,7 +151,7 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="section-split relative w-full">
-          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 hidden lg:block">
+          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0">
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
@@ -166,23 +166,6 @@ export default function AxisOverview() {
           
           {/* Empty right column for the 3D Core with left border to act as separator */}
           <div className="split-col is-right hidden lg:block border-l border-white/10"></div>
-          
-          {/* Mobile view fallback (text only, rings handle their own background) */}
-          <motion.div variants={childFadeUp} className="split-col is-left lg:hidden pt-8">
-            <h2 className="text-luxury-subheading">What Axis Is Not</h2>
-            <ul className="split-list">
-              <li>Not an agency.</li>
-              <li>Not advisory theater.</li>
-              <li>Not growth tactics.</li>
-              <li>Not static strategy.</li>
-            </ul>
-            <p className="text-body-regular mt-8">
-              Axis identifies where revenue is being created but not captured, and what structural constraints are preventing it.
-            </p>
-          </motion.div>
-
-          {/* Empty right column for the 3D Core */}
-          <div className="split-col is-right"></div>
         </div>
       </motion.section>
 
@@ -288,6 +271,7 @@ export default function AxisOverview() {
     </div>
   );
 }
+
 
 
 
