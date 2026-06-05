@@ -131,10 +131,10 @@ export default function AxisOverview() {
           <div className="split-col is-left hidden lg:block relative">
             <motion.div 
               initial={{ scaleY: 0, opacity: 0 }}
-              whileInView={{ scaleY: 1, opacity: 1 }}
+              whileInView={{ scaleY: 1, opacity: 0.4 }}
               viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
-              className="absolute right-0 top-[15%] bottom-[15%] w-[2px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.8)] origin-center"
+              transition={{ duration: 1.0, ease: "easeInOut" }}
+              className="absolute right-0 top-[15%] bottom-[15%] w-[1px] bg-[var(--gold)] origin-center"
             />
           </div>
           
@@ -176,10 +176,10 @@ export default function AxisOverview() {
           <div className="split-col is-right hidden lg:block relative">
             <motion.div 
               initial={{ scaleY: 0, opacity: 0 }}
-              whileInView={{ scaleY: 1, opacity: 1 }}
+              whileInView={{ scaleY: 1, opacity: 0.4 }}
               viewport={{ once: false, amount: 0.5 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
-              className="absolute left-0 top-[15%] bottom-[15%] w-[2px] bg-gradient-to-b from-transparent via-[var(--gold)] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.8)] origin-center"
+              transition={{ duration: 1.0, ease: "easeInOut" }}
+              className="absolute left-0 top-[15%] bottom-[15%] w-[1px] bg-[var(--gold)] origin-center"
             />
           </div>
         </div>
