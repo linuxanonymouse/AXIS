@@ -14,6 +14,8 @@ export default function AxisOverview() {
       const sections = document.querySelectorAll(".overview-section");
       let currentIndex = 0;
       let minDistance = Infinity;
+      let isEcosystemActive = false;
+
       sections.forEach((section, i) => {
         const rect = section.getBoundingClientRect();
         const distance = Math.abs(rect.top - window.innerHeight * 0.3);
@@ -21,8 +23,19 @@ export default function AxisOverview() {
           minDistance = distance;
           currentIndex = i;
         }
+        
+        // Section 5 is at index 4. Check if it's visible on screen.
+        if (i === 4) {
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            isEcosystemActive = true;
+          }
+        }
       });
       setActiveSection(currentIndex);
+
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: isEcosystemActive }));
+      }
     };
     
     window.addEventListener("scroll", handleScroll);
@@ -96,7 +109,6 @@ export default function AxisOverview() {
       {/* SECTION 01 Hero Opening */}
       <motion.section 
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
-        initial="hidden"
         animate={activeSection === 0 ? "visible" : "hidden"}
         variants={containerStagger}
       >
@@ -115,7 +127,6 @@ export default function AxisOverview() {
       {/* SECTION 02 What Axis Is */}
       <motion.section 
         className={`overview-section ${activeSection === 1 ? "active" : ""}`}
-        initial="hidden"
         animate={activeSection === 1 ? "visible" : "hidden"}
         variants={containerStagger}
       >
@@ -140,7 +151,6 @@ export default function AxisOverview() {
       {/* SECTION 03 What Axis Is Not */}
       <motion.section 
         className={`overview-section ${activeSection === 2 ? "active" : ""}`}
-        initial="hidden"
         animate={activeSection === 2 ? "visible" : "hidden"}
         variants={containerStagger}
       >
@@ -167,7 +177,6 @@ export default function AxisOverview() {
       {/* SECTION 04 Clarity → Structure → Monetization */}
       <motion.section 
         className={`overview-section section-hero ${activeSection === 3 ? "active" : ""}`}
-        initial="hidden"
         animate={activeSection === 3 ? "visible" : "hidden"}
         variants={{
           hidden: { opacity: 0 },
@@ -201,7 +210,6 @@ export default function AxisOverview() {
       <motion.section 
         className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
         style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
-        initial="hidden"
         animate={activeSection === 4 || activeSection === 5 ? "visible" : "hidden"}
         onViewportEnter={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: true })) }}
         onViewportLeave={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: false })) }}
@@ -220,7 +228,6 @@ export default function AxisOverview() {
       {/* SECTION 06 Final Statement + CTA */}
       <motion.section 
         className={`overview-section section-final ${activeSection === 6 ? "active" : ""}`}
-        initial="hidden"
         animate={activeSection === 6 ? "visible" : "hidden"}
         variants={containerStagger}
       >
