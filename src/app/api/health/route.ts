@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import { jsonOk } from "@/lib/api";
 
@@ -45,3 +46,4 @@ export async function GET() {
     );
   }
 }
+

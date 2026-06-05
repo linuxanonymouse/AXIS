@@ -22,6 +22,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Generate Prisma client if needed (uncomment if Prisma is used in the build)
 # RUN npx prisma generate
 
+ENV DATABASE_URL="mongodb://dummy/dummy"
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -52,4 +53,5 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
+
 

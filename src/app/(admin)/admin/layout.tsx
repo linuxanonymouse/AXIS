@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import AdminSidebar from "./AdminSidebar";
 import "../../axis-ui.css";
 import "../../globals.css";
@@ -30,3 +31,4 @@ const navLinkStyle: React.CSSProperties = {
   fontSize: "0.9rem",
   transition: "all 0.3s ease",
 };
+
