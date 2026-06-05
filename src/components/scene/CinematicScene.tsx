@@ -277,6 +277,10 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     exitAccumulator.current = 0;
     lockCooldownUntil.current = Date.now() + 2000;
     
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = "";
+    }
+    
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
       window.scrollTo({
@@ -415,12 +419,18 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
         lockState.current = "locked";
         exitAccumulator.current = 0;
+        if (typeof document !== "undefined") {
+          document.body.style.overflow = "hidden";
+        }
         // Snap to exact section 5 position
         if (typeof window !== "undefined") {
           window.scrollTo({ top: 5 * vh, behavior: "auto" });
         }
       }
     } else {
+      if (lockState.current !== "idle" && typeof document !== "undefined") {
+        document.body.style.overflow = "";
+      }
       lockState.current = "idle";
     }
 
@@ -460,6 +470,11 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     }
     if (coreRef.current) {
       coreRef.current.userData.smoothedFloat = THREE.MathUtils.damp(coreRef.current.userData.smoothedFloat, rawSectionFloat, 4, delta);
+      
+      // Scale rings down on mobile
+      const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+      const targetScale = isMobile ? 0.6 : 1.0;
+      coreRef.current.scale.set(targetScale, targetScale, targetScale);
     }
     const sectionFloat = coreRef.current ? coreRef.current.userData.smoothedFloat : rawSectionFloat;
     
