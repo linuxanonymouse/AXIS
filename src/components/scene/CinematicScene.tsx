@@ -22,8 +22,13 @@ function CinematicCamera() {
 
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const vhNode = typeof document !== "undefined" ? document.getElementById('axis-section-0') : null;
-    const vh = vhNode ? vhNode.clientHeight : (typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1);
+    
+    // Consistent 100dvh calculation matching AxisCore
+    let vh = 1;
+    if (typeof window !== "undefined") {
+      const el = document.getElementById('axis-dvh-ref');
+      vh = el ? el.clientHeight : window.innerHeight;
+    }
     
     let rawSectionFloat = Math.min(6, Math.max(0, scrollY / vh));
     if (typeof window !== "undefined" && (window as any).__axisLockFactor !== undefined) {
@@ -408,17 +413,23 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    const vhNode = typeof document !== "undefined" ? document.getElementById('axis-section-0') : null;
-    const vh = vhNode ? vhNode.clientHeight : (typeof window !== "undefined" ? Math.max(1, window.innerHeight) : 1);
-
-    // Track if scrolling has paused
-    if (Math.abs(scrollY - lastScrollY.current) > 2) {
-      timeSinceLastScroll.current = 0;
-      lastScrollY.current = scrollY;
-    } else {
-      timeSinceLastScroll.current += delta;
+    
+    // Accurate 100dvh calculation for mobile browsers to prevent scroll desync
+    let vh = 1;
+    if (typeof window !== "undefined") {
+      let el = document.getElementById('axis-dvh-ref');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'axis-dvh-ref';
+        el.style.height = '100dvh';
+        el.style.position = 'absolute';
+        el.style.top = '0';
+        el.style.visibility = 'hidden';
+        el.style.pointerEvents = 'none';
+        document.body.appendChild(el);
+      }
+      vh = el.clientHeight || window.innerHeight;
     }
-    const isScrollingStopped = timeSinceLastScroll.current > 0.15; // Require 150ms of rest
 
     // Detect if we've arrived at ecosystem section
     const scrollRatio = scrollY / vh;
@@ -429,7 +440,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
     // State machine transitions
     if (isOverview) {
-      if (lockState.current === "idle" && isNearEcosystem && isScrollingStopped && !isProgrammatic && now > lockCooldownUntil.current) {
+      if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
         lockState.current = "locked";
         exitAccumulator.current = 0;
         if (typeof document !== "undefined") {

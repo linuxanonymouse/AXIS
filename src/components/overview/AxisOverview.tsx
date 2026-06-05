@@ -8,11 +8,25 @@ import Link from "next/link";
 export default function AxisOverview() {
   const [activeSection, setActiveSection] = useState(0);
 
+  const getDvh = () => {
+    let el = document.getElementById('axis-dvh-ref');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'axis-dvh-ref';
+      el.style.height = '100dvh';
+      el.style.position = 'absolute';
+      el.style.top = '0';
+      el.style.visibility = 'hidden';
+      el.style.pointerEvents = 'none';
+      document.body.appendChild(el);
+    }
+    return el.clientHeight || window.innerHeight;
+  };
+
   // Update activeSection based on scroll position to keep navigation dots in sync
   useEffect(() => {
     const handleScroll = () => {
-      const vhNode = document.getElementById('axis-section-0');
-      const vh = vhNode ? vhNode.clientHeight : (window.innerHeight || 1);
+      const vh = getDvh();
       const scrollVh = window.scrollY / vh;
       const index = Math.round(scrollVh);
       setActiveSection(Math.min(6, Math.max(0, index)));
@@ -27,7 +41,7 @@ export default function AxisOverview() {
   const scrollToNext = () => {
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
-      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+      window.scrollBy({ top: getDvh(), behavior: 'smooth' });
       setTimeout(() => {
         (window as any).__axisDotClick = false;
       }, 1200);
@@ -37,7 +51,7 @@ export default function AxisOverview() {
   const scrollToSection = (idx: number) => {
     if (typeof window !== "undefined") {
       (window as any).__axisDotClick = true;
-      window.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+      window.scrollTo({ top: idx * getDvh(), behavior: 'smooth' });
       setTimeout(() => {
         (window as any).__axisDotClick = false;
       }, 1200);
@@ -88,7 +102,6 @@ export default function AxisOverview() {
     <div className="w-full">
       {/* SECTION 01 Hero Opening */}
       <motion.section 
-        id="axis-section-0"
         className={`overview-section section-hero ${activeSection === 0 ? "active" : ""}`}
         initial="hidden"
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
@@ -113,14 +126,14 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="section-split relative w-full h-full flex items-center">
-          {/* Desktop vertical separator */}
-          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10 -translate-x-1/2" />
+        <div className="section-split relative w-full">
+          {/* Vertical architectural line separating 3D Core and Text on Desktop */}
+          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10" />
           
           {/* Empty left column for the 3D Core */}
           <div className="split-col is-left lg:border-none"></div>
           
-          <motion.div variants={childFadeUp} className="split-col is-right pl-8">
+          <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16">
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
               Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
@@ -140,11 +153,11 @@ export default function AxisOverview() {
         whileInView="visible" viewport={{ once: false, amount: 0.2 }}
         variants={containerStagger}
       >
-        <div className="section-split relative w-full h-full flex items-center">
-          {/* Desktop vertical separator */}
-          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10 -translate-x-1/2" />
+        <div className="section-split relative w-full">
+          {/* Vertical architectural line separating Text and 3D Core on Desktop */}
+          <div className="hidden lg:block absolute left-1/2 top-1/4 bottom-1/4 w-[1px] bg-white/10" />
 
-          <motion.div variants={childFadeUp} className="split-col is-left pl-8">
+          <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16">
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
               <li>Not an agency.</li>
