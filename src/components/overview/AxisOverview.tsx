@@ -131,13 +131,15 @@ export default function AxisOverview() {
           <div className="split-col is-left hidden lg:block"></div>
           
           <motion.div variants={childFadeUp} className="split-col is-right pl-8 lg:pl-16 pt-8 lg:pt-0 relative">
-            <motion.div 
-              className="hidden lg:block absolute left-0 top-[-2rem] bottom-[-2rem] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
-              initial={{ opacity: 0, scaleY: 0 }}
-              whileInView={{ opacity: 1, scaleY: 1 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              style={{ transformOrigin: "center" }}
+            {/* Golden glowing separator line on Desktop */}
+            <div 
+              className="hidden lg:block absolute left-0 w-[1px]"
+              style={{ 
+                top: '-2rem', 
+                bottom: '-2rem', 
+                background: 'linear-gradient(to bottom, transparent, #CDA464, transparent)', 
+                boxShadow: '0 0 15px rgba(205,164,100,0.5)' 
+              }}
             />
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
@@ -160,13 +162,15 @@ export default function AxisOverview() {
       >
         <div className="section-split relative w-full">
           <motion.div variants={childFadeUp} className="split-col is-left pr-8 lg:pr-16 pt-8 lg:pt-0 relative">
-            <motion.div 
-              className="hidden lg:block absolute right-0 top-[-2rem] bottom-[-2rem] w-[1px] bg-gradient-to-b from-transparent via-[#CDA464] to-transparent shadow-[0_0_15px_rgba(205,164,100,0.5)]"
-              initial={{ opacity: 0, scaleY: 0 }}
-              whileInView={{ opacity: 1, scaleY: 1 }}
-              viewport={{ once: false, amount: 0.3 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              style={{ transformOrigin: "center" }}
+            {/* Golden glowing separator line on Desktop */}
+            <div 
+              className="hidden lg:block absolute right-0 w-[1px]"
+              style={{ 
+                top: '-2rem', 
+                bottom: '-2rem', 
+                background: 'linear-gradient(to bottom, transparent, #CDA464, transparent)', 
+                boxShadow: '0 0 15px rgba(205,164,100,0.5)' 
+              }}
             />
             <h2 className="text-luxury-subheading">What Axis Is Not</h2>
             <ul className="split-list">
