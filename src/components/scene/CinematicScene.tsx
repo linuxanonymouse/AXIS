@@ -405,19 +405,30 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     const isNearEcosystem = Math.abs(scrollRatio - 5.0) < 0.15;
     const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
     const now = Date.now();
+    const isOverview = typeof window !== "undefined" && window.location.pathname === '/overview';
+    const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
 
     // State machine transitions
-    if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
-      lockState.current = "locked";
-      exitAccumulator.current = 0;
-      // Snap to exact section 5 position
-      if (typeof window !== "undefined") {
-        window.scrollTo({ top: 5 * vh, behavior: "auto" });
+    if (isOverview && isDesktop) {
+      if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
+        lockState.current = "locked";
+        exitAccumulator.current = 0;
+        // Snap to exact section 5 position
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 5 * vh, behavior: "auto" });
+        }
       }
+    } else {
+      lockState.current = "idle";
     }
 
     // Target freeze is 1.0 when locked or frozen, 0 otherwise
-    const wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
+    let wantFreeze = 0.0;
+    if (isOverview && isDesktop) {
+      wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
+    } else if (isOverview && !isDesktop) {
+      wantFreeze = isNearEcosystem ? 1.0 : 0.0;
+    }
 
     // Smoothly damp freeze factor
     freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, 4, delta);
