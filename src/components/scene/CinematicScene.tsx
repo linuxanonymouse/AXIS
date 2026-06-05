@@ -257,7 +257,6 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
   const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
   const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
-  const innerCoreRotY = useRef(0);
   const isEcosystemDomVisible = useRef(false); // tied to DOM instead of scroll math
 
   useEffect(() => {
