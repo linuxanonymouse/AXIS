@@ -257,6 +257,16 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
   const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
   const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
+  const innerCoreRotY = useRef(0);
+  const isEcosystemDomVisible = useRef(false); // tied to DOM instead of scroll math
+
+  useEffect(() => {
+    const onEcosystemChange = (e: any) => {
+      isEcosystemDomVisible.current = e.detail;
+    };
+    window.addEventListener("axis-ecosystem", onEcosystemChange);
+    return () => window.removeEventListener("axis-ecosystem", onEcosystemChange);
+  }, []);
 
   // Rotation accumulators (to resume spinning smoothly without jumps)
   const freezeFactor = useRef(0);
@@ -427,7 +437,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     if (isOverview && isDesktop) {
       wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
     } else if (isOverview && !isDesktop) {
-      wantFreeze = (scrollRatio >= 3.5 && scrollRatio <= 6.5) ? 1.0 : 0.0;
+      wantFreeze = isEcosystemDomVisible.current ? 1.0 : 0.0;
     }
 
     // Smoothly damp freeze factor

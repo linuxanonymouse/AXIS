@@ -195,6 +195,8 @@ export default function AxisOverview() {
         style={{ minHeight: '200vh', display: 'block', paddingTop: '0' }}
         initial="hidden"
         whileInView="visible" viewport={{ once: false, amount: 0.1 }}
+        onViewportEnter={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: true })) }}
+        onViewportLeave={() => { if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("axis-ecosystem", { detail: false })) }}
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
