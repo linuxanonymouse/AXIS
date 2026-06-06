@@ -528,13 +528,16 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     const upperIndex = Math.min(5, lowerIndex + 1);
     const p = sectionFloat - lowerIndex;
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const ecosystemY = isMobile ? 0.35 : 0;
+
     const coreTargets = [
       { pos: [0, -0.1, -1.2], sep: 0.0 }, // Hero (0)
       { pos: [-2.5, -0.1, -1.2], sep: 1.0 }, // Is (1)
       { pos: [2.5, 0.4, 0.8], sep: 1.0 }, // Is Not (2)
       { pos: [0, -0.4, -1.5], sep: 1.0 }, // Panels (3)
-      { pos: [0, 0, 0], sep: 1.0 }, // Ecosystem (4)
-      { pos: [0, 0, 0], sep: 1.0 }, // Final CTA (5)
+      { pos: [0, ecosystemY, 0], sep: 1.0 }, // Ecosystem (4)
+      { pos: [0, ecosystemY, 0], sep: 1.0 }, // Final CTA (5)
     ];
 
     const c1 = coreTargets[lowerIndex];

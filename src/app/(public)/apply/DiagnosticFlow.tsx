@@ -39,6 +39,7 @@ type FormData = {
   teamSize: string;
   primaryObjective: string;
   businessStage: string;
+  targetService: string;
   // Extended Fields
   monthlyTraffic: string;
   conversionFunnel: string;
@@ -72,6 +73,7 @@ const INITIAL: FormData = {
   teamSize: "",
   primaryObjective: "",
   businessStage: "",
+  targetService: "",
   monthlyTraffic: "",
   conversionFunnel: "",
   toolsIntegrated: "",
@@ -115,6 +117,14 @@ const STAGE_OPTIONS = [
   { value: "growth", label: "Growth", desc: "Consistent revenue, scaling challenges" },
   { value: "scaling", label: "Scaling", desc: "Proven model, deploying infrastructure" },
   { value: "established", label: "Established", desc: "Mature organization, optimizing systems" },
+];
+
+const SERVICE_OPTIONS = [
+  { value: "Axis Operations Only", label: "Axis Operations" },
+  { value: "Axis Operations → Axis Studio", label: "Axis Studio Deployment" },
+  { value: "Axis Operations → Axis Studio → Axis Intelligence", label: "Axis Intelligence" },
+  { value: "Axis Operations → Axis Media", label: "Axis Media" },
+  { value: "Full Axis Ecosystem", label: "Full Ecosystem Evaluation" },
 ];
 
 export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
@@ -216,6 +226,7 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
         businessStage: form.businessStage,
         type: "diagnostic",
         rawResponses: {
+          targetService: form.targetService,
           monthlyTraffic: form.monthlyTraffic,
           conversionFunnel: form.conversionFunnel,
           toolsIntegrated: form.toolsIntegrated,
@@ -355,6 +366,13 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                       <select className={`apply-input ${errors.businessStage ? "apply-input--error" : ""}`} value={form.businessStage} onChange={(e) => set("businessStage", e.target.value)}>
                         <option value="" disabled>Select Stage...</option>
                         {STAGE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                      </select>
+                    </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Target Axis Service (For AI Evaluation Focus)</label>
+                      <select className={`apply-input ${errors.targetService ? "apply-input--error" : ""}`} value={form.targetService} onChange={(e) => set("targetService", e.target.value)}>
+                        <option value="" disabled>Select Target Service...</option>
+                        {SERVICE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                       </select>
                     </div>
                   </div>

@@ -256,8 +256,8 @@ export async function sendConfirmationEmail(payload: AutomationPayload): Promise
       html = operatorEmailTemplate(recipientName);
       break;
     default:
-      subject = "Axis Operations Submission Received";
-      html = baseTemplate("Submission Received", `<p style="margin:0;font-size:15px;color:#c8c8c8;line-height:1.7;">Your submission has been received and logged. Our team will follow up shortly.</p>`);
+      console.info(`[automation] Unknown type for email ${payload.type}, skipping fallback.`);
+      return;
   }
 
   try {

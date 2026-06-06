@@ -180,7 +180,8 @@ export async function generateDiagnosticAi(
   "clientFacingSummary": string,
   "internalNotes": string
 }
-Be institutional, selective, and concise. Scores are out of 100.`;
+Be institutional, selective, and concise. Scores are out of 100.
+IMPORTANT: The applicant has indicated a Target Axis Service in their rawResponses. You MUST evaluate their alignment specifically for this targeted service pathway. Structure your strategicInsight and clientFacingSummary around their fit for this specific service.`;
 
   const user = JSON.stringify({
     organizationName: app.organizationName,

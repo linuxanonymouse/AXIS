@@ -1,12 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { generateDiagnosticAi } from "@/lib/diagnostic-ai";
 import { dispatchAutomation } from "@/lib/automation";
-import { createClickUpTask } from "@/lib/clickup";
-import {
-  applicantConfirmationHtml,
-  internalDiagnosticHtml,
-  sendEmail,
-} from "@/lib/email";
+import { internalDiagnosticHtml, sendEmail } from "@/lib/email";
 
 export async function processDiagnosticApplication(applicationId: string) {
   const app = await prisma.diagnosticApplication.findUnique({
@@ -48,20 +43,6 @@ export async function processDiagnosticApplication(applicationId: string) {
     clientFacingSummary: updated.clientFacingSummary,
   });
 
-  await createClickUpTask({
-    name: `Diagnostic: ${updated.organizationName}`,
-    description: [
-      `Applicant: ${updated.applicantName}`,
-      `Email: ${updated.email}`,
-      `Record: ${updated.id}`,
-      `Alignment: ${updated.overallAlignmentScore ?? " "}/100`,
-      `Primary constraint: ${updated.primaryConstraint ?? " "}`,
-      `Pathway: ${updated.recommendedAxisPathway ?? " "}`,
-      `Review status: ${updated.internalReviewStatus ?? " "}`,
-      `Next step: ${updated.nextStepRecommendation ?? " "}`,
-    ].join("\n"),
-  });
-
   const internalEmail = process.env.INTERNAL_NOTIFICATION_EMAIL;
   if (internalEmail) {
     await sendEmail({
@@ -78,12 +59,6 @@ export async function processDiagnosticApplication(applicationId: string) {
       }),
     });
   }
-
-  await sendEmail({
-    to: updated.email,
-    subject: "Axis Strategic Diagnostic Received",
-    html: applicantConfirmationHtml(updated.organizationName),
-  });
 }
 
 export function queueDiagnosticProcessing(applicationId: string) {
