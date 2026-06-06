@@ -21,7 +21,7 @@ services:
     container_name: axis-web
     restart: always
     ports:
-      - "3005:3000"
+      - "3002:3000"
     environment:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
@@ -29,23 +29,9 @@ services:
       - DATABASE_URL=mongodb://axis-mongodb:27017/axis?replicaSet=rs0
     depends_on:
       - mongodb
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.axis-web.rule=Host(`axisoperations.ca`) || Host(`www.axisoperations.ca`) || Host(`187.124.154.106`)"
-      - "traefik.http.services.axis-web.loadbalancer.server.port=3000"
-      - "traefik.docker.network=easy-northstar-guide-57003_default"
     networks:
       - default
-      - easy_northstar
-      - supabase
 
 volumes:
   axis_mongo_data:
 
-networks:
-  easy_northstar:
-    name: easy-northstar-guide-57003_default
-    external: true
-  supabase:
-    name: supabase_default
-    external: true
