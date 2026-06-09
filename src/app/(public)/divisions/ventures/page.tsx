@@ -96,7 +96,7 @@ export default function VenturesPage() {
             </div>
             
             <div className="system-card">
-              <h3 className="section-heading" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Growth Capital</h3>
+              <h3 className="section-heading" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Capital Alignment</h3>
               <p className="body-text">Deploying financial resources strategically to accelerate infrastructure deployment and media distribution.</p>
             </div>
 
@@ -106,8 +106,8 @@ export default function VenturesPage() {
             </div>
 
             <div className="system-card">
-              <h3 className="section-heading" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Value Realization</h3>
-              <p className="body-text">Optimizing the organization for eventual acquisition, merger, or public offering through rigorous operational alignment.</p>
+              <h3 className="section-heading" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Enterprise Value Creation</h3>
+              <p className="body-text">Strengthening the systems, revenue architecture, partnerships, and operating structure that increase long-term enterprise value.</p>
             </div>
 
           </div>
@@ -126,7 +126,7 @@ export default function VenturesPage() {
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#4A90E2' }}>Studio</span> builds infrastructure.</p>
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#9b59b6' }}>Intelligence</span> governs performance.</p>
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#e67e22' }}>Media</span> drives distribution.</p>
-              <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#CDA464' }}>Ventures</span> activates expansion.</p>
+              <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#e67e22' }}>Ventures</span> activates expansion.</p>
             </div>
           </div>
         </div>

@@ -131,13 +131,14 @@ export default function AxisOverview() {
       >
         <div className="cinematic-backdrop-glow" />
         <motion.h1 variants={childFadeUp} className="text-luxury-heading text-shimmer">AXIS</motion.h1>
-        <motion.div variants={childFadeUp} className="eyebrow">Operating System for Scalable Organizations</motion.div>
+        <motion.div variants={childFadeUp} className="eyebrow">ALIGN. OPERATE. COMPOUND.</motion.div>
+        <motion.div variants={childFadeUp} className="eyebrow">The operating system for scalable organizations.</motion.div>
         <motion.p variants={childFadeUp} className="text-body-large mt-8">
-          Axis aligns infrastructure, intelligence, distribution, and monetization into a coordinated operating environment designed for scalable growth.
+          Axis aligns infrastructure, intelligence, distribution, and monetization into a coordinated system that removes friction and unlocks unrealized value.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas mt-8">
-          <button className="btn-gold" onClick={() => scrollToSection(4)}>Explore the Ecosystem</button>
-          <button className="btn-white" onClick={() => scrollToSection(1)}>Begin Alignment</button>
+          <button className="btn-gold" onClick={() => scrollToSection(4)}>Explore The Ecosystem</button>
+          <button className="btn-white" onClick={() => scrollToSection(1)}>Start Strategic Diagnostic</button>
         </motion.div>
       </motion.section>
 
@@ -156,7 +157,7 @@ export default function AxisOverview() {
             
             <h2 className="text-luxury-subheading">What Axis Is</h2>
             <p className="text-body-large">
-              Axis is an operating system designed to identify unrealized revenue, remove structural friction, and install scalable systems.
+              Axis is an operating system that identifies unrealized revenue, removes structural friction, and installs scalable systems that make growth easier to execute.
             </p>
             <p className="text-body-regular mt-4">
               Axis does not add complexity.<br/>
@@ -239,7 +240,7 @@ export default function AxisOverview() {
           <motion.h2 variants={childFadeUp} className="text-luxury-subheading text-shimmer">The Axis Ecosystem</motion.h2>
           <motion.p variants={childFadeUp} className="text-body-large">Five interconnected layers. One system.</motion.p>
           <motion.p variants={childFadeUp} className="text-body-regular max-w-2xl mx-auto">
-            Each layer performs a distinct function. Together, they form a complete system built for scalable growth.
+            Each division performs a distinct function. Together, they create one coordinated system for infrastructure, intelligence, distribution, monetization, and strategic growth.
           </motion.p>
         </div>
       </motion.section>
@@ -257,7 +258,7 @@ export default function AxisOverview() {
           AXIS makes existing value unavoidable.
         </motion.h2>
         <motion.p variants={childFadeUp} className="text-body-large mt-6 mb-12 mx-auto" style={{ maxWidth: '800px' }}>
-          Axis is applied inside organizations where revenue already exists, growth is constrained, and structure is required.
+          Axis is built for organizations where demand, revenue, or influence already exists, but growth is being limited by weak structure, disconnected systems, or uncaptured value.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas">
           <Link href="/diagnostic" className="btn-gold">Start Strategic Diagnostic</Link>
@@ -265,33 +266,6 @@ export default function AxisOverview() {
         </motion.div>
       </motion.section>
 
-      {/* Scroll Helper Navigation */}
-      <div className="fixed bottom-12 right-12 z-[100] flex flex-col items-center gap-6 hidden md:flex">
-        {/* Navigation Dots */}
-        <div className="flex flex-col gap-3">
-          {[0, 1, 2, 3, 4, 5, 6].map(idx => (
-            <button 
-              key={idx} 
-              onClick={() => scrollToSection(idx)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSection === idx ? 'bg-[var(--gold)] scale-[1.5] shadow-[0_0_10px_rgba(205,164,100,0.8)]' : 'bg-white/20 hover:bg-white/50'}`}
-              aria-label={`Scroll to section ${idx + 1}`}
-            />
-          ))}
-        </div>
-        
-        {/* Next Section Arrow */}
-        {activeSection < 6 && (
-          <button 
-            onClick={scrollToNext}
-            className="w-10 h-10 rounded-full border border-white/10 bg-black/40 backdrop-blur-md flex items-center justify-center text-[var(--gold)] hover:bg-white/10 hover:border-white/30 transition-all animate-bounce shadow-lg"
-            aria-label="Scroll to next section"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-        )}
-      </div>
     </div>
   );
 }

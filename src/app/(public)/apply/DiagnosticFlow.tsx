@@ -369,7 +369,7 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                       </select>
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Target Axis Service (For AI Evaluation Focus)</label>
+                      <label className="apply-label">Target Axis Service (For Diagnostic Focus)</label>
                       <select className={`apply-input ${errors.targetService ? "apply-input--error" : ""}`} value={form.targetService} onChange={(e) => set("targetService", e.target.value)}>
                         <option value="" disabled>Select Target Service...</option>
                         {SERVICE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -386,23 +386,51 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Are your tools (CRM, email, etc.) integrated?</label>
-                      <input className={`apply-input ${errors.toolsIntegrated ? "apply-input--error" : ""}`} placeholder="e.g. Partially, fully synced, completely siloed" value={form.toolsIntegrated} onChange={(e) => set("toolsIntegrated", e.target.value)} />
+                      <select className={`apply-input ${errors.toolsIntegrated ? "apply-input--error" : ""}`} value={form.toolsIntegrated} onChange={(e) => set("toolsIntegrated", e.target.value)}>
+                        <option value="" disabled>Select Integration Level...</option>
+                        <option value="Fully Integrated">Fully Integrated</option>
+                        <option value="Partially Integrated">Partially Integrated</option>
+                        <option value="Siloed">Siloed</option>
+                        <option value="None">None</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How automated is your operation?</label>
-                      <input className={`apply-input ${errors.automationLevel ? "apply-input--error" : ""}`} placeholder="e.g. Mostly manual, highly automated" value={form.automationLevel} onChange={(e) => set("automationLevel", e.target.value)} />
+                      <select className={`apply-input ${errors.automationLevel ? "apply-input--error" : ""}`} value={form.automationLevel} onChange={(e) => set("automationLevel", e.target.value)}>
+                        <option value="" disabled>Select Automation Level...</option>
+                        <option value="Highly Automated">Highly Automated</option>
+                        <option value="Partially Automated">Partially Automated</option>
+                        <option value="Mostly Manual">Mostly Manual</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you track KPIs clearly?</label>
-                      <input className={`apply-input ${errors.kpiTracking ? "apply-input--error" : ""}`} placeholder="e.g. Yes via dashboard, loosely via spreadsheets" value={form.kpiTracking} onChange={(e) => set("kpiTracking", e.target.value)} />
+                      <select className={`apply-input ${errors.kpiTracking ? "apply-input--error" : ""}`} value={form.kpiTracking} onChange={(e) => set("kpiTracking", e.target.value)}>
+                        <option value="" disabled>Select KPI Tracking...</option>
+                        <option value="Real-time Dashboards">Real-time Dashboards</option>
+                        <option value="Spreadsheets">Spreadsheets</option>
+                        <option value="Inconsistent">Inconsistent</option>
+                        <option value="None">None</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you have a structured reporting system?</label>
-                      <input className={`apply-input ${errors.reportingSystem ? "apply-input--error" : ""}`} placeholder="e.g. Weekly automated reports, none" value={form.reportingSystem} onChange={(e) => set("reportingSystem", e.target.value)} />
+                      <select className={`apply-input ${errors.reportingSystem ? "apply-input--error" : ""}`} value={form.reportingSystem} onChange={(e) => set("reportingSystem", e.target.value)}>
+                        <option value="" disabled>Select Reporting System...</option>
+                        <option value="Automated & Structured">Automated & Structured</option>
+                        <option value="Manual & Structured">Manual & Structured</option>
+                        <option value="Inconsistent">Inconsistent</option>
+                        <option value="None">None</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How are decisions made?</label>
-                      <input className={`apply-input ${errors.decisionMaking ? "apply-input--error" : ""}`} placeholder="e.g. Data-driven, gut feeling, executive committee" value={form.decisionMaking} onChange={(e) => set("decisionMaking", e.target.value)} />
+                      <select className={`apply-input ${errors.decisionMaking ? "apply-input--error" : ""}`} value={form.decisionMaking} onChange={(e) => set("decisionMaking", e.target.value)}>
+                        <option value="" disabled>Select Decision Making...</option>
+                        <option value="Data-driven">Data-driven</option>
+                        <option value="Executive Committee">Executive Committee</option>
+                        <option value="Gut Feeling">Gut Feeling</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -411,7 +439,7 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
               {step === 5 && (
                 <>
                   <p className="apply-step__eyebrow">Distribution</p>
-                  <h2 className="apply-step__title">Marketing & Traffic</h2>
+                  <h2 className="apply-step__title">Distribution & Demand</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Approximate monthly traffic or leads?</label>
@@ -431,15 +459,29 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Content consistency?</label>
-                      <input className={`apply-input ${errors.contentConsistency ? "apply-input--error" : ""}`} placeholder="e.g. Daily, Sporadic, None" value={form.contentConsistency} onChange={(e) => set("contentConsistency", e.target.value)} />
+                      <select className={`apply-input ${errors.contentConsistency ? "apply-input--error" : ""}`} value={form.contentConsistency} onChange={(e) => set("contentConsistency", e.target.value)}>
+                        <option value="" disabled>Select Consistency...</option>
+                        <option value="Daily">Daily</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Sporadic">Sporadic</option>
+                        <option value="None">None</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you leverage influencers or user-generated content?</label>
-                      <input className={`apply-input ${errors.ugc ? "apply-input--error" : ""}`} placeholder="Yes/No" value={form.ugc} onChange={(e) => set("ugc", e.target.value)} />
+                      <select className={`apply-input ${errors.ugc ? "apply-input--error" : ""}`} value={form.ugc} onChange={(e) => set("ugc", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you leverage partnerships or expansion channels?</label>
-                      <input className={`apply-input ${errors.partnerships ? "apply-input--error" : ""}`} placeholder="Yes/No" value={form.partnerships} onChange={(e) => set("partnerships", e.target.value)} />
+                      <select className={`apply-input ${errors.partnerships ? "apply-input--error" : ""}`} value={form.partnerships} onChange={(e) => set("partnerships", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -452,11 +494,19 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Is your offer clearly defined?</label>
-                      <input className={`apply-input ${errors.offerDefined ? "apply-input--error" : ""}`} placeholder="Yes/No" value={form.offerDefined} onChange={(e) => set("offerDefined", e.target.value)} />
+                      <select className={`apply-input ${errors.offerDefined ? "apply-input--error" : ""}`} value={form.offerDefined} onChange={(e) => set("offerDefined", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Is your pricing structured and optimized?</label>
-                      <input className={`apply-input ${errors.pricingOptimized ? "apply-input--error" : ""}`} placeholder="Yes/No" value={form.pricingOptimized} onChange={(e) => set("pricingOptimized", e.target.value)} />
+                      <select className={`apply-input ${errors.pricingOptimized ? "apply-input--error" : ""}`} value={form.pricingOptimized} onChange={(e) => set("pricingOptimized", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">What is your current primary objective?</label>

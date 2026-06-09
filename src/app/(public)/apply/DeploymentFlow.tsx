@@ -35,6 +35,8 @@ type FormData = {
   bottleneck: string;
   desiredOutcome: string;
   businessImpact: string;
+  currentPainPoint: string;
+  successMetric: string;
   priority: string;
   completionDate: string;
   systemAccess: string;
@@ -51,6 +53,8 @@ const INITIAL: FormData = {
   bottleneck: "",
   desiredOutcome: "",
   businessImpact: "",
+  currentPainPoint: "",
+  successMetric: "",
   priority: "",
   completionDate: "",
   systemAccess: "",
@@ -88,7 +92,9 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
     }
     if (s === 3) {
       if (!form.bottleneck.trim()) errs.bottleneck = "Required";
+      if (!form.currentPainPoint.trim()) errs.currentPainPoint = "Required";
       if (!form.desiredOutcome.trim()) errs.desiredOutcome = "Required";
+      if (!form.successMetric.trim()) errs.successMetric = "Required";
       if (!form.businessImpact.trim()) errs.businessImpact = "Required";
     }
     if (s === 4) {
@@ -220,13 +226,18 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Request Category</label>
-                      <input
+                      <select
                         className={`apply-input ${errors.requestCategory ? "apply-input--error" : ""}`}
-                        type="text"
-                        placeholder="e.g., System Integration, Automations"
                         value={form.requestCategory}
                         onChange={(e) => set("requestCategory", e.target.value)}
-                      />
+                      >
+                        <option value="" disabled>Select category...</option>
+                        <option value="System Integration">System Integration</option>
+                        <option value="Process Automation">Process Automation</option>
+                        <option value="Data Pipeline">Data Pipeline</option>
+                        <option value="Custom Application">Custom Application</option>
+                        <option value="Other">Other</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Internal Owner</label>
@@ -285,6 +296,16 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                       />
                     </div>
                     <div className="apply-field">
+                      <label className="apply-label">Primary Constraint / Pain Point</label>
+                      <textarea
+                        className={`apply-textarea ${errors.currentPainPoint ? "apply-input--error" : ""}`}
+                        placeholder="What specific pain point does this solve?"
+                        value={form.currentPainPoint}
+                        onChange={(e) => set("currentPainPoint", e.target.value)}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="apply-field">
                       <label className="apply-label">Desired Outcome</label>
                       <textarea
                         className={`apply-textarea ${errors.desiredOutcome ? "apply-input--error" : ""}`}
@@ -292,6 +313,15 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                         value={form.desiredOutcome}
                         onChange={(e) => set("desiredOutcome", e.target.value)}
                         rows={3}
+                      />
+                    </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Success Metric</label>
+                      <input
+                        className={`apply-input ${errors.successMetric ? "apply-input--error" : ""}`}
+                        placeholder="How will we measure success?"
+                        value={form.successMetric}
+                        onChange={(e) => set("successMetric", e.target.value)}
                       />
                     </div>
                     <div className="apply-field">

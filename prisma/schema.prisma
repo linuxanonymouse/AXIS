@@ -146,6 +146,8 @@ model DeploymentRequest {
   bottleneck        String?
   desiredOutcome    String?
   businessImpact    String?
+  currentPainPoint  String?
+  successMetric     String?
   systemAccess      String?
   completionDate    String?
   internalOwner     String?

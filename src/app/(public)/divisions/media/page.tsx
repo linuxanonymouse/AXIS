@@ -50,7 +50,7 @@ export default function MediaPage() {
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
             className="media-hero-text"
           >
-            Attention is not enough. You need controlled distribution. Axis Media builds the content architectures and broadcasting networks required to capture, direct, and convert market attention at scale.
+            Attention is not enough. You need controlled distribution. Axis Media builds the content architectures and distribution networks required to capture, direct, and convert market attention at scale.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0 }}
@@ -102,7 +102,7 @@ export default function MediaPage() {
 
             <div className="system-card">
               <h3 className="section-heading" style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Brand Authority</h3>
-              <p className="body-text">Establishing market dominance through high-value, cinematic, and institutional-grade brand positioning.</p>
+              <p className="body-text">Building authority through high-value content, institutional-grade positioning, and consistent market presence.</p>
             </div>
 
             <div className="system-card">
@@ -125,7 +125,7 @@ export default function MediaPage() {
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#cdba7b' }}>Operations</span> defines direction.</p>
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#4A90E2' }}>Studio</span> builds infrastructure.</p>
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#9b59b6' }}>Intelligence</span> governs performance.</p>
-              <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#CDA464' }}>Media</span> drives distribution.</p>
+              <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#e67e22' }}>Media</span> drives distribution.</p>
               <p style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)', lineHeight: 2 }}><span style={{ color: '#2ecc71' }}>Ventures</span> activates expansion.</p>
             </div>
           </div>

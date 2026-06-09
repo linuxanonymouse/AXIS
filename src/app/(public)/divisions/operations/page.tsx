@@ -89,6 +89,12 @@ export default function OperationsPage() {
             
             <div className="service-card">
               <div className="service-icon" />
+              <h3 className="service-title">Unrealized Revenue Identification</h3>
+              <p className="service-desc">Identify where revenue is already being created but not fully captured, and define the structural conditions required to convert that value into scalable growth.</p>
+            </div>
+            
+            <div className="service-card">
+              <div className="service-icon" />
               <h3 className="service-title">Revenue Architecture</h3>
               <p className="service-desc">Structure how revenue is designed, captured, reinforced, and scaled.</p>
             </div>
@@ -132,7 +138,7 @@ export default function OperationsPage() {
             <div className="method-step">
               <span className="method-number">04</span>
               <h4 className="method-title">System Deployment</h4>
-              <p className="method-desc">Move from strategy into execution through Axis Studio, partner teams, or internal teams.</p>
+              <p className="method-desc">Move from strategy into execution through the Axis ecosystem.</p>
             </div>
           </div>
         </div>

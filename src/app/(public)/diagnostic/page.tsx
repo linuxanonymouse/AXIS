@@ -35,7 +35,7 @@ const EVALUATION_CARDS = [
 
 const FLOW_STEPS = [
   { step: "01", title: "Submit Diagnostic", body: "The organization completes the structured intake." },
-  { step: "02", title: "AI Review", body: "Responses are processed through the Axis diagnostic engine and scoring logic." },
+  { step: "02", title: "Diagnostic Processing", body: "Responses are processed through the Axis diagnostic engine and scoring logic." },
   { step: "03", title: "Strategic Assessment", body: "The system evaluates constraints, maturity, opportunity, and likely entry point." },
   { step: "04", title: "Internal Review", body: "Axis reviews the diagnostic output to confirm alignment and determine next steps." },
   { step: "05", title: "Response Issued", body: "The organization receives direction based on fit, readiness, and strategic opportunity." },

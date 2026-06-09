@@ -138,7 +138,7 @@ export default function DivisionsPage() {
                 <p className="division-desc">{div.description}</p>
                 <div className="division-ctas">
                   <Link href={div.link} className="hero-btn-primary" style={{ borderColor: div.color, color: div.color }}>Explore Division</Link>
-                  <DynamicBriefButton divisionKey={div.briefKey} label="View Division Brief" />
+                  <DynamicBriefButton divisionKey={div.briefKey} label="View Brief" />
                 </div>
               </div>
             </motion.div>
@@ -151,15 +151,15 @@ export default function DivisionsPage() {
         <div className="divisions-sequence-inner">
           <h2 className="section-heading text-center">How the Divisions Work Together</h2>
           <div className="sequence-flow">
-            <div className="sequence-step">Operations defines direction</div>
+            <div className="sequence-step">Operations Defines Direction</div>
             <div className="sequence-arrow">↓</div>
-            <div className="sequence-step">Studio builds infrastructure</div>
+            <div className="sequence-step">Studio Builds Infrastructure</div>
             <div className="sequence-arrow">↓</div>
-            <div className="sequence-step">Intelligence governs performance</div>
+            <div className="sequence-step">Intelligence Governs Performance</div>
             <div className="sequence-arrow">↓</div>
-            <div className="sequence-step">Media controls distribution</div>
+            <div className="sequence-step">Media Controls Distribution</div>
             <div className="sequence-arrow">↓</div>
-            <div className="sequence-step">Ventures activates expansion</div>
+            <div className="sequence-step">Ventures Activates Expansion</div>
           </div>
           <p className="sequence-text">Each division performs a distinct function, but the value comes from how they operate together.</p>
         </div>

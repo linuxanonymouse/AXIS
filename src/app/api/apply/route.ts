@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
           bottleneck: json.bottleneck,
           desiredOutcome: json.desiredOutcome,
           businessImpact: json.businessImpact,
+          currentPainPoint: json.currentPainPoint,
+          successMetric: json.successMetric,
           priority: json.priority,
           completionDate: json.completionDate,
           systemAccess: json.systemAccess,
