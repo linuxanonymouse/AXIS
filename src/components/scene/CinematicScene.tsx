@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import {  Float, Stars,  Environment, Html , MeshTransmissionMaterial } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import EcosystemGraph from "../overview/EcosystemGraph";
 
 const getScrollRatio = (scrollY: number) => {
@@ -57,11 +57,7 @@ function CinematicCamera() {
 
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    
-    let rawSectionFloat = getScrollRatio(scrollY);
-    if (typeof window !== "undefined" && (window as any).__axisLockFactor !== undefined) {
-      rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 4.5, (window as any).__axisLockFactor);
-    }
+    const rawSectionFloat = getScrollRatio(scrollY);
     
     // Smooth the scroll value itself using THREE.MathUtils.damp to prevent stutter
     if (state.camera.userData.smoothedFloat === undefined) {
@@ -109,6 +105,7 @@ function CinematicCamera() {
     state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, targetPos.x, dampingFactor, delta);
     state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetPos.y, dampingFactor, delta);
     state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetPos.z, dampingFactor, delta);
+    
     // Damping lookAt with same factor
     const currentLookAt = new THREE.Vector3(0, 0, -1).applyQuaternion(state.camera.quaternion).add(state.camera.position);
     currentLookAt.x = THREE.MathUtils.damp(currentLookAt.x, targetLookAt.x, dampingFactor, delta);
@@ -285,19 +282,10 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const mouseRef = useRef({ x: 0, y: 0 });
   const ringSepRef = useRef(0);
   
-  const [isFrozen, setIsFrozen] = useState(false);
-
-  // Scroll lock state machine
-  // States: "idle" | "locked" | "frozen" | "exiting"
-  const lockState = useRef<"idle" | "locked" | "frozen" | "exiting">("idle");
-  const exitAccumulator = useRef(0); // accumulates scroll delta to decide exit direction
-  const lockCooldownUntil = useRef(0); // timestamp after which we can re-lock
-  const lockEntryTime = useRef(0); // timestamp when graph is fully frozen
-  const lastScrollY = useRef(0);
-  const timeSinceLastScroll = useRef(0);
+  const [isActiveGraph, setIsActiveGraph] = useState(false);
+  const graphProgress = useMotionValue(0);
 
   // Rotation accumulators (to resume spinning smoothly without jumps)
-  const freezeFactor = useRef(0);
   const coreRotY = useRef(0);
   const ring1RotY = useRef(0);
   const ring1RotX = useRef(0);
@@ -306,32 +294,6 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
   const ring3RotY = useRef(0);
   const ring3RotX = useRef(0);
   const innerCoreRotY = useRef(0);
-
-  const exitAndScroll = (targetIndex: number) => {
-    lockState.current = "exiting";
-    exitAccumulator.current = 0;
-    lockCooldownUntil.current = Date.now() + 2000;
-    
-    if (typeof document !== "undefined") {
-      document.body.style.overflow = ""; document.documentElement.style.overflow = "";
-    }
-    
-    if (typeof window !== "undefined") {
-      (window as any).__axisDotClick = true;
-      const sections = document.querySelectorAll('.overview-section');
-      const targetEl = sections[targetIndex] as HTMLElement;
-      const targetTop = targetEl ? targetEl.offsetTop : targetIndex * window.innerHeight;
-      
-      window.scrollTo({
-        top: targetTop,
-        behavior: "smooth"
-      });
-      setTimeout(() => {
-        (window as any).__axisDotClick = false;
-        lockState.current = "idle";
-      }, 1500);
-    }
-  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -342,174 +304,30 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Scroll event interception
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      // Skip if programmatic scroll (dot click)
-      if ((window as any).__axisDotClick) return;
-
-      if (lockState.current === "locked") {
-        // Still freezing — just eat the scroll
-        e.preventDefault();
-        return;
-      }
-
-      if (lockState.current === "frozen") {
-        // Rings are aligned, graph is showing — accumulate exit scroll
-        e.preventDefault();
-        
-        // Prevent scroll accumulation for 2.5s to ensure user sees the graph
-        if (Date.now() - lockEntryTime.current < 2500) return;
-
-        exitAccumulator.current += e.deltaY;
-        
-        // Need ~1200px worth of scroll to exit (prevents accidental exits)
-        if (exitAccumulator.current > 1200) {
-          exitAndScroll(5); // scroll to next section
-        } else if (exitAccumulator.current < -1200) {
-          exitAndScroll(3); // scroll to prev section
-        }
-        return;
-      }
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (lockState.current === "locked" || lockState.current === "frozen") {
-        // Store starting Y
-        (window as any).__axisTouchY = e.touches[0].clientY;
-      }
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if ((window as any).__axisDotClick) return;
-
-      if (lockState.current === "locked") {
-        e.preventDefault();
-        return;
-      }
-
-      if (lockState.current === "frozen") {
-        e.preventDefault();
-        
-        // Prevent scroll accumulation for 2.5s to ensure user sees the graph
-        if (Date.now() - lockEntryTime.current < 2500) return;
-
-        const startY = (window as any).__axisTouchY || e.touches[0].clientY;
-        const deltaY = startY - e.touches[0].clientY;
-        (window as any).__axisTouchY = e.touches[0].clientY;
-        
-        exitAccumulator.current += deltaY * 2;
-        
-        if (exitAccumulator.current > 1200) {
-          exitAndScroll(5);
-        } else if (exitAccumulator.current < -1200) {
-          exitAndScroll(3);
-        }
-        return;
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((window as any).__axisDotClick) return;
-
-      const scrollKeys = ["ArrowDown", "ArrowUp", "PageDown", "PageUp", " "];
-      if ((lockState.current === "locked" || lockState.current === "frozen") && scrollKeys.includes(e.key)) {
-        e.preventDefault();
-        
-        if (lockState.current === "frozen") {
-          // Prevent scroll exit for 2.5s to ensure user sees the graph
-          if (Date.now() - lockEntryTime.current < 2500) return;
-
-          if (e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") {
-            exitAndScroll(5);
-          } else {
-            exitAndScroll(3);
-          }
-        }
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
-    
-    // Detect if we've arrived at ecosystem section
     const scrollRatio = getScrollRatio(scrollY);
-    const isNearEcosystem = scrollRatio >= 4.3 && scrollRatio <= 4.9;
-    const isProgrammatic = (typeof window !== "undefined" && (window as any).__axisDotClick);
-    const now = Date.now();
-    const isOverview = typeof window !== "undefined" && (window.location.pathname === '/overview' || window.location.pathname === '/');
-
-    // State machine transitions
-    if (isOverview) {
-      if (lockState.current === "idle" && isNearEcosystem && !isProgrammatic && now > lockCooldownUntil.current) {
-        lockState.current = "locked";
-        exitAccumulator.current = 0;
-        if (typeof document !== "undefined") {
-          document.body.style.overflow = "hidden"; document.documentElement.style.overflow = "hidden";
-        }
-        // Snap to exact section 5 position
-        if (typeof window !== "undefined") {
-          
-        }
-      }
-    } else {
-      if (lockState.current !== "idle" && typeof document !== "undefined") {
-        document.body.style.overflow = ""; document.documentElement.style.overflow = "";
-      }
-      lockState.current = "idle";
-    }
-
-    // If kinetic scroll on mobile overpowered the overflow hidden, gracefully abort
-    if ((lockState.current === "locked" || lockState.current === "frozen") && Math.abs(scrollRatio - 4.5) > 0.6) {
-      lockState.current = "idle";
-      if (typeof document !== "undefined") {
-        document.body.style.overflow = ""; document.documentElement.style.overflow = "";
-      }
-    }
-
-    // Target freeze is 1.0 when locked or frozen, 0 otherwise
-    let wantFreeze = 0.0;
-    if (isOverview) {
-      wantFreeze = (lockState.current === "locked" || lockState.current === "frozen") ? 1.0 : 0.0;
-    }
-
-    // Smoothly damp freeze factor
-    freezeFactor.current = THREE.MathUtils.damp(freezeFactor.current, wantFreeze, wantFreeze === 0 ? 15 : 4, delta);
-    const amp = 1.0 - freezeFactor.current;
     
-    // Expose globally for CinematicCamera to stay locked
-    if (typeof window !== "undefined") {
-      (window as any).__axisLockFactor = freezeFactor.current;
+    // Graph activates strictly when user is scrolling near the ecosystem section (4.5)
+    // We open it a bit early so it animates in as they scroll down
+    const isEcosystemActive = scrollRatio >= 3.8 && scrollRatio <= 5.2;
+    if (isEcosystemActive !== isActiveGraph) {
+      setIsActiveGraph(isEcosystemActive);
     }
 
-    // Transition locked → frozen once rings have settled
-    if (lockState.current === "locked" && freezeFactor.current > 0.92) {
-      lockState.current = "frozen";
-      lockEntryTime.current = Date.now();
+    // Interactive freeze factor based purely on scroll distance from 4.5
+    let targetFreeze = 0;
+    if (scrollRatio > 4.0 && scrollRatio < 5.0) {
+       // Peaks at 1.0 exactly at 4.5
+       targetFreeze = 1.0 - (Math.abs(scrollRatio - 4.5) * 2.0);
     }
-
-    // Update isFrozen React state (drives graph visibility)
-    const shouldBeFrozen = freezeFactor.current > 0.92;
-    if (shouldBeFrozen !== isFrozen) {
-      setIsFrozen(shouldBeFrozen);
-    }
-
-    // Continuous 1:1 scroll float for position
-    let rawSectionFloat = Math.min(5, Math.max(0, scrollRatio));
-    rawSectionFloat = THREE.MathUtils.lerp(rawSectionFloat, 4.5, freezeFactor.current);
+    targetFreeze = Math.max(0, Math.min(1, targetFreeze));
+    
+    // Update the framer-motion value without re-rendering React
+    graphProgress.set(targetFreeze);
+    
+    const amp = 1.0 - targetFreeze;
+    const rawSectionFloat = Math.min(5, Math.max(0, scrollRatio));
     
     if (coreRef.current && coreRef.current.userData.smoothedFloat === undefined) {
       coreRef.current.userData.smoothedFloat = rawSectionFloat;
@@ -517,7 +335,6 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
     if (coreRef.current) {
       coreRef.current.userData.smoothedFloat = THREE.MathUtils.damp(coreRef.current.userData.smoothedFloat, rawSectionFloat, 4, delta);
       
-      // Scale rings down on mobile
       const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
       const targetScale = isMobile ? 0.6 : 1.0;
       coreRef.current.scale.set(targetScale, targetScale, targetScale);
@@ -551,13 +368,11 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
     const targetRingSepLimit = THREE.MathUtils.lerp(c1.sep, c2.sep, p);
     
-    // Add subtle mouse parallax when not completely frozen
     targetPos.x += mouseRef.current.x * 0.3 * amp;
     targetPos.y += mouseRef.current.y * 0.3 * amp;
 
     const t = state.clock.getElapsedTime();
 
-    // Accumulate rotation only when moving (amp > 0)
     coreRotY.current += delta * 0.08 * amp;
     ring1RotY.current += delta * 0.15 * amp;
     ring1RotX.current += delta * 0.08 * amp;
@@ -573,37 +388,36 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
       coreRef.current.position.z = THREE.MathUtils.damp(coreRef.current.position.z, targetPos.z * amp, 4, delta);
       
       const targetCoreRotX = Math.sin(t * 0.15) * 0.08 * amp;
-      coreRef.current.rotation.y = THREE.MathUtils.lerp(coreRotY.current, 0, freezeFactor.current);
-      coreRef.current.rotation.x = THREE.MathUtils.lerp(targetCoreRotX, 0, freezeFactor.current);
+      coreRef.current.rotation.y = THREE.MathUtils.lerp(coreRotY.current, 0, targetFreeze);
+      coreRef.current.rotation.x = THREE.MathUtils.lerp(targetCoreRotX, 0, targetFreeze);
     }
 
-    // Smoothly animate ring separation to avoid popping
     ringSepRef.current = THREE.MathUtils.damp(ringSepRef.current, targetRingSepLimit, 4, delta);
     const ringSep = ringSepRef.current * amp;
     
     if (ring1Ref.current) {
       ring1Ref.current.position.y = ringSep * 0.55;
-      ring1Ref.current.rotation.y = THREE.MathUtils.lerp(ring1RotY.current, 0, freezeFactor.current);
-      ring1Ref.current.rotation.x = THREE.MathUtils.lerp(ring1RotX.current, 0, freezeFactor.current);
+      ring1Ref.current.rotation.y = THREE.MathUtils.lerp(ring1RotY.current, 0, targetFreeze);
+      ring1Ref.current.rotation.x = THREE.MathUtils.lerp(ring1RotX.current, 0, targetFreeze);
     }
     if (ring2Ref.current) {
       ring2Ref.current.position.y = 0;
-      ring2Ref.current.rotation.y = THREE.MathUtils.lerp(ring2RotY.current, 0, freezeFactor.current);
-      ring2Ref.current.rotation.z = THREE.MathUtils.lerp(ring2RotZ.current, 0, freezeFactor.current);
+      ring2Ref.current.rotation.y = THREE.MathUtils.lerp(ring2RotY.current, 0, targetFreeze);
+      ring2Ref.current.rotation.z = THREE.MathUtils.lerp(ring2RotZ.current, 0, targetFreeze);
     }
     if (ring3Ref.current) {
       ring3Ref.current.position.y = -ringSep * 0.55;
-      ring3Ref.current.rotation.y = THREE.MathUtils.lerp(ring3RotY.current, 0, freezeFactor.current);
-      ring3Ref.current.rotation.x = THREE.MathUtils.lerp(ring3RotX.current, 0, freezeFactor.current);
+      ring3Ref.current.rotation.y = THREE.MathUtils.lerp(ring3RotY.current, 0, targetFreeze);
+      ring3Ref.current.rotation.x = THREE.MathUtils.lerp(ring3RotX.current, 0, targetFreeze);
     }
 
     if (innerCoreRef.current) {
       const targetInnerCorePosY = Math.sin(t * 2.5) * 0.15 * amp;
-      innerCoreRef.current.position.y = THREE.MathUtils.lerp(targetInnerCorePosY, 0, freezeFactor.current);
-      innerCoreRef.current.rotation.y = THREE.MathUtils.lerp(innerCoreRotY.current, 0, freezeFactor.current);
+      innerCoreRef.current.position.y = THREE.MathUtils.lerp(targetInnerCorePosY, 0, targetFreeze);
+      innerCoreRef.current.rotation.y = THREE.MathUtils.lerp(innerCoreRotY.current, 0, targetFreeze);
       
       const targetInnerCoreRotX = Math.sin(t * 0.8) * 0.1 * amp;
-      innerCoreRef.current.rotation.x = THREE.MathUtils.lerp(targetInnerCoreRotX, 0, freezeFactor.current);
+      innerCoreRef.current.rotation.x = THREE.MathUtils.lerp(targetInnerCoreRotX, 0, targetFreeze);
     }
   });
 
@@ -625,7 +439,7 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
         </mesh>
       </group>
 
-      {/* Crystalline Core Monolith — manually controlled, freezes at ecosystem */}
+      {/* Crystalline Core Monolith */}
       <group ref={innerCoreRef}>
         <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
           <octahedronGeometry args={[0.42]} />
@@ -653,8 +467,8 @@ function AxisCore({ showGraph = false }: { showGraph?: boolean }) {
 
       {showGraph && (
         <Html center zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
-          <div style={{ pointerEvents: isFrozen ? 'auto' : 'none' }}>
-            <EcosystemGraph isActive={isFrozen} centerLayout={true} />
+          <div style={{ pointerEvents: isActiveGraph ? 'auto' : 'none' }}>
+            <EcosystemGraph isActive={isActiveGraph} progress={graphProgress} centerLayout={true} />
           </div>
         </Html>
       )}

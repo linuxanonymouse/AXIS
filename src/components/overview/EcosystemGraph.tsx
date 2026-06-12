@@ -1,150 +1,79 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useTransform, MotionValue, useMotionValue } from "framer-motion";
 import { Brain, Play, DollarSign, Building2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function EcosystemGraph({ isActive, centerLayout = false }: { isActive?: boolean, centerLayout?: boolean }) {
-  const containerFade = {
-    hidden: { 
-      opacity: 0, 
-      filter: "drop-shadow(0px 0px 0px rgba(205,164,100,0))",
-      transition: { duration: 0.2, ease: "easeOut" as const }
-    },
-    visible: { 
-      opacity: 1, 
-      filter: "drop-shadow(0px 0px 40px rgba(205,164,100,0.6))",
-      transition: { duration: 0.8, delay: 0.4, staggerChildren: 0.15 } 
-    }
-  };
+export default function EcosystemGraph({ 
+  isActive, 
+  centerLayout = false,
+  progress
+}: { 
+  isActive?: boolean;
+  centerLayout?: boolean;
+  progress?: MotionValue<number>;
+}) {
+  const [scale, setScale] = useState(1);
 
-  const nodeEntrance = {
-    hidden: { 
-      scale: 0, 
-      opacity: 0, 
-      filter: "blur(10px)",
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      scale: 1, 
-      opacity: 1, 
-      filter: "blur(0px)",
-      transition: { type: "spring" as const, stiffness: 70, damping: 14 } 
+  // Fallback for when no progress motion value is provided
+  const fallbackProgress = useMotionValue(isActive ? 1 : 0);
+  useEffect(() => {
+    // If we only have boolean control, smoothly animate the motion value
+    if (!progress) {
+      let current = fallbackProgress.get();
+      const target = isActive ? 1 : 0;
+      if (current !== target) {
+        fallbackProgress.set(target);
+      }
     }
-  };
+  }, [isActive, progress, fallbackProgress]);
+
+  const p = progress || fallbackProgress;
+
+  // ─── SCROLL INTERPOLATIONS ─── //
+  // Main container (fade in early)
+  const containerOpacity = useTransform(p, [0.1, 0.4], [0, 1]);
+  const containerFilter = useTransform(p, [0.1, 0.4], [
+    "drop-shadow(0px 0px 0px rgba(205,164,100,0))", 
+    "drop-shadow(0px 0px 40px rgba(205,164,100,0.6))"
+  ]);
+
+  // Rings and lines (draw out as scroll continues)
+  const drawOpacity = useTransform(p, [0.2, 0.6], [0, 1]);
+  const drawPath = useTransform(p, [0.2, 0.8], [0, 1]);
+
+  // Nodes (pop in towards the end of the scroll)
+  const nodeScale = useTransform(p, [0.6, 0.9], [0, 1]);
+  const nodeOpacity = useTransform(p, [0.6, 0.9], [0, 1]);
+  const nodeFilter = useTransform(p, [0.6, 0.9], ["blur(10px)", "blur(0px)"]);
+
+  // Active data flows (fade in last)
+  const flowOpacity = useTransform(p, [0.8, 1.0], [0, 1]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const availableWidth = Math.min(window.innerWidth - 16, 800);
+      const availableHeight = Math.min(window.innerHeight - 100, 800);
+      const minScale = Math.min(availableWidth, availableHeight) / 800;
+      setScale(Math.max(0.3, minScale));
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const nodeFloat = {
     float: {
       y: ["-12px", "12px"],
       transition: {
-        y: {
-          duration: 3,
-          repeat: Infinity,
-          repeatType: "reverse" as const,
-          ease: "easeInOut" as const
-        }
+        y: { duration: 3, repeat: Infinity, repeatType: "reverse" as const, ease: "easeInOut" }
       }
     }
   };
 
-  const drawLine = {
-    hidden: { 
-      pathLength: 0, 
-      opacity: 0,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      pathLength: 1, 
-      opacity: 1, 
-      transition: { pathLength: { duration: 0.8, ease: "easeInOut" as const }, opacity: { duration: 0.3 } } 
-    }
-  };
-
-  const drawCircle = {
-    hidden: { 
-      pathLength: 0, 
-      opacity: 0,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      pathLength: 1, 
-      opacity: 1, 
-      transition: { pathLength: { duration: 0.8, ease: "easeInOut" as const }, opacity: { duration: 0.3 } } 
-    }
-  };
-
-  const drawAndSpinInner = {
-    hidden: { 
-      pathLength: 0, 
-      opacity: 0, 
-      rotate: 0,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      pathLength: 1, 
-      opacity: 1, 
-      rotate: 360,
-      transition: { 
-        pathLength: { duration: 0.8, ease: "easeInOut" as const }, 
-        opacity: { duration: 0.3 },
-        rotate: { repeat: Infinity, duration: 40, ease: "linear" as const }
-      } 
-    }
-  };
-
-  const drawAndSpinOuter = {
-    hidden: { 
-      pathLength: 0, 
-      opacity: 0, 
-      rotate: 0,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      pathLength: 1, 
-      opacity: 1, 
-      rotate: -360,
-      transition: { 
-        pathLength: { duration: 0.8, ease: "easeInOut" as const }, 
-        opacity: { duration: 0.3 },
-        rotate: { repeat: Infinity, duration: 60, ease: "linear" as const }
-      } 
-    }
-  };
-
-  const fadeInDelay = {
-    hidden: { 
-      opacity: 0,
-      transition: { duration: 0.2 }
-    },
-    visible: { 
-      opacity: 1, 
-      transition: { duration: 0.6, delay: 0.6 } 
-    }
-  };
-
-  const [scale, setScale] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => {
-      // Increase sizing algorithm to force the graph to be large and legible
-      const availableWidth = Math.min(window.innerWidth - 16, 800);
-      const availableHeight = Math.min(window.innerHeight - 100, 800);
-      const minScale = Math.min(availableWidth, availableHeight) / 800;
-      // Allow the graph to shrink to fit mobile screens
-      setScale(Math.max(0.3, minScale));
-    };
-    
-    // Initial calculation
-    handleResize();
-    
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   return (
     <div style={{ position: 'relative', width: `${800 * scale}px`, height: `${800 * scale}px`, margin: '0 auto', transform: centerLayout ? 'none' : (typeof window !== 'undefined' && window.innerWidth < 1024 ? 'none' : 'translateX(-70px)') }}>
       
-      {/* The 800x800 perfect square that scales up and down like an image, responding to SCROLL position! */}
       <motion.div 
         className="ecosystem-graph"
         style={{ 
@@ -153,12 +82,13 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
           left: '50%',
           width: '800px', 
           height: '800px', 
-          transform: `translate(-50%, -50%) scale(${scale})`,
-          transformOrigin: 'center center'
+          x: "-50%",
+          y: "-50%",
+          scale: scale,
+          transformOrigin: 'center center',
+          opacity: containerOpacity,
+          filter: containerFilter
         }}
-        variants={containerFade}
-        initial="hidden"
-        animate={isActive ? "visible" : "hidden"}
       >
         <svg style={{ position: 'absolute', top: 0, left: 0, width: '800px', height: '800px', pointerEvents: 'none' }} viewBox="0 0 1000 1000">
           <defs>
@@ -167,7 +97,6 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
             
-            {/* Arrows for lines */}
             <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.3)" />
             </marker>
@@ -176,42 +105,42 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
             </marker>
           </defs>
 
-          {/* ─── BASE SKELETON (Draws on entrance) ─── */}
-          {/* Inner concentric dashed rings */}
-          <motion.circle variants={drawAndSpinInner} style={{ transformOrigin: "500px 500px" }} cx="500" cy="500" r="160" fill="none" stroke="rgba(205, 164, 100, 0.15)" strokeWidth="1" strokeDasharray="4 8" />
-          <motion.circle variants={drawCircle} cx="500" cy="500" r="280" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+          {/* ─── BASE SKELETON (Drawn by Scroll) ─── */}
+          <motion.circle 
+            style={{ transformOrigin: "500px 500px", pathLength: drawPath, opacity: drawOpacity }} 
+            animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
+            cx="500" cy="500" r="160" fill="none" stroke="rgba(205, 164, 100, 0.15)" strokeWidth="1" strokeDasharray="4 8" 
+          />
+          <motion.circle style={{ pathLength: drawPath, opacity: drawOpacity }} cx="500" cy="500" r="280" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
           
-          {/* Main outer orbit ring */}
-          <motion.circle variants={drawCircle} cx="500" cy="500" r="380" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-          <motion.circle variants={drawAndSpinOuter} style={{ transformOrigin: "500px 500px" }} cx="500" cy="500" r="380" fill="none" stroke="rgba(205, 164, 100, 0.3)" strokeWidth="1" strokeDasharray="8 16" />
+          <motion.circle style={{ pathLength: drawPath, opacity: drawOpacity }} cx="500" cy="500" r="380" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+          <motion.circle 
+            style={{ transformOrigin: "500px 500px", pathLength: drawPath, opacity: drawOpacity }} 
+            animate={{ rotate: -360 }} transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+            cx="500" cy="500" r="380" fill="none" stroke="rgba(205, 164, 100, 0.3)" strokeWidth="1" strokeDasharray="8 16" 
+          />
 
-          {/* Diagonal Intersecting Lines */}
           <g stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1">
-            <motion.line variants={drawLine} x1="230" y1="230" x2="770" y2="770" />
-            <motion.line variants={drawLine} x1="230" y1="770" x2="770" y2="230" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="230" y1="230" x2="770" y2="770" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="230" y1="770" x2="770" y2="230" />
           </g>
 
-          {/* Straight Connection Lines to Satellites */}
           <g stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" markerEnd="url(#arrow)" markerStart="url(#arrow)">
-            <motion.line variants={drawLine} x1="500" y1="280" x2="500" y2="380" />
-            <motion.line variants={drawLine} x1="500" y1="620" x2="500" y2="720" />
-            <motion.line variants={drawLine} x1="280" y1="500" x2="380" y2="500" />
-            <motion.line variants={drawLine} x1="620" y1="500" x2="720" y2="500" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="500" y1="280" x2="500" y2="380" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="500" y1="620" x2="500" y2="720" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="280" y1="500" x2="380" y2="500" />
+            <motion.line style={{ pathLength: drawPath, opacity: drawOpacity }} x1="620" y1="500" x2="720" y2="500" />
           </g>
 
-          {/* ─── ACTIVE DATA FLOWS (Fades in after build, then runs infinitely) ─── */}
-          <motion.g variants={fadeInDelay}>
-            {/* Bi-Directional Pulsing Lines to Satellites */}
+          {/* ─── ACTIVE DATA FLOWS ─── */}
+          <motion.g style={{ opacity: flowOpacity }}>
             <g strokeWidth="2" fill="none" filter="url(#glow)">
-              {/* Data flowing OUT from Axis Operations */}
               <g className="flow-line-out" stroke="var(--gold)">
                 <path d="M 504 380 L 504 280" strokeDasharray="6 24" />
                 <path d="M 496 620 L 496 720" strokeDasharray="6 24" />
                 <path d="M 380 496 L 280 496" strokeDasharray="6 24" />
                 <path d="M 620 504 L 720 504" strokeDasharray="6 24" />
               </g>
-
-              {/* Data flowing IN to Axis Operations */}
               <g className="flow-line-in" stroke="rgba(255,255,255,0.7)">
                 <path d="M 496 380 L 496 280" strokeDasharray="6 24" />
                 <path d="M 504 620 L 504 720" strokeDasharray="6 24" />
@@ -220,28 +149,21 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
               </g>
             </g>
 
-            {/* Curved Outer Arrows between Satellites (Clockwise) */}
             <g stroke="rgba(205, 164, 100, 0.4)" strokeWidth="1.5" fill="none" markerEnd="url(#arrow-gold)">
-              {/* Top to Right */}
               <path d="M 580 128 A 380 380 0 0 1 872 420" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Right to Bottom */}
               <path d="M 872 580 A 380 380 0 0 1 580 872" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Bottom to Left */}
               <path d="M 420 872 A 380 380 0 0 1 128 580" strokeDasharray="5 25" className="flow-line-out" />
-              {/* Left to Top */}
               <path d="M 128 420 A 380 380 0 0 1 420 128" strokeDasharray="5 25" className="flow-line-out" />
             </g>
 
-            {/* Intersection Dots */}
             <motion.g fill="var(--gold)" filter="url(#glow)"
               animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" as const }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               <circle cx="230" cy="230" r="4" />
               <circle cx="770" cy="770" r="4" />
               <circle cx="230" cy="770" r="4" />
               <circle cx="770" cy="230" r="4" />
-              
               <circle cx="500" cy="280" r="4" />
               <circle cx="500" cy="380" r="4" />
               <circle cx="500" cy="620" r="4" />
@@ -254,11 +176,9 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
           </motion.g>
         </svg>
 
-        {/* Structural Node Containers (Using HARD PIXEL positions on an 800x800 grid) */}
-        
         {/* Center Node */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
+          <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node center-node group bg-black/60 backdrop-blur-md w-40 h-40 rounded-full border border-[var(--gold)]/30 shadow-[0_0_30px_rgba(205,164,100,0.15)] flex flex-col items-center justify-center">
                 <div className="absolute inset-0 bg-[var(--gold)] opacity-5 blur-2xl group-hover:opacity-15 transition-opacity duration-700 rounded-full" />
@@ -270,7 +190,7 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
 
         {/* Top Node: Intelligence */}
         <div style={{ position: 'absolute', zIndex: 10, top: '96px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
+          <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-purple group">
                 <Brain className="w-8 h-8 mb-2 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
@@ -282,7 +202,7 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
 
         {/* Right Node: Media */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '704px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
+          <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-blue group">
                 <Play className="w-8 h-8 mb-2 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
@@ -294,7 +214,7 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
 
         {/* Bottom Node: Ventures */}
         <div style={{ position: 'absolute', zIndex: 10, top: '704px', left: '400px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
+          <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-green group">
                 <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
@@ -306,7 +226,7 @@ export default function EcosystemGraph({ isActive, centerLayout = false }: { isA
 
         {/* Left Node: Studio */}
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '96px', transform: 'translate(-50%, -50%)' }}>
-          <motion.div variants={nodeEntrance}>
+          <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-orange group">
                 <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
