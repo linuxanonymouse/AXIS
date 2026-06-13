@@ -193,7 +193,7 @@ export default function EcosystemGraph({
           <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-purple group">
-                <Brain className="w-8 h-8 mb-2 opacity-80 text-[#B89CF2] group-hover:text-white transition-colors" />
+                <Brain className="w-8 h-8 mb-2 opacity-80 text-[#9b59b6] group-hover:text-white transition-colors" />
                 <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Intelligence</h4>
               </div>
             </motion.div>
@@ -204,8 +204,8 @@ export default function EcosystemGraph({
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '704px', transform: 'translate(-50%, -50%)' }}>
           <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
-              <div className="ecosystem-graph-node satellite-node node-blue group">
-                <Play className="w-8 h-8 mb-2 opacity-80 text-[#85C1EB] group-hover:text-white transition-colors" />
+              <div className="ecosystem-graph-node satellite-node node-orange group">
+                <Play className="w-8 h-8 mb-2 opacity-80 text-[#e67e22] group-hover:text-white transition-colors" />
                 <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Media</h4>
               </div>
             </motion.div>
@@ -217,7 +217,7 @@ export default function EcosystemGraph({
           <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
               <div className="ecosystem-graph-node satellite-node node-green group">
-                <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#9ED8A6] group-hover:text-white transition-colors" />
+                <DollarSign className="w-8 h-8 mb-2 opacity-80 text-[#2ecc71] group-hover:text-white transition-colors" />
                 <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Ventures</h4>
               </div>
             </motion.div>
@@ -228,8 +228,8 @@ export default function EcosystemGraph({
         <div style={{ position: 'absolute', zIndex: 10, top: '400px', left: '96px', transform: 'translate(-50%, -50%)' }}>
           <motion.div style={{ scale: nodeScale, opacity: nodeOpacity, filter: nodeFilter }}>
             <motion.div variants={nodeFloat} animate="float">
-              <div className="ecosystem-graph-node satellite-node node-orange group">
-                <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#E2A687] group-hover:text-white transition-colors" />
+              <div className="ecosystem-graph-node satellite-node node-blue group">
+                <Building2 className="w-8 h-8 mb-2 opacity-80 text-[#4A90E2] group-hover:text-white transition-colors" />
                 <h4 className="text-[0.8rem] font-mono tracking-widest text-[var(--ivory)] uppercase group-hover:text-shimmer transition-all">Studio</h4>
               </div>
             </motion.div>

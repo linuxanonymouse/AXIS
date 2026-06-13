@@ -386,9 +386,9 @@ html {
 .ecosystem-graph-node.center-node {
   width: clamp(120px, 18vw, 180px);
   height: clamp(120px, 18vw, 180px);
-  background: radial-gradient(circle at center, rgba(205, 164, 100, 0.1) 0%, rgba(11, 11, 11, 0.9) 100%);
-  border-color: rgba(205, 164, 100, 0.4);
-  box-shadow: 0 0 30px rgba(205, 164, 100, 0.1);
+  background: radial-gradient(circle at center, rgba(205, 186, 123, 0.1) 0%, rgba(11, 11, 11, 0.9) 100%);
+  border-color: rgba(205, 186, 123, 0.4);
+  box-shadow: 0 0 30px rgba(205, 186, 123, 0.1);
   animation: center-breathe 4s infinite ease-in-out;
 }
 
@@ -397,10 +397,10 @@ html {
   height: clamp(100px, 14vw, 140px);
 }
 
-.ecosystem-graph-node.node-purple { background: radial-gradient(circle at center, rgba(184, 156, 242, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(184, 156, 242, 0.2); }
-.ecosystem-graph-node.node-blue { background: radial-gradient(circle at center, rgba(133, 193, 235, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(133, 193, 235, 0.2); }
-.ecosystem-graph-node.node-green { background: radial-gradient(circle at center, rgba(158, 216, 166, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(158, 216, 166, 0.2); }
-.ecosystem-graph-node.node-orange { background: radial-gradient(circle at center, rgba(226, 166, 135, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(226, 166, 135, 0.2); }
+.ecosystem-graph-node.node-purple { background: radial-gradient(circle at center, rgba(155, 89, 182, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(155, 89, 182, 0.2); }
+.ecosystem-graph-node.node-blue { background: radial-gradient(circle at center, rgba(74, 144, 226, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(74, 144, 226, 0.2); }
+.ecosystem-graph-node.node-green { background: radial-gradient(circle at center, rgba(46, 204, 113, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(46, 204, 113, 0.2); }
+.ecosystem-graph-node.node-orange { background: radial-gradient(circle at center, rgba(230, 126, 34, 0.12), rgba(11, 11, 11, 0.8)); border-color: rgba(230, 126, 34, 0.2); }
 
 /* Hover states */
 .satellite-node:hover {
@@ -415,9 +415,9 @@ html {
 }
 
 @keyframes center-breathe {
-  0% { box-shadow: 0 0 15px rgba(205, 164, 100, 0.1); border-color: rgba(205, 164, 100, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(205, 164, 100, 0.3), inset 0 0 25px rgba(205, 164, 100, 0.1); border-color: rgba(205, 164, 100, 0.6); }
-  100% { box-shadow: 0 0 15px rgba(205, 164, 100, 0.1); border-color: rgba(205, 164, 100, 0.3); }
+  0% { box-shadow: 0 0 15px rgba(205, 186, 123, 0.1); border-color: rgba(205, 186, 123, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(205, 186, 123, 0.3), inset 0 0 25px rgba(205, 186, 123, 0.1); border-color: rgba(205, 186, 123, 0.6); }
+  100% { box-shadow: 0 0 15px rgba(205, 186, 123, 0.1); border-color: rgba(205, 186, 123, 0.3); }
 }
 
 @keyframes flow-out {

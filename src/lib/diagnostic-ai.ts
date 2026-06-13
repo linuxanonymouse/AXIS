@@ -17,6 +17,7 @@ export type DiagnosticAiResult = {
   nextStepRecommendation: string;
   clientFacingSummary: string;
   internalNotes: string;
+  personalizedEmail: string;
 };
 
 const PATHWAYS = [

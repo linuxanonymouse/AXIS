@@ -100,22 +100,34 @@ export default function DiagnosticPage() {
             transition={{ duration: 1, delay: 0.35 }}
             className="axis-hero__ctas"
           >
-            <Link href="/apply" className="axis-btn axis-btn--primary">
+            <Link href="/apply" className="hero-btn-primary">
               Begin Diagnostic
             </Link>
-            <Link href="/overview" className="axis-btn axis-btn--ghost">
+            <Link href="/overview" className="hero-btn-secondary">
               Explore Axis
             </Link>
           </motion.div>
         </section>
 
         <section className="axis-section">
-          <h2 className="axis-section__title">Diagnosis precedes deployment.</h2>
-          <p className="axis-section__lead">
-            Most organizations misdiagnose growth problems. Axis evaluates revenue structure,
-            infrastructure maturity, operational constraints, distribution capacity, performance
-            visibility, and expansion readiness not surface-level symptoms.
-          </p>
+          <div className="axis-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+            <div className="axis-card">
+              <h2 style={{ margin: '0 0 1rem', fontFamily: 'var(--font-serif)', fontSize: '1.8rem', fontWeight: 500, color: 'var(--gold)' }}>
+                Diagnosis precedes deployment.
+              </h2>
+              <p style={{ color: 'rgba(255, 255, 255, 0.74)', lineHeight: 1.7, margin: 0, fontSize: '1rem' }}>
+                Most organizations misdiagnose growth problems by treating surface-level symptoms. Axis requires a structural diagnosis before any deployment occurs.
+              </p>
+            </div>
+            <div className="axis-card">
+              <h2 style={{ margin: '0 0 1rem', fontFamily: 'var(--font-serif)', fontSize: '1.8rem', fontWeight: 500 }}>
+                What We Evaluate
+              </h2>
+              <p style={{ color: 'rgba(255, 255, 255, 0.74)', lineHeight: 1.7, margin: 0, fontSize: '1rem' }}>
+                Axis evaluates revenue structure, infrastructure maturity, operational constraints, distribution capacity, performance visibility, and expansion readiness.
+              </p>
+            </div>
+          </div>
         </section>
 
         <section className="axis-section">
@@ -208,10 +220,10 @@ export default function DiagnosticPage() {
             the organization is aligned for the next stage.
           </p>
           <div className="axis-hero__ctas">
-            <Link href="/apply" className="axis-btn axis-btn--primary">
+            <Link href="/apply" className="hero-btn-primary">
               Start Strategic Diagnostic
             </Link>
-            <Link href="/divisions" className="axis-btn axis-btn--ghost">
+            <Link href="/divisions" className="hero-btn-secondary">
               Explore Divisions
             </Link>
           </div>

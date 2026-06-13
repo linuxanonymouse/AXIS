@@ -47,7 +47,7 @@ export async function processDiagnosticApplication(applicationId: string) {
   if (internalEmail) {
     await sendEmail({
       to: internalEmail,
-      subject: `Axis Diagnostic ${updated.organizationName}`,
+      subject: `Axis Diagnostic: ${updated.organizationName}`,
       html: internalDiagnosticHtml({
         id: updated.id,
         organizationName: updated.organizationName,
