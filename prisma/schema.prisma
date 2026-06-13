@@ -194,3 +194,13 @@ model SystemSettings {
   operatorEnabled   Boolean  @default(true)
   updatedAt         DateTime @updatedAt
 }
+
+model OperatorToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+
+  token     String   @unique
+  email     String
+  used      Boolean  @default(false)
+  expiresAt DateTime
+}

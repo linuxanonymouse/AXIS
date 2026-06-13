@@ -10,6 +10,16 @@ function ProcessingCore() {
   const outerWireframeRef = useRef<THREE.Group>(null);
   const middleGlassRef = useRef<THREE.Mesh>(null);
   const coreRef = useRef<THREE.Mesh>(null);
+  const isSpeakingRef = useRef(false);
+  const speakStateRef = useRef(0);
+
+  useEffect(() => {
+    const handleState = (e: any) => {
+      isSpeakingRef.current = e.detail?.isSpeaking || false;
+    };
+    window.addEventListener("jarvis-state", handleState);
+    return () => window.removeEventListener("jarvis-state", handleState);
+  }, []);
   
   useFrame((state, delta) => {
     const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
@@ -20,25 +30,39 @@ function ProcessingCore() {
     // Base floating motion
     const floatY = Math.sin(t * 1.5) * 0.2;
     
+    // Smoothly transition the speaking state
+    speakStateRef.current = THREE.MathUtils.damp(speakStateRef.current, isSpeakingRef.current ? 1 : 0, 3, delta);
+    const speakVal = speakStateRef.current;
+
     if (outerWireframeRef.current) {
-      // Spins faster as you scroll
-      const spinSpeed = 0.2 + scrollPercent * 2;
+      // Spins slightly faster when speaking smoothly
+      const spinSpeed = 0.2 + scrollPercent * 2 + speakVal * 0.5;
       outerWireframeRef.current.rotation.y += spinSpeed * delta;
       outerWireframeRef.current.rotation.z += spinSpeed * 0.5 * delta;
+      
+      // Wireframe expands slightly when speaking
+      const wireScale = 1 + (speakVal * 0.05);
+      outerWireframeRef.current.scale.setScalar(wireScale);
       outerWireframeRef.current.position.y = floatY;
     }
     
     if (middleGlassRef.current) {
-      middleGlassRef.current.rotation.y -= 0.3 * delta;
+      middleGlassRef.current.rotation.y -= (0.3 + speakVal * 0.2) * delta;
       middleGlassRef.current.rotation.x = Math.sin(t) * 0.2;
       middleGlassRef.current.position.y = floatY;
     }
     
     if (coreRef.current) {
-      // Core pulses with "processing power" as you scroll
-      const pulseScale = 1 + Math.sin(t * (5 + scrollPercent * 10)) * 0.05 + scrollPercent * 0.2;
+      // Core pulses with "processing power" as you scroll and slightly swells when speaking
+      const pulseScale = 1 + Math.sin(t * (5 + scrollPercent * 10)) * 0.05 + scrollPercent * 0.2 + (speakVal * 0.1);
       coreRef.current.scale.setScalar(pulseScale);
-      coreRef.current.rotation.y += 1.0 * delta;
+      
+      // Smoothly transition emissive intensity
+      if ((coreRef.current.material as any).emissiveIntensity !== undefined) {
+        (coreRef.current.material as any).emissiveIntensity = 2 + (speakVal * 1.5);
+      }
+      
+      coreRef.current.rotation.y += (1.0 + speakVal * 0.5) * delta;
       coreRef.current.position.y = floatY;
     }
   });

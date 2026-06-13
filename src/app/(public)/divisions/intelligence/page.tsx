@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import IntelligenceScene from "@/components/scene/IntelligenceScene";
 import DynamicBriefButton from "@/components/ui/DynamicBriefButton";
+import JarvisBot from "@/components/ui/JarvisBot";
 import "./intelligence.css";
 
 export default function IntelligencePage() {
@@ -74,6 +75,11 @@ export default function IntelligencePage() {
             <DynamicBriefButton divisionKey="intelligence_brief_url" label="View Intelligence Brief" />
           </motion.div>
         </div>
+      </section>
+
+      {/* JARVIS BOT SECTION */}
+      <section style={{ padding: "4rem 2rem", position: "relative", zIndex: 20 }}>
+        <JarvisBot />
       </section>
 
       {/* SECTION 02: The Intelligence Problem */}

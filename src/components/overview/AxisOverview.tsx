@@ -138,7 +138,7 @@ export default function AxisOverview() {
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas mt-8">
           <Link href="/divisions" className="btn-gold">Explore The Ecosystem</Link>
-          <Link href="/apply" className="btn-white">Start Strategic Diagnostic</Link>
+          <Link href="/diagnostic" className="btn-white">Strategic Diagnostic</Link>
         </motion.div>
       </motion.section>
 
@@ -260,7 +260,7 @@ export default function AxisOverview() {
           Axis is built for organizations where demand, revenue, or influence already exists, but growth is being limited by weak structure, disconnected systems, or uncaptured value.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas">
-          <Link href="/apply" className="btn-gold">Start Strategic Diagnostic</Link>
+          <Link href="/diagnostic" className="btn-gold">Strategic Diagnostic</Link>
           <Link href="/divisions" className="btn-white">Explore Divisions</Link>
         </motion.div>
       </motion.section>

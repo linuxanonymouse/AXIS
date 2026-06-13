@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const slideVariants = {
   enter: (dir: number) => ({
@@ -68,7 +69,7 @@ const INITIAL: FormData = {
   bringClients: "",
 };
 
-export default function OperatorFlow({ onBack }: { onBack: () => void }) {
+export default function OperatorFlow({ onBack, token }: { onBack: () => void; token: string }) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [dir, setDir] = useState(1);
@@ -76,6 +77,26 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const [validatingToken, setValidatingToken] = useState(true);
+  const [tokenError, setTokenError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function validate() {
+      try {
+        const res = await fetch(`/api/apply/validate-token?token=${token}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Invalid token");
+        
+        setForm(prev => ({ ...prev, email: data.email }));
+      } catch (err: any) {
+        setTokenError(err.message);
+      } finally {
+        setValidatingToken(false);
+      }
+    }
+    validate();
+  }, [token]);
 
   function set(field: keyof FormData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -137,7 +158,8 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
     try {
       const payload = {
         ...form,
-        type: "operator"
+        type: "operator",
+        token // Pass token to mark as used
       };
 
       const res = await fetch("/api/apply", {
@@ -157,6 +179,24 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
   }
 
   const progress = (step / TOTAL_STEPS) * 100;
+
+  if (validatingToken) {
+    return (
+      <div className="apply-shell" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "400px" }}>
+        <p style={{ color: "#888" }}>Verifying secure access token...</p>
+      </div>
+    );
+  }
+
+  if (tokenError) {
+    return (
+      <div className="apply-shell" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: "400px", gap: "1rem" }}>
+        <h2 style={{ color: "#ff4444" }}>Access Denied</h2>
+        <p style={{ color: "#888" }}>{tokenError}</p>
+        <button onClick={onBack} className="axis-btn axis-btn--ghost">Return</button>
+      </div>
+    );
+  }
 
   return (
     <div className="apply-shell">
@@ -195,8 +235,14 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                       <input className={`apply-input ${errors.name ? "apply-input--error" : ""}`} type="text" placeholder="Your full name" value={form.name} onChange={(e) => set("name", e.target.value)} />
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Email</label>
-                      <input className={`apply-input ${errors.email ? "apply-input--error" : ""}`} type="email" placeholder="you@email.com" value={form.email} onChange={(e) => set("email", e.target.value)} />
+                      <label className="apply-label">Primary Contact Email</label>
+                      <input
+                        className="apply-input"
+                        type="email"
+                        readOnly
+                        value={form.email}
+                        style={{ color: "#888", backgroundColor: "#0a0a0a", cursor: "not-allowed" }}
+                      />
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">What best describes your current role?</label>
@@ -217,7 +263,7 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
               {step === 2 && (
                 <>
                   <p className="apply-step__eyebrow">Experience</p>
-                  <h2 className="apply-step__title">Client History</h2>
+                  <h2 className="apply-step__title">Client Access & Experience</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">How long have you been working with clients?</label>
@@ -225,7 +271,11 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you currently have active clients?</label>
-                      <input className={`apply-input ${errors.activeClients ? "apply-input--error" : ""}`} type="text" placeholder="Yes/No and brief detail" value={form.activeClients} onChange={(e) => set("activeClients", e.target.value)} />
+                      <select className={`apply-input ${errors.activeClients ? "apply-input--error" : ""}`} value={form.activeClients} onChange={(e) => set("activeClients", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Current Portfolio Size</label>
@@ -239,15 +289,29 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How do you primarily acquire clients?</label>
-                      <input className={`apply-input ${errors.clientAcquisition ? "apply-input--error" : ""}`} type="text" placeholder="e.g. Referrals, Outbound, Inbound" value={form.clientAcquisition} onChange={(e) => set("clientAcquisition", e.target.value)} />
+                      <select className={`apply-input ${errors.clientAcquisition ? "apply-input--error" : ""}`} value={form.clientAcquisition} onChange={(e) => set("clientAcquisition", e.target.value)}>
+                        <option value="" disabled>Select primary method...</option>
+                        <option value="Referrals">Referrals</option>
+                        <option value="Inbound / Content">Inbound / Content</option>
+                        <option value="Outbound / Prospecting">Outbound / Prospecting</option>
+                        <option value="Partnerships">Partnerships</option>
+                        <option value="Paid Ads">Paid Ads</option>
+                      </select>
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">How many clients could you realistically bring into this system within the next 30–60 days?</label>
+                      <label className="apply-label">How many qualified opportunities could you realistically introduce within the next 30–60 days?</label>
                       <input className={`apply-input ${errors.realisticClients ? "apply-input--error" : ""}`} type="text" placeholder="e.g. 1-3, 5-10" value={form.realisticClients} onChange={(e) => set("realisticClients", e.target.value)} />
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">What is your current monthly revenue range?</label>
-                      <input className={`apply-input ${errors.revenueRange ? "apply-input--error" : ""}`} type="text" placeholder="e.g. $5k-$10k, $20k+" value={form.revenueRange} onChange={(e) => set("revenueRange", e.target.value)} />
+                      <select className={`apply-input ${errors.revenueRange ? "apply-input--error" : ""}`} value={form.revenueRange} onChange={(e) => set("revenueRange", e.target.value)}>
+                        <option value="" disabled>Select range...</option>
+                        <option value="Under $5k">Under $5k</option>
+                        <option value="$5k - $10k">$5k - $10k</option>
+                        <option value="$10k - $25k">$10k - $25k</option>
+                        <option value="$25k - $50k">$25k - $50k</option>
+                        <option value="$50k+">$50k+</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -256,14 +320,14 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
               {step === 3 && (
                 <>
                   <p className="apply-step__eyebrow">Operations</p>
-                  <h2 className="apply-step__title">Delivery & Management</h2>
+                  <h2 className="apply-step__title">Operating Capability</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">What is your primary limitation right now?</label>
                       <textarea className={`apply-textarea ${errors.primaryLimitation ? "apply-input--error" : ""}`} placeholder="e.g. Fulfillment capacity, Lead generation" value={form.primaryLimitation} onChange={(e) => set("primaryLimitation", e.target.value)} rows={2} />
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">How do you currently deliver work to clients?</label>
+                      <label className="apply-label">How do you currently deliver work or manage client outcomes?</label>
                       <textarea className={`apply-textarea ${errors.deliveryMethod ? "apply-input--error" : ""}`} placeholder="e.g. I do everything manually, I have a small team" value={form.deliveryMethod} onChange={(e) => set("deliveryMethod", e.target.value)} rows={2} />
                     </div>
                     <div className="apply-field">
@@ -271,8 +335,12 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                       <textarea className={`apply-textarea ${errors.relationshipManagement ? "apply-input--error" : ""}`} placeholder="e.g. Excellent communication, Struggle with boundaries" value={form.relationshipManagement} onChange={(e) => set("relationshipManagement", e.target.value)} rows={2} />
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Are you comfortable operating under your own brand while fulfillment is handled externally?</label>
-                      <input className={`apply-input ${errors.whiteLabelComfort ? "apply-input--error" : ""}`} type="text" placeholder="Yes/No" value={form.whiteLabelComfort} onChange={(e) => set("whiteLabelComfort", e.target.value)} />
+                      <label className="apply-label">Are you comfortable operating within Axis standards, systems, and approval processes?</label>
+                      <select className={`apply-input ${errors.whiteLabelComfort ? "apply-input--error" : ""}`} value={form.whiteLabelComfort} onChange={(e) => set("whiteLabelComfort", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -289,15 +357,25 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">What is your timeline?</label>
-                      <input className={`apply-input ${errors.timeline ? "apply-input--error" : ""}`} type="text" placeholder="e.g. Immediate, Next 30 days" value={form.timeline} onChange={(e) => set("timeline", e.target.value)} />
+                      <select className={`apply-input ${errors.timeline ? "apply-input--error" : ""}`} value={form.timeline} onChange={(e) => set("timeline", e.target.value)}>
+                        <option value="" disabled>Select timeline...</option>
+                        <option value="Immediate">Immediate</option>
+                        <option value="Next 30 days">Next 30 days</option>
+                        <option value="1-3 months">1-3 months</option>
+                        <option value="Just exploring">Just exploring</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Are you currently in a position to bring clients into this system?</label>
-                      <input className={`apply-input ${errors.bringClients ? "apply-input--error" : ""}`} type="text" placeholder="Yes/No" value={form.bringClients} onChange={(e) => set("bringClients", e.target.value)} />
+                      <select className={`apply-input ${errors.bringClients ? "apply-input--error" : ""}`} value={form.bringClients} onChange={(e) => set("bringClients", e.target.value)}>
+                        <option value="" disabled>Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                     <p style={{ marginTop: "2rem", color: "#888", fontSize: "0.875rem", lineHeight: 1.6 }}>
-                      This application is used to assess alignment with the Axis Studio Operator System.
-                      Access is limited and based on experience, client access, and ability to operate at a professional level.
+                      This application is used to assess alignment with the Axis Operator System.
+                      Access is limited and based on experience, relationship quality, professional judgment, and ability to operate within Axis standards.
                     </p>
                   </div>
                 </>

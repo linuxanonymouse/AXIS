@@ -13,9 +13,6 @@ type FormState = {
   email: string;
   phone: string;
   website: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
   brief: string;
   referralSource: string;
 };
@@ -26,41 +23,9 @@ const INITIAL: FormState = {
   email: "",
   phone: "",
   website: "",
-  projectType: "",
-  budget: "",
-  timeline: "",
   brief: "",
   referralSource: "",
 };
-
-const PROJECT_TYPES = [
-  "Web Development",
-  "App Development",
-  "Brand & Identity",
-  "Marketing & Distribution",
-  "Operations Consulting",
-  "Strategic Advisory",
-  "Full-Stack Deployment",
-  "Other",
-];
-
-const BUDGET_OPTIONS = [
-  "Under $5K",
-  "$5K $15K",
-  "$15K $50K",
-  "$50K $100K",
-  "$100K+",
-  "To be discussed",
-];
-
-const TIMELINE_OPTIONS = [
-  "Immediately",
-  "Within 2 weeks",
-  "1 3 months",
-  "3 6 months",
-  "6+ months",
-  "Flexible",
-];
 
 export default function ContactPage() {
   const [form, setForm] = useState<FormState>(INITIAL);
@@ -80,9 +45,6 @@ export default function ContactPage() {
     if (!form.organization.trim()) errs.organization = "Required";
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
       errs.email = "Valid email required";
-    if (!form.projectType) errs.projectType = "Select a project type";
-    if (!form.budget) errs.budget = "Select a budget range";
-    if (!form.timeline) errs.timeline = "Select a timeline";
     if (!form.brief.trim()) errs.brief = "Required";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -126,7 +88,7 @@ export default function ContactPage() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="contact-eyebrow"
           >
-            Project Intake
+            Contact
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -134,7 +96,7 @@ export default function ContactPage() {
             transition={{ duration: 0.95, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
             className="contact-title"
           >
-            Deployment Request
+            Contact Axis
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -142,8 +104,7 @@ export default function ContactPage() {
             transition={{ duration: 0.95, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
             className="contact-body"
           >
-            Submit a project request through the Axis Operations intake system. Our team will
-            review your specifications and respond within 24 hours.
+            Get in touch with the Axis Operations team for general inquiries or support. We will review your message and respond within 24 hours.
           </motion.p>
 
           <motion.div
@@ -168,7 +129,7 @@ export default function ContactPage() {
                 >
                   <p className="contact-sent-title">Transmission received.</p>
                   <p className="contact-sent-body">
-                    Your project request has been logged. A confirmation has been sent to your
+                    Your message has been sent. A confirmation has been sent to your
                     email. Our operations team will respond within 24 hours.
                   </p>
                   <Link href="/diagnostic" className="axis-btn axis-btn--ghost">
@@ -274,78 +235,17 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Project Type */}
-                  <div className="contact-form__field">
-                    <label className="contact-form__label" htmlFor="contact-project-type">
-                      Service Required
-                    </label>
-                    <select
-                      id="contact-project-type"
-                      className={`contact-form__input ${errors.projectType ? "contact-form__input--error" : ""}`}
-                      value={form.projectType}
-                      onChange={(e) => set("projectType", e.target.value)}
-                    >
-                      <option value="">Select a service…</option>
-                      {PROJECT_TYPES.map((t) => (
-                        <option key={t} value={t}>{t}</option>
-                      ))}
-                    </select>
-                    {errors.projectType && (
-                      <span className="contact-form__error">{errors.projectType}</span>
-                    )}
-                  </div>
 
-                  {/* Row: Budget + Timeline */}
-                  <div className="contact-form__row">
-                    <div className="contact-form__field">
-                      <label className="contact-form__label" htmlFor="contact-budget">
-                        Budget Range
-                      </label>
-                      <select
-                        id="contact-budget"
-                        className={`contact-form__input ${errors.budget ? "contact-form__input--error" : ""}`}
-                        value={form.budget}
-                        onChange={(e) => set("budget", e.target.value)}
-                      >
-                        <option value="">Select budget…</option>
-                        {BUDGET_OPTIONS.map((b) => (
-                          <option key={b} value={b}>{b}</option>
-                        ))}
-                      </select>
-                      {errors.budget && (
-                        <span className="contact-form__error">{errors.budget}</span>
-                      )}
-                    </div>
-                    <div className="contact-form__field">
-                      <label className="contact-form__label" htmlFor="contact-timeline">
-                        Timeline
-                      </label>
-                      <select
-                        id="contact-timeline"
-                        className={`contact-form__input ${errors.timeline ? "contact-form__input--error" : ""}`}
-                        value={form.timeline}
-                        onChange={(e) => set("timeline", e.target.value)}
-                      >
-                        <option value="">Select timeline…</option>
-                        {TIMELINE_OPTIONS.map((t) => (
-                          <option key={t} value={t}>{t}</option>
-                        ))}
-                      </select>
-                      {errors.timeline && (
-                        <span className="contact-form__error">{errors.timeline}</span>
-                      )}
-                    </div>
-                  </div>
 
-                  {/* Project Description */}
+                  {/* Message */}
                   <div className="contact-form__field">
                     <label className="contact-form__label" htmlFor="contact-brief">
-                      Project Description
+                      Message
                     </label>
                     <textarea
                       id="contact-brief"
                       className={`contact-form__textarea ${errors.brief ? "contact-form__input--error" : ""}`}
-                      placeholder="Describe your project requirements, goals, and desired outcomes…"
+                      placeholder="How can we help you?"
                       value={form.brief}
                       onChange={(e) => set("brief", e.target.value)}
                       rows={5}
@@ -380,7 +280,7 @@ export default function ContactPage() {
                       className="axis-btn axis-btn--primary"
                       disabled={submitting}
                     >
-                      {submitting ? "Transmitting…" : "Submit Project Request"}
+                      {submitting ? "Transmitting…" : "Send Message"}
                     </button>
                     <p className="contact-note">
                       For structured evaluation, begin with the{" "}

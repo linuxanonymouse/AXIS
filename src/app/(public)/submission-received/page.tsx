@@ -22,8 +22,8 @@ function SubmissionContent() {
     title = "Alignment Request Received";
     message = "Your alignment request has been submitted. Axis will review your objectives and readiness to determine the appropriate next step.";
   } else if (type === "operator") {
-    title = "Application Received";
-    message = "Your operator access application has been received. Axis will review your experience and alignment to determine eligibility.";
+    title = "Submission Received";
+    message = "Your Axis Operator Application has been received. Axis will review your experience, client access, operating capability, and alignment with the Axis ecosystem. This is an automated confirmation. Internal review will determine whether there is a fit for the Axis Operator System.";
   }
 
   return (

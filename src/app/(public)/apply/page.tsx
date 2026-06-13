@@ -13,6 +13,7 @@ function ApplyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const flowParam = searchParams.get("flow");
+  const tokenParam = searchParams.get("token");
   
   const flow = flowParam === "diagnostic" || flowParam === "deployment" || flowParam === "operator" ? flowParam : "none";
   
@@ -111,44 +112,24 @@ function ApplyContent() {
               </button>
             )}
 
-            {false && settings.operatorEnabled && (
-              <button
-                onClick={() => setFlow("operator")}
-                style={{
-                  textAlign: "left",
-                  cursor: "pointer",
-                  padding: "2.5rem",
-                  width: "100%",
-                  background: "#050505",
-                  border: "1px solid #1a1a1a",
-                  borderRadius: "4px",
-                  transition: "all 0.2s ease"
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.borderColor = "#888"; // Muted neutral grey
-                  e.currentTarget.style.background = "#0a0a0a";
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.borderColor = "#1a1a1a";
-                  e.currentTarget.style.background = "#050505";
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#888" }} />
-                  <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Operator Access</h3>
-                </div>
-                <p style={{ color: "#888", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  Apply for limited access to the Axis Operator System. Access is based on execution capability, active portfolio, professional standards, and alignment with Axis operating requirements.
-                </p>
-              </button>
-            )}
+
           </div>
         </div>
       )}
 
       {flow === "diagnostic" && <DiagnosticFlow onBack={() => setFlow("none")} />}
       {flow === "deployment" && <DeploymentFlow onBack={() => setFlow("none")} />}
-      {flow === "operator" && <OperatorFlow onBack={() => setFlow("none")} />}
+      {flow === "operator" && (
+        tokenParam ? (
+          <OperatorFlow onBack={() => setFlow("none")} token={tokenParam} />
+        ) : (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "#888" }}>
+            <h2 style={{ color: "#ededed", marginBottom: "1rem" }}>Restricted Access</h2>
+            <p>The Axis Operator System requires a secure, single-use token to apply.</p>
+            <button onClick={() => setFlow("none")} className="axis-btn axis-btn--ghost" style={{ marginTop: "2rem" }}>Return</button>
+          </div>
+        )
+      )}
       
       <Footer />
     </div>

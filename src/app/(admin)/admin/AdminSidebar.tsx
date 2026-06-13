@@ -55,6 +55,9 @@ export default function AdminSidebar() {
           <Link href="/admin/insights" onClick={() => setIsOpen(false)} className="admin-nav-link">
             <FileText size={18} strokeWidth={1.5} /> Insights CMS
           </Link>
+          <Link href="/admin/operators/tokens" onClick={() => setIsOpen(false)} className="admin-nav-link">
+            <Users size={18} strokeWidth={1.5} /> Operator Tokens
+          </Link>
           <Link href="/admin/settings" onClick={() => setIsOpen(false)} className="admin-nav-link">
             <LayoutDashboard size={18} strokeWidth={1.5} /> Settings
           </Link>

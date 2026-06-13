@@ -49,6 +49,20 @@ export async function POST(request: NextRequest) {
     }
 
     if (json?.type === "operator") {
+      const { token, ...operatorData } = json;
+
+      if (!token) {
+        return jsonError("Missing access token", 401);
+      }
+
+      const operatorToken = await prisma.operatorToken.findUnique({
+        where: { token },
+      });
+
+      if (!operatorToken || operatorToken.used || new Date() > operatorToken.expiresAt) {
+        return jsonError("Invalid or expired token", 401);
+      }
+
       const record = await prisma.operatorApplication.create({
         data: {
           name: json.name,
@@ -70,6 +84,11 @@ export async function POST(request: NextRequest) {
           ipHash: meta.ipHash,
           userAgent: meta.userAgent,
         }
+      });
+
+      await prisma.operatorToken.update({
+        where: { id: operatorToken.id },
+        data: { used: true },
       });
 
       await dispatchAutomation({

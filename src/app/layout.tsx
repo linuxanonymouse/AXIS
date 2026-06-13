@@ -34,6 +34,9 @@ export const metadata: Metadata = {
     default: `${SITE.name} Operating System for Scalable Organizations`,
   },
   description: SITE.description,
+  icons: {
+    icon: "/images/AXIS Logo-01.png",
+  },
   openGraph: {
     title: SITE.name,
     description: SITE.description,

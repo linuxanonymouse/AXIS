@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Crosshair, LayoutGrid, Layers, Building2, BrainCircuit, PlaySquare, CircleDollarSign, Activity, BarChart2, Mail, ChevronRight, Target, X } from "lucide-react";
 import "./navbar.css";
 
 export default function Navbar() {
@@ -62,8 +63,8 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__actions">
-          <Link href="/diagnostic" className="navbar__btn-apply">
-            Start Strategic Diagnostic
+          <Link href="/apply" className="navbar__btn-apply">
+            Request Access
           </Link>
           
           <div className="navbar__mobile-btn">
@@ -84,55 +85,107 @@ export default function Navbar() {
         {menuOpen && (
           <motion.div 
             className="mobile-menu-overlay"
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
           >
-            <div className="mobile-menu-links">
-              {/* Primary */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4 }}>
-                <Link href="/overview" className={`mobile-menu-link ${pathname === '/overview' ? 'mobile-menu-link--active' : ''}`}>Overview</Link>
-              </motion.div>
-              
-              {/* Divisions Group */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.4 }} className="mobile-menu-group">
-                <Link href="/divisions" className={`mobile-menu-link ${pathname === '/divisions' ? 'mobile-menu-link--active' : ''}`}>Divisions</Link>
-                <div className="mobile-menu-sublinks">
-                  <Link href="/divisions/operations" className={`mobile-menu-sublink ${pathname === '/divisions/operations' ? 'mobile-menu-sublink--active' : ''}`}>Axis Operations</Link>
-                  <Link href="/divisions/studio" className={`mobile-menu-sublink ${pathname === '/divisions/studio' ? 'mobile-menu-sublink--active' : ''}`}>Axis Studio</Link>
-                  <Link href="/divisions/intelligence" className={`mobile-menu-sublink ${pathname === '/divisions/intelligence' ? 'mobile-menu-sublink--active' : ''}`}>Axis Intelligence</Link>
-                  <Link href="/divisions/media" className={`mobile-menu-sublink ${pathname === '/divisions/media' ? 'mobile-menu-sublink--active' : ''}`}>Axis Media</Link>
-                </div>
-              </motion.div>
-
-              {/* Strategic Action */}
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.4 }}>
-                <Link href="/diagnostic" className={`mobile-menu-link ${pathname.startsWith('/diagnostic') ? 'mobile-menu-link--active' : ''}`}>Diagnostic</Link>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35, duration: 0.4 }}>
-                <Link href="/insights" className={`mobile-menu-link ${pathname.startsWith('/insights') ? 'mobile-menu-link--active' : ''}`}>Insights</Link>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.4 }}>
-                <Link href="/contact" className={`mobile-menu-link ${pathname === '/contact' ? 'mobile-menu-link--active' : ''}`}>Contact</Link>
-              </motion.div>
+            <div className="mobile-menu-header">
+              <div className="navbar__logo">
+                <div className="navbar__mark" />
+                <span className="navbar__brand">A X I S</span>
+              </div>
+              <button className="mobile-menu-close" onClick={() => setMenuOpen(false)}>
+                <X size={24} color="#d4af37" strokeWidth={1} />
+              </button>
             </div>
 
-            <motion.div 
-              className="mobile-menu-footer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <Link href="/diagnostic" className="mobile-menu-btn-apply">
-                Start Strategic Diagnostic
-              </Link>
-              <a href="mailto:operations@axisoperations.ca" className="mobile-menu-email">
-                operations@axisoperations.ca
-              </a>
-            </motion.div>
+            <div className="mobile-menu-scroll">
+              {/* PRIMARY NAVIGATION */}
+              <div className="mobile-menu-section">
+                <span className="mobile-menu-section-title">PRIMARY NAVIGATION</span>
+                <Link href="/overview" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><Crosshair size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Overview</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+              </div>
+
+              {/* DIVISIONS */}
+              <div className="mobile-menu-section">
+                <span className="mobile-menu-section-title">DIVISIONS</span>
+                <Link href="/divisions" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><LayoutGrid size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Divisions</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/divisions/operations" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><Layers size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Operations</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/divisions/studio" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><Building2 size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Studio</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/divisions/intelligence" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><BrainCircuit size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Intelligence</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/divisions/media" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><PlaySquare size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Media</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/divisions/ventures" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><CircleDollarSign size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Ventures</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+              </div>
+
+              {/* STRATEGIC ENTRY */}
+              <div className="mobile-menu-section">
+                <span className="mobile-menu-section-title">STRATEGIC ENTRY</span>
+                <Link href="/diagnostic" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><Activity size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Diagnostic</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/insights" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><BarChart2 size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Insights</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+                <Link href="/contact" className="mobile-menu-row" onClick={() => setMenuOpen(false)}>
+                  <div className="mobile-icon-wrapper"><Mail size={16} strokeWidth={1.5} color="#d4af37" /></div>
+                  <span className="mobile-menu-text">Contact</span>
+                  <ChevronRight size={16} color="#d4af37" className="mobile-menu-arrow" />
+                </Link>
+              </div>
+
+              {/* Bottom Actions */}
+              <div className="mobile-menu-bottom">
+                <Link href="/diagnostic" className="mobile-btn-diagnostic" onClick={() => setMenuOpen(false)}>
+                  <Target size={18} color="#d4af37" strokeWidth={1.5} />
+                  <span>START STRATEGIC DIAGNOSTIC</span>
+                </Link>
+                <a href="mailto:operations@axisoperations.ca" className="mobile-email-link">
+                  operations@axisoperations.ca
+                </a>
+              </div>
+              
+              {/* Footer Links */}
+              <div className="mobile-footer-links">
+                <Link href="/privacy" onClick={() => setMenuOpen(false)}>PRIVACY POLICY</Link>
+                <span>|</span>
+                <Link href="/terms" onClick={() => setMenuOpen(false)}>TERMS</Link>
+                <span>|</span>
+                <Link href="/disclaimer" onClick={() => setMenuOpen(false)}>DISCLAIMER</Link>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

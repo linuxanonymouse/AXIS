@@ -28,7 +28,7 @@ const slideVariants = {
 type FormData = {
   projectName: string;
   email: string;
-  requestCategory: string;
+  projectType: string;
   internalOwner: string;
   techStack: string;
   currentProcess: string;
@@ -37,16 +37,45 @@ type FormData = {
   businessImpact: string;
   currentPainPoint: string;
   successMetric: string;
-  priority: string;
-  completionDate: string;
+  budget: string;
+  timeline: string;
   systemAccess: string;
   supportUrl: string;
 };
 
+const PROJECT_TYPES = [
+  "Web Development",
+  "App Development",
+  "Brand & Identity",
+  "Marketing & Distribution",
+  "Operations Consulting",
+  "Strategic Advisory",
+  "Full-Stack Deployment",
+  "Other",
+];
+
+const BUDGET_OPTIONS = [
+  "Under $5K",
+  "$5K - $15K",
+  "$15K - $50K",
+  "$50K - $100K",
+  "$100K+",
+  "To be discussed",
+];
+
+const TIMELINE_OPTIONS = [
+  "Immediately",
+  "Within 2 weeks",
+  "1 - 3 months",
+  "3 - 6 months",
+  "6+ months",
+  "Flexible",
+];
+
 const INITIAL: FormData = {
   projectName: "",
   email: "",
-  requestCategory: "",
+  projectType: "",
   internalOwner: "",
   techStack: "",
   currentProcess: "",
@@ -55,8 +84,8 @@ const INITIAL: FormData = {
   businessImpact: "",
   currentPainPoint: "",
   successMetric: "",
-  priority: "",
-  completionDate: "",
+  budget: "",
+  timeline: "",
   systemAccess: "",
   supportUrl: "",
 };
@@ -83,23 +112,23 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
       if (!form.projectName.trim()) errs.projectName = "Required";
       if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
         errs.email = "Valid email required";
-      if (!form.requestCategory.trim()) errs.requestCategory = "Required";
+      if (!form.projectType.trim()) errs.projectType = "Required";
       if (!form.internalOwner.trim()) errs.internalOwner = "Required";
     }
     if (s === 2) {
       if (!form.techStack.trim()) errs.techStack = "Required";
       if (!form.currentProcess.trim()) errs.currentProcess = "Required";
+      if (!form.currentPainPoint.trim()) errs.currentPainPoint = "Required";
     }
     if (s === 3) {
       if (!form.bottleneck.trim()) errs.bottleneck = "Required";
-      if (!form.currentPainPoint.trim()) errs.currentPainPoint = "Required";
       if (!form.desiredOutcome.trim()) errs.desiredOutcome = "Required";
       if (!form.successMetric.trim()) errs.successMetric = "Required";
       if (!form.businessImpact.trim()) errs.businessImpact = "Required";
     }
     if (s === 4) {
-      if (!form.priority) errs.priority = "Required";
-      if (!form.completionDate.trim()) errs.completionDate = "Required";
+      if (!form.budget) errs.budget = "Required";
+      if (!form.timeline.trim()) errs.timeline = "Required";
       if (!form.systemAccess.trim()) errs.systemAccess = "Required";
     }
     setErrors(errs);
@@ -228,24 +257,20 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                       {errors.email && <span className="apply-error">{errors.email}</span>}
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Request Category</label>
+                      <label className="apply-label">Service Required</label>
                       <select
-                        className={`apply-input ${errors.requestCategory ? "apply-input--error" : ""}`}
-                        value={form.requestCategory}
-                        onChange={(e) => set("requestCategory", e.target.value)}
+                        className={`apply-input ${errors.projectType ? "apply-input--error" : ""}`}
+                        value={form.projectType}
+                        onChange={(e) => set("projectType", e.target.value)}
                       >
-                        <option value="" disabled>Select category...</option>
-                        <option value="Strategic Advisory">Strategic Advisory</option>
-                        <option value="Infrastructure Deployment">Infrastructure Deployment</option>
-                        <option value="Data & AI Systems">Data & AI Systems</option>
-                        <option value="Distribution Ecosystem">Distribution Ecosystem</option>
-                        <option value="Strategic Partnership">Strategic Partnership</option>
-                        <option value="Full Axis Operating System">Full Axis Operating System</option>
-                        <option value="Not Sure Yet">Not Sure Yet</option>
+                        <option value="" disabled>Select a service...</option>
+                        {PROJECT_TYPES.map(t => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Internal Owner</label>
+                      <label className="apply-label">Primary Decision Owner</label>
                       <input
                         className={`apply-input ${errors.internalOwner ? "apply-input--error" : ""}`}
                         type="text"
@@ -282,6 +307,16 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                         rows={5}
                       />
                     </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Current Pain Point</label>
+                      <textarea
+                        className={`apply-textarea ${errors.currentPainPoint ? "apply-input--error" : ""}`}
+                        placeholder="What part of the current system creates the most friction?"
+                        value={form.currentPainPoint}
+                        onChange={(e) => set("currentPainPoint", e.target.value)}
+                        rows={3}
+                      />
+                    </div>
                   </div>
                 </>
               )}
@@ -298,16 +333,6 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                         value={form.bottleneck}
                         onChange={(e) => set("bottleneck", e.target.value)}
                         rows={3}
-                      />
-                    </div>
-                    <div className="apply-field">
-                      <label className="apply-label">Primary Constraint / Pain Point</label>
-                      <textarea
-                        className={`apply-textarea ${errors.currentPainPoint ? "apply-input--error" : ""}`}
-                        placeholder="What specific pain point does this solve?"
-                        value={form.currentPainPoint}
-                        onChange={(e) => set("currentPainPoint", e.target.value)}
-                        rows={2}
                       />
                     </div>
                     <div className="apply-field">
@@ -348,26 +373,30 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                   <h2 className="apply-step__title">Execution Logistics</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
-                      <label className="apply-label">Priority</label>
+                      <label className="apply-label">Budget Range</label>
                       <select
-                        className={`apply-input ${errors.priority ? "apply-input--error" : ""}`}
-                        value={form.priority}
-                        onChange={(e) => set("priority", e.target.value)}
+                        className={`apply-input ${errors.budget ? "apply-input--error" : ""}`}
+                        value={form.budget}
+                        onChange={(e) => set("budget", e.target.value)}
                       >
-                        <option value="" disabled>Select priority...</option>
-                        <option value="High">High (Immediate Bottleneck)</option>
-                        <option value="Medium">Medium (Scheduled Growth)</option>
-                        <option value="Low">Low (Backlog/Optimizations)</option>
+                        <option value="" disabled>Select budget...</option>
+                        {BUDGET_OPTIONS.map(b => (
+                          <option key={b} value={b}>{b}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="apply-field">
-                      <label className="apply-label">Desired Completion Date</label>
-                      <input
-                        className={`apply-input ${errors.completionDate ? "apply-input--error" : ""}`}
-                        type="date"
-                        value={form.completionDate}
-                        onChange={(e) => set("completionDate", e.target.value)}
-                      />
+                      <label className="apply-label">Timeline</label>
+                      <select
+                        className={`apply-input ${errors.timeline ? "apply-input--error" : ""}`}
+                        value={form.timeline}
+                        onChange={(e) => set("timeline", e.target.value)}
+                      >
+                        <option value="" disabled>Select timeline...</option>
+                        {TIMELINE_OPTIONS.map(t => (
+                          <option key={t} value={t}>{t}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">System Access & Credentials</label>
