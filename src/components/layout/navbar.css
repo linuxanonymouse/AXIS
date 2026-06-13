@@ -96,7 +96,8 @@
   padding: 0.5rem 0;
 }
 
-.navbar__link:hover {
+.navbar__link:hover,
+.navbar__link--active {
   color: var(--ivory);
   text-shadow: 0 0 12px rgba(205, 164, 100, 0.4);
 }
@@ -112,7 +113,8 @@
   transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.navbar__link:hover .navbar__indicator {
+.navbar__link:hover .navbar__indicator,
+.navbar__link--active .navbar__indicator {
   width: 100%;
 }
 
@@ -229,7 +231,8 @@
   transition: color 0.3s ease;
 }
 
-.mobile-menu-link:hover {
+.mobile-menu-link:hover,
+.mobile-menu-link--active {
   color: var(--gold);
 }
 

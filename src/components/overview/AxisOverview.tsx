@@ -130,15 +130,21 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
-        <motion.h1 variants={childFadeUp} className="text-luxury-heading text-shimmer">AXIS</motion.h1>
+        <motion.img 
+          src="/images/AXIS%20Gold%20Logo-01.png" 
+          alt="AXIS" 
+          variants={childFadeUp} 
+          className="mb-6"
+          style={{ height: "160px", width: "auto", objectFit: "contain" }} 
+        />
         <motion.div variants={childFadeUp} className="eyebrow">ALIGN. OPERATE. COMPOUND.</motion.div>
         <motion.div variants={childFadeUp} className="eyebrow">The operating system for scalable organizations.</motion.div>
         <motion.p variants={childFadeUp} className="text-body-large mt-8">
           Axis aligns infrastructure, intelligence, distribution, and monetization into a coordinated system that removes friction and unlocks unrealized value.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas mt-8">
-          <button className="btn-gold" onClick={() => scrollToSection(4)}>Explore The Ecosystem</button>
-          <button className="btn-white" onClick={() => scrollToSection(1)}>Start Strategic Diagnostic</button>
+          <Link href="/divisions" className="btn-gold">Explore The Ecosystem</Link>
+          <Link href="/apply" className="btn-white">Start Strategic Diagnostic</Link>
         </motion.div>
       </motion.section>
 
@@ -229,8 +235,7 @@ export default function AxisOverview() {
 
       {/* SECTION 05 The Axis Ecosystem */}
       <motion.section 
-        className={`overview-section section-hero relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
-        style={{ minHeight: '200dvh', display: 'block', paddingTop: '0' }}
+        className={`overview-section section-hero section-ecosystem relative overflow-visible ${activeSection === 4 || activeSection === 5 ? "active" : ""}`}
         initial="hidden"
         whileInView="visible" viewport={{ once: false, amount: 0.1 }}
         variants={containerStagger}
@@ -261,7 +266,7 @@ export default function AxisOverview() {
           Axis is built for organizations where demand, revenue, or influence already exists, but growth is being limited by weak structure, disconnected systems, or uncaptured value.
         </motion.p>
         <motion.div variants={childFadeUp} className="hero-ctas">
-          <Link href="/diagnostic" className="btn-gold">Start Strategic Diagnostic</Link>
+          <Link href="/apply" className="btn-gold">Start Strategic Diagnostic</Link>
           <Link href="/divisions" className="btn-white">Explore Divisions</Link>
         </motion.div>
       </motion.section>

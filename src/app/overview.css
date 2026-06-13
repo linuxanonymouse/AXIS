@@ -76,6 +76,14 @@ html {
 .section-final {
   flex-direction: column;
   text-align: center;
+  justify-content: flex-end;
+  padding-bottom: 15vh;
+}
+
+.section-ecosystem {
+  min-height: 200dvh;
+  display: block;
+  padding-top: 0;
 }
 
 /* ─── Typography overrides ─── */
@@ -472,9 +480,17 @@ html {
     padding: 2rem 0.8rem; /* Reduced mobile padding */ /* Reduced mobile padding */
   }
 
+  .section-ecosystem {
+    min-height: 80dvh;
+  }
+
   .section-split {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .split-col:empty {
+    display: none;
   }
 
   .split-col {

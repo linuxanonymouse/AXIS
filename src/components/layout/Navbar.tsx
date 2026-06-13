@@ -55,19 +55,21 @@ export default function Navbar() {
       >
         <div className="navbar__logo">
           <Link href="/" className="navbar__logo-link">
-            <div className="navbar__mark" />
-            <span className="navbar__brand">AXIS</span>
+            <img src="/images/AXIS%20Gold%20Logo-01.png" alt="AXIS" style={{ height: "40px", width: "auto", objectFit: "contain" }} />
           </Link>
         </div>
 
         {/* Desktop Links */}
         <div className="navbar__links">
-          {desktopLinks.map((link, i) => (
-            <Link key={i} href={link.href} className="navbar__link">
-              {link.label}
-              <span className="navbar__indicator" />
-            </Link>
-          ))}
+          {desktopLinks.map((link, i) => {
+            const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+            return (
+              <Link key={i} href={link.href} className={`navbar__link ${isActive ? 'navbar__link--active' : ''}`}>
+                {link.label}
+                <span className="navbar__indicator" />
+              </Link>
+            );
+          })}
         </div>
 
         <div className="navbar__actions">
@@ -99,18 +101,21 @@ export default function Navbar() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="mobile-menu-links">
-              {mobileLinks.map((link, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + (i * 0.05), duration: 0.4 }}
-                >
-                  <Link href={link.href} className="mobile-menu-link">
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
+              {mobileLinks.map((link, i) => {
+                const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + (i * 0.05), duration: 0.4 }}
+                  >
+                    <Link href={link.href} className={`mobile-menu-link ${isActive ? 'mobile-menu-link--active' : ''}`}>
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
 
             <motion.div 
