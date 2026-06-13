@@ -29,7 +29,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} Operating System for Scalable Organizations`,
+  title: {
+    template: "%s | Axis",
+    default: `${SITE.name} Operating System for Scalable Organizations`,
+  },
   description: SITE.description,
   openGraph: {
     title: SITE.name,

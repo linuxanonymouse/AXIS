@@ -32,18 +32,6 @@ export default function Navbar() {
     { label: "Contact", href: "/contact" }
   ];
 
-  const mobileLinks = [
-    { label: "Overview", href: "/overview" },
-    { label: "Divisions", href: "/divisions" },
-    { label: "Operations", href: "/divisions/operations" },
-    { label: "Studio", href: "/divisions/studio" },
-    { label: "Intelligence", href: "/divisions/intelligence" },
-    { label: "Media", href: "/divisions/media" },
-    { label: "Ventures", href: "/divisions/ventures" },
-    { label: "Diagnostic", href: "/diagnostic" },
-    { label: "Insights", href: "/insights" },
-    { label: "Contact", href: "/contact" }
-  ];
 
   return (
     <>
@@ -55,7 +43,8 @@ export default function Navbar() {
       >
         <div className="navbar__logo">
           <Link href="/" className="navbar__logo-link">
-            <img src="/images/AXIS%20Gold%20Logo-01.png" alt="AXIS" style={{ height: "40px", width: "auto", objectFit: "contain" }} />
+            <div className="navbar__mark" />
+            <span className="navbar__brand">AXIS</span>
           </Link>
         </div>
 
@@ -73,8 +62,8 @@ export default function Navbar() {
         </div>
 
         <div className="navbar__actions">
-          <Link href="/apply" className="navbar__btn-apply">
-            Apply Access
+          <Link href="/diagnostic" className="navbar__btn-apply">
+            Start Strategic Diagnostic
           </Link>
           
           <div className="navbar__mobile-btn">
@@ -101,21 +90,34 @@ export default function Navbar() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="mobile-menu-links">
-              {mobileLinks.map((link, i) => {
-                const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + (i * 0.05), duration: 0.4 }}
-                  >
-                    <Link href={link.href} className={`mobile-menu-link ${isActive ? 'mobile-menu-link--active' : ''}`}>
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                );
-              })}
+              {/* Primary */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4 }}>
+                <Link href="/overview" className={`mobile-menu-link ${pathname === '/overview' ? 'mobile-menu-link--active' : ''}`}>Overview</Link>
+              </motion.div>
+              
+              {/* Divisions Group */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25, duration: 0.4 }} className="mobile-menu-group">
+                <Link href="/divisions" className={`mobile-menu-link ${pathname === '/divisions' ? 'mobile-menu-link--active' : ''}`}>Divisions</Link>
+                <div className="mobile-menu-sublinks">
+                  <Link href="/divisions/operations" className={`mobile-menu-sublink ${pathname === '/divisions/operations' ? 'mobile-menu-sublink--active' : ''}`}>Axis Operations</Link>
+                  <Link href="/divisions/studio" className={`mobile-menu-sublink ${pathname === '/divisions/studio' ? 'mobile-menu-sublink--active' : ''}`}>Axis Studio</Link>
+                  <Link href="/divisions/intelligence" className={`mobile-menu-sublink ${pathname === '/divisions/intelligence' ? 'mobile-menu-sublink--active' : ''}`}>Axis Intelligence</Link>
+                  <Link href="/divisions/media" className={`mobile-menu-sublink ${pathname === '/divisions/media' ? 'mobile-menu-sublink--active' : ''}`}>Axis Media</Link>
+                </div>
+              </motion.div>
+
+              {/* Strategic Action */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.4 }}>
+                <Link href="/diagnostic" className={`mobile-menu-link ${pathname.startsWith('/diagnostic') ? 'mobile-menu-link--active' : ''}`}>Diagnostic</Link>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35, duration: 0.4 }}>
+                <Link href="/insights" className={`mobile-menu-link ${pathname.startsWith('/insights') ? 'mobile-menu-link--active' : ''}`}>Insights</Link>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.4 }}>
+                <Link href="/contact" className={`mobile-menu-link ${pathname === '/contact' ? 'mobile-menu-link--active' : ''}`}>Contact</Link>
+              </motion.div>
             </div>
 
             <motion.div 
@@ -124,8 +126,8 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <Link href="/apply" className="mobile-menu-btn-apply">
-                Apply Access
+              <Link href="/diagnostic" className="mobile-menu-btn-apply">
+                Start Strategic Diagnostic
               </Link>
               <a href="mailto:operations@axisoperations.ca" className="mobile-menu-email">
                 operations@axisoperations.ca

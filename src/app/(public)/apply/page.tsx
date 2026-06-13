@@ -39,10 +39,10 @@ function ApplyContent() {
         <div className="apply-shell" style={{ maxWidth: "700px", margin: "4rem auto" }}>
           <div className="apply-header" style={{ textAlign: "center", borderBottom: "none", marginBottom: "0", paddingBottom: "2rem" }}>
             <h1 style={{ fontFamily: "var(--font-cormorant)", fontSize: "3rem", color: "#ededed", marginBottom: "1rem" }}>
-              Select Intake Pathway
+              Select Alignment Pathway
             </h1>
             <p style={{ color: "#888", fontSize: "1.125rem", lineHeight: 1.6 }}>
-              Choose the appropriate operational track for your organization.
+              Choose the appropriate Axis pathway based on your organization’s stage, needs, and alignment.
             </p>
           </div>
           
@@ -56,7 +56,7 @@ function ApplyContent() {
                   padding: "2.5rem",
                   width: "100%",
                   background: "#050505",
-                  border: "1px solid #1a1a1a",
+                  border: "1px solid #333", // Slightly stronger border for hierarchy
                   borderRadius: "4px",
                   transition: "all 0.2s ease"
                 }}
@@ -65,7 +65,7 @@ function ApplyContent() {
                   e.currentTarget.style.background = "#0a0a0a";
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.borderColor = "#1a1a1a";
+                  e.currentTarget.style.borderColor = "#333";
                   e.currentTarget.style.background = "#050505";
                 }}
               >
@@ -74,7 +74,7 @@ function ApplyContent() {
                   <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Strategic Diagnostic</h3>
                 </div>
                 <p style={{ color: "#888", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  This diagnostic is used to identify structural constraints within your organization and determine where Axis is applied. Designed for organizations operating with existing revenue seeking structured scale.
+                  Used to identify structural constraints, evaluate growth readiness, and determine where Axis can be applied. Designed for organizations with existing revenue seeking structured scale.
                 </p>
               </button>
             )}
@@ -103,15 +103,15 @@ function ApplyContent() {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
                   <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#4a8fe8" }} />
-                  <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Studio Deployment Request</h3>
+                  <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Studio Infrastructure Request</h3>
                 </div>
                 <p style={{ color: "#888", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  Submit a structured deployment request for Axis Studio execution. Used to define system requirements and initiate build operations.
+                  Used for approved infrastructure deployment through Axis Studio. This pathway defines system requirements and initiates build operations after strategic alignment is confirmed.
                 </p>
               </button>
             )}
 
-            {settings.operatorEnabled && (
+            {false && settings.operatorEnabled && (
               <button
                 onClick={() => setFlow("operator")}
                 style={{
@@ -125,7 +125,7 @@ function ApplyContent() {
                   transition: "all 0.2s ease"
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.borderColor = "#2ecc71";
+                  e.currentTarget.style.borderColor = "#888"; // Muted neutral grey
                   e.currentTarget.style.background = "#0a0a0a";
                 }}
                 onMouseOut={(e) => {
@@ -134,11 +134,11 @@ function ApplyContent() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#2ecc71" }} />
-                  <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Operator Application</h3>
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#888" }} />
+                  <h3 style={{ fontSize: "1.25rem", color: "#ededed", letterSpacing: "0.05em", textTransform: "uppercase" }}>Axis Operator Access</h3>
                 </div>
                 <p style={{ color: "#888", fontSize: "0.95rem", lineHeight: 1.6 }}>
-                  Apply to the Axis Studio Operator System. Limited access based on experience, active client portfolio, and professional alignment.
+                  Apply for limited access to the Axis Operator System. Access is based on execution capability, active portfolio, professional standards, and alignment with Axis operating requirements.
                 </p>
               </button>
             )}

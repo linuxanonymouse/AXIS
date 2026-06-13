@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import "../apply/apply.css";
+import "../../legal.css";
 
 export default function PrivacyPage() {
   return (

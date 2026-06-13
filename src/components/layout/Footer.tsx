@@ -14,8 +14,7 @@ export default function Footer() {
     { label: "Operations", href: "/divisions/operations" },
     { label: "Studio", href: "/divisions/studio" },
     { label: "Intelligence", href: "/divisions/intelligence" },
-    { label: "Media", href: "/divisions/media" },
-    { label: "Ventures", href: "/divisions/ventures" }
+    { label: "Media", href: "/divisions/media" }
   ];
 
   return (

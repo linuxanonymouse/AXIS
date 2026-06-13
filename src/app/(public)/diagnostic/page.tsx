@@ -182,11 +182,9 @@ export default function DiagnosticPage() {
         </section>
 
         <section className="axis-section">
-          <h2 className="axis-section__title">Built as a Website Intake, Not a Native Form</h2>
+          <h2 className="axis-section__title">A Controlled Alignment System</h2>
           <p className="axis-section__lead">
-            The Axis Alignment Application is built directly inside the Axis website multi-step,
-            progress-tracked, mobile-first, and fully branded. ClickUp and automation tools operate
-            behind the scenes; the public experience remains Axis-controlled.
+            The Axis Alignment Application is a structured, multi-step intake system designed to evaluate fit, constraints, readiness, and the appropriate Axis pathway before engagement begins.
           </p>
           <div className="axis-grid">
             <div className="axis-card">

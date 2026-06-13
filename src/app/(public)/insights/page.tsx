@@ -183,12 +183,21 @@ export default function InsightsPage() {
               animate={{ opacity: 1 }}
               className="insights-empty"
             >
-              <p className="insights-empty__eyebrow">No doctrine published yet</p>
-              <p className="insights-empty__body">
-                Axis publishes structural thinking on growth, infrastructure, and organizational
-                design. Check back soon.
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                <motion.span 
+                  animate={{ opacity: [1, 0.3, 1] }} 
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                  style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--gold)", boxShadow: "0 0 12px rgba(205, 164, 100, 0.8)", display: "inline-block" }}
+                />
+                <p className="insights-empty__eyebrow" style={{ margin: 0 }}>Processing</p>
+              </div>
+              <p className="insights-empty__body" style={{ fontSize: "1.2rem", color: "var(--ivory)", marginBottom: "1rem" }}>
+                Axis Insights engine is currently aggregating performance metrics and deployment histories.
               </p>
-              <div className="insights-empty__ctas">
+              <p className="insights-empty__body" style={{ fontSize: "0.95rem" }}>
+                Check back later for public case studies and system documentation.
+              </p>
+              <div className="insights-empty__ctas" style={{ marginTop: "2rem" }}>
                 <Link href="/diagnostic" className="axis-btn axis-btn--primary">
                   Start Strategic Diagnostic
                 </Link>

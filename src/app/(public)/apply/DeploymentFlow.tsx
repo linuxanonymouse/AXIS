@@ -137,7 +137,7 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.error ?? "Submission failed");
       }
-      router.push("/submission-received");
+      router.push("/submission-received?type=deployment");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "An error occurred. Please try again.");
       setSubmitting(false);
@@ -165,7 +165,7 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="apply-eyebrow"
         >
-          Axis Studio Deployment Request
+          AXIS INTAKE
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 14 }}
@@ -200,7 +200,10 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
               {step === 1 && (
                 <>
                   <p className="apply-step__eyebrow">Identity</p>
-                  <h2 className="apply-step__title">Project Identity</h2>
+                  <h2 className="apply-step__title">Alignment Request</h2>
+                  <p style={{ color: "#888", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "2rem" }}>
+                    Submit an alignment request through the Axis intake system. Axis will review your organization, objectives, infrastructure needs, and readiness to determine the appropriate next step.
+                  </p>
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Project Name</label>
@@ -232,11 +235,13 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                         onChange={(e) => set("requestCategory", e.target.value)}
                       >
                         <option value="" disabled>Select category...</option>
-                        <option value="System Integration">System Integration</option>
-                        <option value="Process Automation">Process Automation</option>
-                        <option value="Data Pipeline">Data Pipeline</option>
-                        <option value="Custom Application">Custom Application</option>
-                        <option value="Other">Other</option>
+                        <option value="Strategic Advisory">Strategic Advisory</option>
+                        <option value="Infrastructure Deployment">Infrastructure Deployment</option>
+                        <option value="Data & AI Systems">Data & AI Systems</option>
+                        <option value="Distribution Ecosystem">Distribution Ecosystem</option>
+                        <option value="Strategic Partnership">Strategic Partnership</option>
+                        <option value="Full Axis Operating System">Full Axis Operating System</option>
+                        <option value="Not Sure Yet">Not Sure Yet</option>
                       </select>
                     </div>
                     <div className="apply-field">
@@ -384,6 +389,9 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
                         onChange={(e) => set("supportUrl", e.target.value)}
                       />
                     </div>
+                    <p style={{ marginTop: "2rem", color: "#888", fontSize: "0.875rem", lineHeight: 1.6 }}>
+                      For deeper evaluation, begin with the Strategic Diagnostic.
+                    </p>
                   </div>
                 </>
               )}
@@ -413,7 +421,7 @@ export default function DeploymentFlow({ onBack }: { onBack: () => void }) {
               onClick={submit}
               disabled={submitting}
             >
-              {submitting ? "Transmitting..." : "Submit Deployment Request"}
+              {submitting ? "Transmitting..." : "Submit Alignment Request"}
             </button>
           )}
         </div>

@@ -35,6 +35,7 @@ type FormData = {
   location: string;
   role: string;
   businessModel: string;
+  businessModelDesc: string;
   revenueRange: string;
   teamSize: string;
   primaryObjective: string;
@@ -57,6 +58,7 @@ type FormData = {
   partnerships: string;
   revenueLoss: string;
   mostBroken: string;
+  uncapturedRevenue: string;
   timeline: string;
 };
 
@@ -69,6 +71,7 @@ const INITIAL: FormData = {
   location: "",
   role: "",
   businessModel: "",
+  businessModelDesc: "",
   revenueRange: "",
   teamSize: "",
   primaryObjective: "",
@@ -90,33 +93,38 @@ const INITIAL: FormData = {
   partnerships: "",
   revenueLoss: "",
   mostBroken: "",
+  uncapturedRevenue: "",
   timeline: "",
 };
 
 const REVENUE_OPTIONS = [
-  { value: "under_100k", label: "Under $100K" },
-  { value: "100k_500k", label: "$100K - $500K" },
-  { value: "500k_1m", label: "$500K - $1M" },
-  { value: "1m_5m", label: "$1M - $5M" },
-  { value: "5m_25m", label: "$5M - $25M" },
-  { value: "25m_plus", label: "$25M+" },
+  { value: "pre_revenue", label: "Pre-revenue" },
+  { value: "under_100k", label: "Under $100K annually" },
+  { value: "100k_500k", label: "$100K to $500K annually" },
+  { value: "500k_1m", label: "$500K to $1M annually" },
+  { value: "1m_5m", label: "$1M to $5M annually" },
+  { value: "5m_10m", label: "$5M to $10M annually" },
+  { value: "10m_plus", label: "$10M+ annually" },
+  { value: "undisclosed", label: "Prefer not to disclose" },
 ];
 
 const TEAM_OPTIONS = [
-  { value: "solo", label: "Solo" },
-  { value: "2_5", label: "2-5" },
-  { value: "6_15", label: "6-15" },
-  { value: "16_50", label: "16-50" },
-  { value: "51_200", label: "51-200" },
-  { value: "200_plus", label: "200+" },
+  { value: "solo", label: "Solo operator" },
+  { value: "2_5", label: "2 to 5" },
+  { value: "6_15", label: "6 to 15" },
+  { value: "16_50", label: "16 to 50" },
+  { value: "51_100", label: "51 to 100" },
+  { value: "100_plus", label: "100+" },
 ];
 
 const STAGE_OPTIONS = [
-  { value: "pre_revenue", label: "Pre-Revenue", desc: "Building toward first revenue" },
-  { value: "early_traction", label: "Early Traction", desc: "Revenue exists, not yet consistent" },
-  { value: "growth", label: "Growth", desc: "Consistent revenue, scaling challenges" },
-  { value: "scaling", label: "Scaling", desc: "Proven model, deploying infrastructure" },
-  { value: "established", label: "Established", desc: "Mature organization, optimizing systems" },
+  { value: "early_validation", label: "Early validation" },
+  { value: "revenue_generating", label: "Revenue generating" },
+  { value: "growing_messy", label: "Growing but operationally messy" },
+  { value: "established_scaling", label: "Established and scaling" },
+  { value: "expansion_ready", label: "Expansion ready" },
+  { value: "restructuring", label: "Restructuring / rebuilding" },
+  { value: "preparing_investment", label: "Preparing for investment, acquisition, or partnership" },
 ];
 
 const SERVICE_OPTIONS = [
@@ -181,6 +189,7 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
       if (!form.primaryObjective.trim()) errs.primaryObjective = "Required";
       if (!form.revenueLoss.trim()) errs.revenueLoss = "Required";
       if (!form.mostBroken.trim()) errs.mostBroken = "Required";
+      if (!form.uncapturedRevenue.trim()) errs.uncapturedRevenue = "Required";
     }
     if (s === 7) {
       if (!form.timeline) errs.timeline = "Required";
@@ -256,7 +265,7 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.error ?? "Submission failed");
       }
-      router.push("/submission-received");
+      router.push("/submission-received?type=diagnostic");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "An error occurred. Please try again.");
       setSubmitting(false);
@@ -345,7 +354,23 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Business Model</label>
-                      <textarea className={`apply-textarea ${errors.businessModel ? "apply-input--error" : ""}`} placeholder="Describe how your organization generates revenue..." value={form.businessModel} onChange={(e) => set("businessModel", e.target.value)} rows={2} />
+                      <select className={`apply-input ${errors.businessModel ? "apply-input--error" : ""}`} value={form.businessModel} onChange={(e) => set("businessModel", e.target.value)}>
+                        <option value="" disabled>Select Business Model...</option>
+                        <option value="Service business">Service business</option>
+                        <option value="Product business">Product business</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="Media/content business">Media/content business</option>
+                        <option value="Membership/subscription">Membership/subscription</option>
+                        <option value="Marketplace/platform">Marketplace/platform</option>
+                        <option value="Education/programs">Education/programs</option>
+                        <option value="Events/experiences">Events/experiences</option>
+                        <option value="Hybrid model">Hybrid model</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Briefly describe how your organization generates revenue. (Optional)</label>
+                      <textarea className="apply-textarea" placeholder="e.g. B2B enterprise software with monthly subscriptions..." value={form.businessModelDesc} onChange={(e) => set("businessModelDesc", e.target.value)} rows={2} />
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Revenue Range</label>
@@ -385,51 +410,60 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                   <h2 className="apply-step__title">Operations & Systems</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
-                      <label className="apply-label">Are your tools (CRM, email, etc.) integrated?</label>
+                      <label className="apply-label">Are your tools integrated?</label>
                       <select className={`apply-input ${errors.toolsIntegrated ? "apply-input--error" : ""}`} value={form.toolsIntegrated} onChange={(e) => set("toolsIntegrated", e.target.value)}>
                         <option value="" disabled>Select Integration Level...</option>
-                        <option value="Fully Integrated">Fully Integrated</option>
-                        <option value="Partially Integrated">Partially Integrated</option>
-                        <option value="Siloed">Siloed</option>
-                        <option value="None">None</option>
+                        <option value="Not integrated">Not integrated</option>
+                        <option value="Partially integrated">Partially integrated</option>
+                        <option value="Mostly integrated">Mostly integrated</option>
+                        <option value="Fully integrated">Fully integrated</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How automated is your operation?</label>
                       <select className={`apply-input ${errors.automationLevel ? "apply-input--error" : ""}`} value={form.automationLevel} onChange={(e) => set("automationLevel", e.target.value)}>
                         <option value="" disabled>Select Automation Level...</option>
-                        <option value="Highly Automated">Highly Automated</option>
-                        <option value="Partially Automated">Partially Automated</option>
-                        <option value="Mostly Manual">Mostly Manual</option>
+                        <option value="Mostly manual">Mostly manual</option>
+                        <option value="Some automation">Some automation</option>
+                        <option value="Moderately automated">Moderately automated</option>
+                        <option value="Highly automated">Highly automated</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you track KPIs clearly?</label>
                       <select className={`apply-input ${errors.kpiTracking ? "apply-input--error" : ""}`} value={form.kpiTracking} onChange={(e) => set("kpiTracking", e.target.value)}>
                         <option value="" disabled>Select KPI Tracking...</option>
-                        <option value="Real-time Dashboards">Real-time Dashboards</option>
-                        <option value="Spreadsheets">Spreadsheets</option>
-                        <option value="Inconsistent">Inconsistent</option>
-                        <option value="None">None</option>
+                        <option value="No">No</option>
+                        <option value="Somewhat">Somewhat</option>
+                        <option value="Yes, manually">Yes, manually</option>
+                        <option value="Yes, through dashboards">Yes, through dashboards</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you have a structured reporting system?</label>
                       <select className={`apply-input ${errors.reportingSystem ? "apply-input--error" : ""}`} value={form.reportingSystem} onChange={(e) => set("reportingSystem", e.target.value)}>
                         <option value="" disabled>Select Reporting System...</option>
-                        <option value="Automated & Structured">Automated & Structured</option>
-                        <option value="Manual & Structured">Manual & Structured</option>
-                        <option value="Inconsistent">Inconsistent</option>
-                        <option value="None">None</option>
+                        <option value="No">No</option>
+                        <option value="Basic reporting">Basic reporting</option>
+                        <option value="Manual reports">Manual reports</option>
+                        <option value="Automated reports">Automated reports</option>
+                        <option value="Dashboard-based reporting">Dashboard-based reporting</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How are decisions made?</label>
                       <select className={`apply-input ${errors.decisionMaking ? "apply-input--error" : ""}`} value={form.decisionMaking} onChange={(e) => set("decisionMaking", e.target.value)}>
                         <option value="" disabled>Select Decision Making...</option>
-                        <option value="Data-driven">Data-driven</option>
-                        <option value="Executive Committee">Executive Committee</option>
-                        <option value="Gut Feeling">Gut Feeling</option>
+                        <option value="Founder instinct">Founder instinct</option>
+                        <option value="Leadership discussion">Leadership discussion</option>
+                        <option value="Data-informed">Data-informed</option>
+                        <option value="Dashboard-driven">Dashboard-driven</option>
+                        <option value="Reactive / problem-based">Reactive / problem-based</option>
+                        <option value="Unclear">Unclear</option>
                       </select>
                     </div>
                   </div>
@@ -447,40 +481,80 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Primary traffic source?</label>
-                      <input className={`apply-input ${errors.primaryTrafficSource ? "apply-input--error" : ""}`} placeholder="e.g. SEO, Meta Ads, Outbound" value={form.primaryTrafficSource} onChange={(e) => set("primaryTrafficSource", e.target.value)} />
+                      <select className={`apply-input ${errors.primaryTrafficSource ? "apply-input--error" : ""}`} value={form.primaryTrafficSource} onChange={(e) => set("primaryTrafficSource", e.target.value)}>
+                        <option value="" disabled>Select Source...</option>
+                        <option value="Organic social">Organic social</option>
+                        <option value="Paid ads">Paid ads</option>
+                        <option value="SEO">SEO</option>
+                        <option value="Email">Email</option>
+                        <option value="Referrals">Referrals</option>
+                        <option value="Partnerships">Partnerships</option>
+                        <option value="Influencers / UGC">Influencers / UGC</option>
+                        <option value="Outbound">Outbound</option>
+                        <option value="Events">Events</option>
+                        <option value="Mixed / multiple channels">Mixed / multiple channels</option>
+                        <option value="Unsure">Unsure</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you have a defined system or funnel for conversion?</label>
-                      <input className={`apply-input ${errors.conversionFunnel ? "apply-input--error" : ""}`} placeholder="Yes/No and brief detail" value={form.conversionFunnel} onChange={(e) => set("conversionFunnel", e.target.value)} />
+                      <select className={`apply-input ${errors.conversionFunnel ? "apply-input--error" : ""}`} value={form.conversionFunnel} onChange={(e) => set("conversionFunnel", e.target.value)}>
+                        <option value="" disabled>Select Funnel Status...</option>
+                        <option value="No">No</option>
+                        <option value="Basic funnel">Basic funnel</option>
+                        <option value="Partially defined">Partially defined</option>
+                        <option value="Clearly defined">Clearly defined</option>
+                        <option value="Automated funnel">Automated funnel</option>
+                        <option value="Unsure">Unsure</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you use paid ads?</label>
-                      <input className={`apply-input ${errors.paidAds ? "apply-input--error" : ""}`} placeholder="Yes/No (Platform/Spend)" value={form.paidAds} onChange={(e) => set("paidAds", e.target.value)} />
+                      <select className={`apply-input ${errors.paidAds ? "apply-input--error" : ""}`} value={form.paidAds} onChange={(e) => set("paidAds", e.target.value)}>
+                        <option value="" disabled>Select Ad Spend...</option>
+                        <option value="No">No</option>
+                        <option value="Yes, under $1K/month">Yes, under $1K/month</option>
+                        <option value="Yes, $1K to $5K/month">Yes, $1K to $5K/month</option>
+                        <option value="Yes, $5K to $25K/month">Yes, $5K to $25K/month</option>
+                        <option value="Yes, $25K+/month">Yes, $25K+/month</option>
+                        <option value="Previously used ads">Previously used ads</option>
+                        <option value="Unsure">Unsure</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Content consistency?</label>
                       <select className={`apply-input ${errors.contentConsistency ? "apply-input--error" : ""}`} value={form.contentConsistency} onChange={(e) => set("contentConsistency", e.target.value)}>
                         <option value="" disabled>Select Consistency...</option>
-                        <option value="Daily">Daily</option>
-                        <option value="Weekly">Weekly</option>
-                        <option value="Sporadic">Sporadic</option>
                         <option value="None">None</option>
+                        <option value="Sporadic">Sporadic</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Multiple times per week">Multiple times per week</option>
+                        <option value="Daily">Daily</option>
+                        <option value="High-volume content system">High-volume content system</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you leverage influencers or user-generated content?</label>
                       <select className={`apply-input ${errors.ugc ? "apply-input--error" : ""}`} value={form.ugc} onChange={(e) => set("ugc", e.target.value)}>
                         <option value="" disabled>Select...</option>
-                        <option value="Yes">Yes</option>
                         <option value="No">No</option>
+                        <option value="Testing">Testing</option>
+                        <option value="Occasionally">Occasionally</option>
+                        <option value="Yes, consistently">Yes, consistently</option>
+                        <option value="Yes, structured program">Yes, structured program</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Do you leverage partnerships or expansion channels?</label>
                       <select className={`apply-input ${errors.partnerships ? "apply-input--error" : ""}`} value={form.partnerships} onChange={(e) => set("partnerships", e.target.value)}>
                         <option value="" disabled>Select...</option>
-                        <option value="Yes">Yes</option>
                         <option value="No">No</option>
+                        <option value="Informally">Informally</option>
+                        <option value="Some partnerships">Some partnerships</option>
+                        <option value="Structured partnerships">Structured partnerships</option>
+                        <option value="Expansion channels active">Expansion channels active</option>
+                        <option value="Unsure">Unsure</option>
                       </select>
                     </div>
                   </div>
@@ -520,6 +594,10 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                       <label className="apply-label">What feels most broken right now?</label>
                       <textarea className={`apply-textarea ${errors.mostBroken ? "apply-input--error" : ""}`} placeholder="Be honest about what is failing..." value={form.mostBroken} onChange={(e) => set("mostBroken", e.target.value)} rows={2} />
                     </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Where do you see uncaptured revenue potential?</label>
+                      <textarea className={`apply-textarea ${errors.uncapturedRevenue ? "apply-input--error" : ""}`} placeholder="New offer, pricing, audience, partnership, automation, upsell, retention, distribution, or other." value={form.uncapturedRevenue} onChange={(e) => set("uncapturedRevenue", e.target.value)} rows={2} />
+                    </div>
                   </div>
                 </>
               )}
@@ -531,11 +609,19 @@ export default function DiagnosticFlow({ onBack }: { onBack: () => void }) {
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">What is your timeline?</label>
-                      <input className={`apply-input ${errors.timeline ? "apply-input--error" : ""}`} placeholder="e.g. Immediate, Next 30 days, Exploring" value={form.timeline} onChange={(e) => set("timeline", e.target.value)} />
+                      <select className={`apply-input ${errors.timeline ? "apply-input--error" : ""}`} value={form.timeline} onChange={(e) => set("timeline", e.target.value)}>
+                        <option value="" disabled>Select Timeline...</option>
+                        <option value="Immediate">Immediate</option>
+                        <option value="Next 30 days">Next 30 days</option>
+                        <option value="Next 60 to 90 days">Next 60 to 90 days</option>
+                        <option value="This quarter">This quarter</option>
+                        <option value="Exploring">Exploring</option>
+                        <option value="Not sure">Not sure</option>
+                      </select>
                     </div>
                     <p style={{ marginTop: "2rem", color: "#888", fontSize: "0.875rem", lineHeight: 1.6 }}>
-                      Submission of this diagnostic initiates an automated constraint analysis. 
-                      Axis will review your metrics and issue next steps based on objective alignment.
+                      Submission of this diagnostic initiates an internal constraint analysis. 
+                      Axis will review your responses, evaluate alignment, and issue next steps based on strategic fit.
                     </p>
                   </div>
                 </>

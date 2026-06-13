@@ -81,7 +81,7 @@ html {
 }
 
 .section-ecosystem {
-  min-height: 200dvh;
+  min-height: 250dvh;
   display: block;
   padding-top: 0;
 }
@@ -481,7 +481,7 @@ html {
   }
 
   .section-ecosystem {
-    min-height: 80dvh;
+    min-height: 250dvh;
   }
 
   .section-split {

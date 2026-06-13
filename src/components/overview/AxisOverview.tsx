@@ -130,13 +130,7 @@ export default function AxisOverview() {
         variants={containerStagger}
       >
         <div className="cinematic-backdrop-glow" />
-        <motion.img 
-          src="/images/AXIS%20Gold%20Logo-01.png" 
-          alt="AXIS" 
-          variants={childFadeUp} 
-          className="mb-6"
-          style={{ height: "160px", width: "auto", objectFit: "contain" }} 
-        />
+        <motion.h1 variants={childFadeUp} className="text-luxury-heading text-shimmer">AXIS</motion.h1>
         <motion.div variants={childFadeUp} className="eyebrow">ALIGN. OPERATE. COMPOUND.</motion.div>
         <motion.div variants={childFadeUp} className="eyebrow">The operating system for scalable organizations.</motion.div>
         <motion.p variants={childFadeUp} className="text-body-large mt-8">

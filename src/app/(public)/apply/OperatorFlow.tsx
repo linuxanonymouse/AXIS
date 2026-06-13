@@ -30,10 +30,12 @@ type FormData = {
   name: string;
   email: string;
   currentRole: string;
+  specialization: string;
   portfolioUrl: string;
   experienceDuration: string;
   activeClients: string;
   clientAcquisition: string;
+  portfolioSize: string;
   realisticClients: string;
   revenueRange: string;
   primaryLimitation: string;
@@ -49,10 +51,12 @@ const INITIAL: FormData = {
   name: "",
   email: "",
   currentRole: "",
+  specialization: "",
   portfolioUrl: "",
   experienceDuration: "",
   activeClients: "",
   clientAcquisition: "",
+  portfolioSize: "",
   realisticClients: "",
   revenueRange: "",
   primaryLimitation: "",
@@ -84,10 +88,12 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
       if (!form.name.trim()) errs.name = "Required";
       if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = "Valid email required";
       if (!form.currentRole.trim()) errs.currentRole = "Required";
+      if (!form.specialization.trim()) errs.specialization = "Required";
     }
     if (s === 2) {
       if (!form.experienceDuration.trim()) errs.experienceDuration = "Required";
       if (!form.activeClients.trim()) errs.activeClients = "Required";
+      if (!form.portfolioSize) errs.portfolioSize = "Required";
       if (!form.clientAcquisition.trim()) errs.clientAcquisition = "Required";
       if (!form.realisticClients.trim()) errs.realisticClients = "Required";
       if (!form.revenueRange.trim()) errs.revenueRange = "Required";
@@ -143,7 +149,7 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.error ?? "Submission failed");
       }
-      router.push("/submission-received");
+      router.push("/submission-received?type=operator");
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "An error occurred. Please try again.");
       setSubmitting(false);
@@ -160,7 +166,7 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
 
       <div className="apply-header">
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="apply-eyebrow">
-          Axis Operator Application
+          AXIS INTAKE
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.06 }} className="apply-step-counter">
           <span className="apply-step-num">{String(step).padStart(2, "0")}</span>
@@ -182,7 +188,7 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
               {step === 1 && (
                 <>
                   <p className="apply-step__eyebrow">Identification</p>
-                  <h2 className="apply-step__title">Personal Details</h2>
+                  <h2 className="apply-step__title">Operator Access Request</h2>
                   <div className="apply-fields">
                     <div className="apply-field">
                       <label className="apply-label">Name</label>
@@ -195,6 +201,10 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                     <div className="apply-field">
                       <label className="apply-label">What best describes your current role?</label>
                       <input className={`apply-input ${errors.currentRole ? "apply-input--error" : ""}`} type="text" placeholder="e.g. Freelancer, Agency Owner" value={form.currentRole} onChange={(e) => set("currentRole", e.target.value)} />
+                    </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Specialization</label>
+                      <input className={`apply-input ${errors.specialization ? "apply-input--error" : ""}`} type="text" placeholder="e.g. Meta Ads, B2B SEO" value={form.specialization} onChange={(e) => set("specialization", e.target.value)} />
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">Website/Portfolio Link</label>
@@ -216,6 +226,16 @@ export default function OperatorFlow({ onBack }: { onBack: () => void }) {
                     <div className="apply-field">
                       <label className="apply-label">Do you currently have active clients?</label>
                       <input className={`apply-input ${errors.activeClients ? "apply-input--error" : ""}`} type="text" placeholder="Yes/No and brief detail" value={form.activeClients} onChange={(e) => set("activeClients", e.target.value)} />
+                    </div>
+                    <div className="apply-field">
+                      <label className="apply-label">Current Portfolio Size</label>
+                      <select className={`apply-input ${errors.portfolioSize ? "apply-input--error" : ""}`} value={form.portfolioSize} onChange={(e) => set("portfolioSize", e.target.value)}>
+                        <option value="" disabled>Select Portfolio Size...</option>
+                        <option value="1-3 clients">1-3 clients</option>
+                        <option value="4-10 clients">4-10 clients</option>
+                        <option value="11-20 clients">11-20 clients</option>
+                        <option value="21+ clients">21+ clients</option>
+                      </select>
                     </div>
                     <div className="apply-field">
                       <label className="apply-label">How do you primarily acquire clients?</label>
