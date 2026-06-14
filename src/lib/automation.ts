@@ -72,7 +72,7 @@ function getTransporter(): nodemailer.Transporter | null {
 
 // ─── Email templates ─────────────────────────────────────────────────────────
 
-function baseTemplate(title: string, bodyHtml: string): string {
+function baseTemplate(title: string, bodyHtml: string, divisionName: string = "Operations"): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -85,7 +85,7 @@ function baseTemplate(title: string, bodyHtml: string): string {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td style="font-size:20px;font-weight:700;color:#d4af37;letter-spacing:4px;text-transform:uppercase;">AXIS</td>
-              <td align="right" style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;">Operations</td>
+              <td align="right" style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;">${divisionName}</td>
             </tr>
           </table>
         </td></tr>
@@ -100,7 +100,7 @@ function baseTemplate(title: string, bodyHtml: string): string {
         <!-- Footer -->
         <tr><td style="padding:24px 40px;border-top:1px solid rgba(212,175,55,0.08);background:rgba(0,0,0,0.3);">
           <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.25);line-height:1.6;">
-            This is an automated confirmation from Axis Operations.<br>
+            This is an automated confirmation from Axis ${divisionName}.<br>
             Do not reply to this email. For inquiries, contact
             <a href="mailto:operations@axisoperations.ca" style="color:#d4af37;text-decoration:none;">operations@axisoperations.ca</a>
           </p>
@@ -112,7 +112,7 @@ function baseTemplate(title: string, bodyHtml: string): string {
 </html>`;
 }
 
-function diagnosticEmailTemplate(name: string): string {
+function diagnosticEmailTemplate(name: string, divisionName: string): string {
   const bodyHtml = `
     <p style="margin:0 0 16px;font-size:15px;color:#c8c8c8;line-height:1.7;">
       ${name},
@@ -132,10 +132,10 @@ function diagnosticEmailTemplate(name: string): string {
       </p>
     </div>`;
 
-  return baseTemplate("Strategic Diagnostic Submission Received", bodyHtml);
+  return baseTemplate("Strategic Diagnostic Submission Received", bodyHtml, divisionName);
 }
 
-function contactEmailTemplate(name: string, projectType?: string | null): string {
+function contactEmailTemplate(name: string, projectType: string | undefined, divisionName: string): string {
   const serviceNote = projectType ? `<p style="margin:0 0 16px;font-size:14px;color:rgba(255,255,255,0.4);">Service requested: <span style="color:#d4af37;">${projectType}</span></p>` : "";
 
   const bodyHtml = `
@@ -155,31 +155,33 @@ function contactEmailTemplate(name: string, projectType?: string | null): string
       </p>
     </div>`;
 
-  return baseTemplate("Project Inquiry Submission Received", bodyHtml);
+  return baseTemplate("Project Inquiry Submission Received", bodyHtml, divisionName);
 }
 
-function deploymentEmailTemplate(name: string, projectType?: string | null): string {
+function deploymentEmailTemplate(name: string, projectType: string | undefined, divisionName: string): string {
   const serviceNote = projectType ? `<p style="margin:0 0 16px;font-size:14px;color:rgba(255,255,255,0.4);">Category: <span style="color:#d4af37;">${projectType}</span></p>` : "";
+  const title = projectType ? `${projectType} Request` : "Deployment Request Received";
+  const requestTypeName = projectType ? projectType.toLowerCase() : "deployment";
 
   const bodyHtml = `
     <p style="margin:0 0 16px;font-size:15px;color:#c8c8c8;line-height:1.7;">
       ${name},
     </p>
     <p style="margin:0 0 16px;font-size:15px;color:#c8c8c8;line-height:1.7;">
-      Your deployment request has been received and logged into our operations queue.
+      Your ${requestTypeName} request has been received and logged into our operations queue.
     </p>
     ${serviceNote}
     <div style="margin:24px 0;padding:20px;background:rgba(212,175,55,0.05);border-left:3px solid #d4af37;border-radius:0 4px 4px 0;">
       <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;font-weight:600;">What happens next</p>
       <p style="margin:8px 0 0;font-size:14px;color:#c8c8c8;line-height:1.6;">
-        Our technical team will review your deployment scope and system requirements. We will contact you shortly regarding approval and deployment timelines.
+        Our technical team will review your ${requestTypeName} scope and system requirements. We will contact you shortly regarding approval and timelines.
       </p>
     </div>`;
 
-  return baseTemplate("Deployment Request Received", bodyHtml);
+  return baseTemplate(title, bodyHtml, divisionName);
 }
 
-function operatorEmailTemplate(name: string): string {
+function operatorEmailTemplate(name: string, divisionName: string): string {
   const bodyHtml = `
     <p style="margin:0 0 16px;font-size:15px;color:#c8c8c8;line-height:1.7;">
       ${name},
@@ -197,10 +199,10 @@ function operatorEmailTemplate(name: string): string {
       </p>
     </div>`;
 
-  return baseTemplate("Operator Application Received", bodyHtml);
+  return baseTemplate("Operator Application Received", bodyHtml, divisionName);
 }
 
-function newsletterEmailTemplate(name: string): string {
+function newsletterEmailTemplate(name: string, divisionName: string): string {
   const bodyHtml = `
     <p style="margin:0 0 16px;font-size:15px;color:#c8c8c8;line-height:1.7;">
       ${name || "Operator"},
@@ -213,7 +215,7 @@ function newsletterEmailTemplate(name: string): string {
       directly from the Axis network.
     </p>`;
 
-  return baseTemplate("Intelligence Briefing Subscription Confirmed", bodyHtml);
+  return baseTemplate("Intelligence Briefing Subscription Confirmed", bodyHtml, divisionName);
 }
 
 // ─── Send confirmation email ─────────────────────────────────────────────────
@@ -228,40 +230,48 @@ export async function sendConfirmationEmail(payload: AutomationPayload): Promise
   const to = payload.email;
   if (!to) return;
 
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@axisoperations.ca";
+  const baseFromAddress = process.env.SMTP_FROM || process.env.SMTP_USER || "noreply@axisoperations.ca";
   const recipientName = (payload.name as string) || "Operator";
 
   let subject: string;
   let html: string;
+  let divisionName: string;
 
   switch (payload.type) {
     case "diagnostic_application":
       subject = "Axis Strategic Diagnostic Submission Received";
-      html = diagnosticEmailTemplate(recipientName);
+      divisionName = "Strategic Diagnostic";
+      html = diagnosticEmailTemplate(recipientName, divisionName);
       break;
     case "contact_submission":
-      subject = "Axis Operations Project Inquiry Received";
-      html = contactEmailTemplate(recipientName, payload.projectType as string | undefined);
+      subject = payload.projectType ? `Axis ${payload.projectType} Inquiry Received` : "Axis Operations Project Inquiry Received";
+      divisionName = "Operations";
+      html = contactEmailTemplate(recipientName, payload.projectType as string | undefined, divisionName);
       break;
     case "newsletter_subscription":
       subject = "Axis Intelligence Subscription Confirmed";
-      html = newsletterEmailTemplate(recipientName);
+      divisionName = "Intelligence";
+      html = newsletterEmailTemplate(recipientName, divisionName);
       break;
     case "deployment_request":
-      subject = "Axis Studio Deployment Request Received";
-      html = deploymentEmailTemplate(recipientName, payload.projectType as string | undefined);
+      subject = payload.projectType ? `Axis ${payload.projectType} Deployment Request` : "Axis Studio Deployment Request Received";
+      divisionName = "Studio";
+      html = deploymentEmailTemplate(recipientName, payload.projectType as string | undefined, divisionName);
       break;
     case "operator_application":
       subject = "Axis Operator Application Received";
-      html = operatorEmailTemplate(recipientName);
+      divisionName = "Studio Operator System";
+      html = operatorEmailTemplate(recipientName, divisionName);
       break;
     default:
       console.info(`[automation] Unknown type for email ${payload.type}, skipping fallback.`);
       return;
   }
 
+  const dynamicFrom = `"Axis " + divisionName + "" <" + baseFromAddress + ">"`;
+
   try {
-    await transporter.sendMail({ from, to, subject, html });
+    await transporter.sendMail({ from: `"Axis ${divisionName}" <${baseFromAddress}>`, to, subject, html });
     console.info(`[automation] Confirmation email sent to ${to} (${payload.type})`);
   } catch (err) {
     console.warn("[automation] Email send failed:", (err as Error)?.message);

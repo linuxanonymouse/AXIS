@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
         data: {
           projectName: json.projectName,
           email: json.email,
-          requestCategory: json.requestCategory,
+          requestCategory: json.projectType || json.requestCategory || "Axis Studio",
           internalOwner: json.internalOwner,
           techStack: json.techStack,
           currentProcess: json.currentProcess,
